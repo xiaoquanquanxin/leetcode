@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>题库</title>
+    <style>
+        .red {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<p class="red">121.买股票的最佳时机</p>
+<script data-msg="121.买股票的最佳时机">
+    (() => {
+        function getValue(arr) {
+            //  如果一共就一天，没得买
+            if (arr.length < 2) {
+                return 0;
+            }
+            //  历史最低的index，需要一直变动，更新，将来的大值要减去这个值
+            let _minIndex = 0;
+            //  最大差值，如果将来某个值减去历史最大值比这个值还大，需要更新
+            let _diff = 0;
+            for (let i = 1; i < arr.length; i++) {
+                //  如果是历史最低值
+                if (arr[i] - arr[_minIndex] < 0) {
+                    _minIndex = i;
+                    //  肯定没戏了
+                    continue;
+                }
+                //  如果比差值大，记录这个值-最低值
+                if (arr[i] - arr[_minIndex] > _diff) {
+                    _diff = arr[i] - arr[_minIndex];
+                }
+            }
+            return {_minIndex, _diff}
+        }
+
+        const arr = [2, 0, 2, -33, 33, 3, 9, 43, -214, -222];
+        // console.log(getValue(arr));
+    })();
+</script>
+<p>122.买股票2</p>
+<script data-msg="122.买股票2">
+    (() => {
+        const arr = [2, 32, 60, -1, 43, 43, 32, -333, 3];
+
+        function getValue(arr) {
+            if (arr.length < 1) {
+                return 0;
+            }
+            //  总价
+            let total = 0;
+            for (let i = 1; i < arr.length; i++) {
+                let diff = arr[i] - arr[i - 1];
+                //  如果跌了
+                if (diff < 0) {
+                    //  等下一次
+                    continue;
+                }
+                total += diff;
+            }
+            return {
+                total,
+            }
+        }
+
+        // console.log(getValue(arr));
+    })();
+</script>
+<p>125.验证回文串</p>
+<script data-msg="125.验证回文串">
+    (() => {
+        let str = '1112345432111';
+
+        function getValue(str) {
+            let len = str.length;
+            for (let i = 0; i < len / 2; i++) {
+                if (str[i] !== str[(len - 1) - i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // console.log(getValue(str));
+    })();
+</script>
+<p class="red">136.只有一次的数字</p>
+<script data-msg="136.只有一次的数字">
+    (function () {
+        //  异或计算，一趟搞定。时间复杂度o(n)，答案为３，因为两个相同的数异或为０．
+        const arr = [23, 4, 23, 43, 23, 44, 2, 4, 43, 23, 44, 2, 37];
+        let value = 0;
+        for (let i = 0; i < arr.length; i++) {
+            value ^= arr[i];
+            // console.log(value);
+        }
+        // console.log(value);
+
+        //  拓展
+        const a = [2, 3, 4, 5, 6, 7, 8, 9, 21, 33, 66];
+        const _a = [2, 3, 4, 5, 6, 7, 7, 8, 9, 21, 33, 66];
+        let _value = 0;
+        let _value_ = 0;
+        for (let i = 0; i < a.length; i++) {
+            _value ^= a[i];
+        }
+        for (let i = 0; i < _a.length; i++) {
+            _value_ ^= _a[i];
+        }
+        // console.log(_value ^ _value_);
+
+    })();
+</script>
+<p>141.环形链表</p>
+<script data-msg="141.环形链表">
+    //  判断有没有环形链表
+    (() => {
+        const arr = createList(10);
+
+        function createList(len) {
+            const arr = new Array(len);
+            for (let i = len - 1; i >= 0; i--) {
+                arr[i] = {value: i, next: arr[i + 1] || null};
+            }
+            return arr;
+        }
+
+        // console.log(arr);
+        // arr[9].next = arr[3];
+
+        function circle(node) {
+            //  如果没有了
+            if (!node) {
+                return false;
+            }
+            //  如果是重复了，说明闭环了
+            if (node.flag) {
+                return true;
+            }
+            //  如果没有重复
+            if (node.flag === undefined) {
+                node.flag = true;
+            }
+            return circle(node.next);
+        }
+
+        const isCircle = circle(arr[0]);
+        // console.log(isCircle);
+
+    })();
+</script>
+<p>160.相交链表</p>
+<script data-msg="160.相交链表">
+    (() => {
+        function setFlag(node) {
+            if (!node) {
+                return false;
+            }
+            if (node.flag) {
+                return node;
+            }
+            node.flag = true;
+            return setFlag(node.next);
+        }
+    })();
+</script>
+<p>167.两数之和2，输入有序数组</p>
+<script data-msg="167.两数之和2，输入有序数组">
+    (() => {
+        const arr = [1, 2, 4, 5, 8, 322, 566, 881];
+
+        function getValue(arr, target) {
+            const hash = {};
+            for (let i = 0; i < arr.length; i++) {
+                const _hashVal = hash[target - arr[i]];
+                if (_hashVal === undefined) {
+                    hash[arr[i]] = i;
+                    continue;
+                }
+                return [_hashVal, i];
+            }
+            return null;
+        }
+
+        // const res = getValue(arr, 566 + 2);
+        // console.log(res);
+    })();
+</script>
+<p class="red">168.excel表列名称</p>
+<script>
+    (() => {
+        const el = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
+        // console.log(el);
+
+        function getValue(num) {
+            const arr = [];
+            while (num > 0) {
+                if (num === 26) {
+                    arr.unshift(el[num - 1]);
+                } else {
+                    arr.unshift(el[num % (el.length) - 1]);
+                }
+                num = Math.floor(num / (el.length + 1));
+            }
+            // console.log(arr);
+            return arr;
+        }
+
+        const res = getValue(701);
+
+        // console.log(res);
+
+        function a(n) {
+            let ans = '';
+            while (n) {
+                if (n % 26 === 0) {
+                    ans += String.fromCharCode(26 + 64);
+                    n = (n / 26 - 1);
+                } else {
+                    ans += String.fromCharCode(n % 26 + 64);
+                    n = Math.floor(n / 26);
+                }
+            }
+            return ans.split('').reverse().join('');
+        }
+
+        // console.log(a(343));
+    })();
+</script>
+<p>171.求众数</p>
+<script data-msg="171.求众数">
+    (() => {
+        const arr = [12, 3, 4, 5, 23, 123545, 231, 51, 2343, 5, 87, 23, 5, 6, 7, 8, 7, 6, 4, 8, 3, 3983, 31, 756, 13, 8, 42, 7, 3, 2];
+
+        function getValue(arr) {
+            const hash = {};
+            let max = -Infinity;
+            let maxValue = 0;
+            arr.forEach(function (item, index) {
+                hash[item] = hash[item] || 0;
+                hash[item]++;
+                if (max < hash[item]) {
+                    max = hash[item];
+                    maxValue = item;
+                }
+            });
+            return maxValue;
+        }
+
+        const res = getValue(arr);
+        // console.log(res);
+    })();
+</script>
+<p>172.阶乘后的零</p>
+<script data-msg="172.阶乘后的零">
+    (() => {
+        function getValue(n, prev) {
+            prev = prev || BigInt(1);
+            n = BigInt(n);
+            if (n === BigInt(1)) {
+                return n * prev;
+            }
+            if (n === BigInt(0)) {
+                return 0;
+            }
+            prev = n * prev;
+            return getValue(n - BigInt(1), prev);
+        }
+
+
+        function getZeroCount(n) {
+            n = BigInt(n);
+            let _n = 0;
+            while (n > BigInt(10) && n % BigInt(10) === BigInt(0)) {
+                n = n / BigInt(10);
+                _n++;
+            }
+            return _n;
+        }
+
+        const res = getValue(100);
+        // console.log(res);
+        console.log(getZeroCount(res));
+
+
+        function tra(n) {
+            let ans = 0;
+            while (n) {
+                ans += Math.floor(n / 5);
+                n /= 5;
+                n = Math.floor(n);
+            }
+            return ans;
+        }
+
+        console.log(tra(15))
+    })();
+</script>
+</body>
+</html>
