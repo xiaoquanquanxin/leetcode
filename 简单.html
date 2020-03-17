@@ -258,7 +258,7 @@
         // console.log(res);
     })();
 </script>
-<p>172.阶乘后的零</p>
+<p class="red">172.阶乘后的零</p>
 <script data-msg="172.阶乘后的零">
     (() => {
         function getValue(n, prev) {
@@ -285,22 +285,106 @@
             return _n;
         }
 
-        const res = getValue(100);
+        const res = getValue(222);
         // console.log(res);
-        console.log(getZeroCount(res));
+        // console.log(getZeroCount(res));
 
 
         function tra(n) {
             let ans = 0;
             while (n) {
-                ans += Math.floor(n / 5);
-                n /= 5;
-                n = Math.floor(n);
+                n = Math.floor(n / 5);
+                ans += n;
             }
             return ans;
         }
 
-        console.log(tra(15))
+        // console.log(tra(15));
+    })();
+</script>
+<p>189.旋转数组</p>
+<script data-msg="189.旋转数组">
+    (() => {
+        let arr = ["1", "2", "3", "4", "5", "6", "7"];
+        const len = arr.length;
+
+        //  1.
+        function getValue1(n) {
+            n = n % len;
+            if (n === 0) {
+                return;
+            }
+            do {
+                let last = arr[len - 1];
+                for (let i = len - 1; i > 0; i--) {
+                    arr[i] = arr[i - 1];
+                }
+                arr[0] = last;
+            } while (--n);
+        }
+
+        // getValue1(0);
+        // console.log(arr);
+
+        //  2.
+        function getValue2(n) {
+            n = n % len;
+            if (n === 0) {
+                return;
+            }
+            let temp = arr.slice(-n, len);
+            arr.splice(-n, n);
+            Array.prototype.unshift.apply(arr, temp);
+        }
+
+        getValue2(3);
+        // console.log(arr);
+    })();
+</script>
+<p class="red">190.颠倒二进制位</p>
+<script data-msg="190.颠倒二进制位">
+    (() => {
+        //  需理解题意
+        const num = 43261596;
+
+        function getValue1(n = 0) {
+            return parseInt(n.toString(2).split('').reverse().join(''), 2);
+        }
+
+        function getValue2(n) {
+            let str = [];
+            //  先转二进制
+            while (n) {
+                const yu = n % 2;
+                str.unshift(yu);
+                n = ~~(n / 2);
+            }
+            return parseInt(str.reverse().join(''), 2);
+        }
+
+        // console.log(getValue1(num));
+        // console.log(getValue2(num));
+
+        //  缓存了数据
+        const sum = [];
+        sum[0] = 1;
+        for (let i = 1; i <= 32; i++) {
+            sum[i] = 2 * sum[i - 1];
+        }
+        console.log(sum);
+
+        function getValue3(n = 0) {
+            const temp = ('00000000000000000000000000000000' + n.toString(2)).slice(-32);
+            let ans = 0;
+            for (let i = 0, len = temp.length; i < len; i++) {
+                if (temp[i] === '1') {
+                    ans += sum[i];
+                }
+            }
+            return ans;
+        }
+
+        console.log(getValue3(num))
     })();
 </script>
 </body>
