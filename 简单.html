@@ -545,5 +545,94 @@
         }
     })();
 </script>
+<p>202.快乐数</p>
+<script data-msg="202.快乐数">
+    (() => {
+        function getValue(n) {
+            let arr = [];
+            let _n = n;
+            do {
+                let m = 0;
+                n = n.toString();
+                for (let i = n.length - 1; i >= 0; i--) {
+                    m += Math.pow(+n[i], 2);
+                }
+                n = m;
+                if (arr.indexOf(m) !== -1) {
+                    return false;
+                }
+                if (m === 1) {
+                    console.log(_n);
+                    return true;
+                }
+                arr.push(m);
+            } while (1);
+        }
+
+        //  1, 7, 10, 13, 19, 23, 28, 31, 32, 44, 49, 68, 70, 79, 82, 86, 91, 94, 97, 100。
+        for (let i = 0; i <= 100; i++) {
+            // getValue(i);
+        }
+    })();
+</script>
+<p>203.删除链表中的节点</p>
+<script data-msg="203.删除链表中的节点">
+    (() => {
+        let _arr = [];
+
+        function deleteValue(value) {
+            for (let i = 0; i < _arr.length; i++) {
+                if (_arr[i].value === value) {
+                    _arr.splice(i, 1);
+                    if (_arr[i - 1]) {
+                        if (_arr[i]) {
+                            _arr[i - 1].next = _arr[i];
+                        }
+                    } else {
+                        _arr[i].isHead = true;
+                    }
+                    break;
+                }
+            }
+        }
+    })();
+</script>
+<p>204.计数质数</p>
+<script data-msg="204.计数质数">
+    (() => {
+        //  key：第几个数，value：有几个质数
+        const arr = {
+            1: 0,
+        };
+
+        function getValue(n) {
+            if (arr[n] !== undefined) {
+                return arr[n];
+            }
+            arr[n] = arr[n - 1];
+            let _n = 2;
+            const s_n = Math.sqrt(n);
+            let isHe = false;
+            while (_n <= s_n) {
+                if (n % _n === 0) {
+                    isHe = true;
+                    break;
+                }
+                _n++;
+            }
+            if (!isHe) {
+                arr[n] = arr[n - 1] + 1;
+            }
+            return arr.length;
+        }
+
+        for (let i = 1; i < 100; i++) {
+            let res = getValue(i);
+            // console.log(res);
+        }
+        console.log(arr);
+        console.log(getValue(10))
+    })();
+</script>
 </body>
 </html>
