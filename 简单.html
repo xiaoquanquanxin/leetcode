@@ -630,9 +630,341 @@
             let res = getValue(i);
             // console.log(res);
         }
-        console.log(arr);
-        console.log(getValue(10))
+        // console.log(arr);
+        // console.log(getValue(10))
+    })();
+</script>
+<p>205.同构字符串</p>
+<script data-msg="205.同构字符串">
+    (() => {
+        function getValue(str1, str2) {
+            str1 = str1.toString();
+            str2 = str2.toString();
+            let obj1 = {};
+            let obj2 = {};
+            for (let i = 0; i < str1.length; i++) {
+                obj1[str1[i]] = (obj1[str1[i]] || 0) + 1;
+                obj2[str2[i]] = (obj2[str2[i]] || 0) + 1;
+            }
+            // console.log(obj1);
+            // console.log(obj2);
+            return obj1.toString() === obj2.toString();
+        }
+
+        const res = getValue(12122, 'ababb');
+        // console.log(res);
+    })();
+</script>
+<p>217.存在重复元素</p>
+<script data-msg="217.存在重复元素">
+    (() => {
+        function getValue(arr) {
+            const hash = {};
+            for (let i = 0; i < arr.length; i++) {
+                //  重复
+                if (hash[arr[i]]) {
+                    return true;
+                }
+                hash[arr[i]] = 1;
+            }
+        }
+
+        const arr = [1, 2, 3, 5, 4, 3];
+        // console.log(getValue(arr));
+    })();
+</script>
+<p>219.存在重复元素二</p>
+<script data-msg="219.存在重复元素二">
+    (() => {
+        function getValue(arr, _dif) {
+            const hash = {};
+            for (let i = 0; i < arr.length; i++) {
+                //  如果有重复
+                if (hash[arr[i]]) {
+                    //  判断距离
+                    if (hash[arr[i]] + _dif <= i) {
+                        console.log(hash, arr[i]);
+                        return true;
+                    }
+                }
+                //  是新的数
+                hash[arr[i]] = i;
+            }
+            console.log(hash);
+            return false;
+        }
+
+        const arr = [21, 34, 3, 63, 21, 2, 4, 73, 12, 1, 3, 1, 3];
+        // const res = getValue(arr, 3);
+        // console.log(res);
+    })();
+</script>
+<p>225.用队列实现栈</p>
+<script data-msg="225.用队列实现栈">
+    (() => {
+        function Stack() {
+            this.arr = [];
+        }
+
+        Stack.prototype.push = function (x) {
+            this.arr.push(x);
+        }
+    })();
+</script>
+<p>226.反转二叉树</p>
+<script data-msg="226.反转二叉树">
+    (() => {
+        const obj = {
+            value: 4,
+            prev: {
+                value: 2,
+                prev: {
+                    value: 1,
+                },
+            },
+            next: {
+                value: 6,
+                prev: {
+                    value: 5,
+                }
+            }
+        };
+
+        function getValue(obj) {
+            const prev = obj.prev;
+            obj.prev = obj.next || null;
+            obj.next = prev || null;
+            obj.prev && getValue(obj.prev);
+            obj.next && getValue(obj.next);
+        }
+
+        // console.log(JSON.parse(JSON.stringify(obj)));
+        getValue(obj);
+        // console.log(obj);
+    })();
+</script>
+<p>231.2的幂</p>
+<script data-msg="231.2的幂">
+    (() => {
+        function getValue(n) {
+            return ((Math.log(n) / Math.log(2)) % 1) === 0;
+        }
+
+        // console.log(getValue(17))
+    })();
+</script>
+<p>232.用栈实现队列</p>
+<script data-msg="232.用栈实现队列">
+    (() => {
+        //  略
+    })();
+</script>
+<p>234.回文链表</p>
+<script data-msg="234.回文链表">
+    (() => {
+        const obj = {
+            value: 1,
+            next: {
+                value: 2,
+                next: {
+                    value: 3,
+                    next: {
+                        value: 2,
+                        next: {
+                            value: 1
+                        }
+                    }
+                }
+            }
+        };
+
+        function getValue(obj) {
+            let str = '';
+            do {
+                str += obj.value;
+                obj = obj.next;
+            } while (obj);
+            for (let i = 0; i < str.length; i++) {
+                if (str[i] !== str[str.length - 1 - i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        const res = getValue(obj);
+        // console.log(res);
+    })();
+</script>
+<p class="red">235.二叉搜索树的最近公共祖先</p>
+<script data-msg="235.二叉搜索树的最近公共祖先">
+    (() => {
+        //  二叉搜索树是按大小排序的
+        const next = {
+            value: 11,
+            prev: {
+                value: 10,
+            }
+        };
+        const prev = {
+            value: 8,
+        };
+        const obj = {
+            value: 5,
+            prev: {
+                value: 3,
+                next: {
+                    value: 4,
+                },
+            },
+            next: {
+                value: 9,
+                prev: {
+                    value: 7,
+                    next: next
+                },
+                next: {
+                    value: 14,
+                    prev: prev,
+                }
+            }
+        };
+        const res = getValue(obj, prev, next);
+
+        // console.log(res);
+
+        function getValue(obj, prev, next) {
+            let value = obj.value;
+            let pValue = prev.value;
+            let nValue = next.value;
+            //  夹击
+            if (value > pValue && value < nValue) {
+                return obj;
+            }
+            //  向右查找
+            if (value < pValue) {
+                return getValue(obj.next, prev, next);
+            }
+            if (value > nValue) {
+                return getValue(obj.prev, prev, next);
+            }
+        }
+    })();
+</script>
+<p>237.删除链表节点</p>
+<script data-msg="237.删除链表节点">
+    (() => {
+        //  略
+    })();
+</script>
+<p>242.有效的字母异位词</p>
+<script data-msg="242.有效的字母异位词">
+    (() => {
+        //  就是用的字母都一样，排序变了
+        function getValue(str1, str2) {
+            if (str1.length !== str2.length) {
+                return false;
+            }
+            return (str1.split('').sort().join() === str2.split('').sort().join());
+        }
+
+        const res = getValue('323221,', '221,321');
+        // console.log(res);
+    })();
+</script>
+<p class="red">257.二叉树的所有路径</p>
+<script data-msg="257.二叉树的所有路径">
+    (() => {
+        //  略，有几个叶子节点就有几个路径
+    })();
+</script>
+<p>258.各位相加</p>
+<script data-msg="258.各位相加">
+    (() => {
+        function getValue1(n) {
+            n = n.toString();
+            while (n >= 10) {
+                n = n.toString();
+                let res = 0;
+                for (let i = 0; i < n.length; i++) {
+                    res += +n[i];
+                }
+                n = res;
+            }
+            return n;
+        }
+
+        //  谁tm知道了？
+        function getValue2(n) {
+            return 1 + (n - 1) % 9;
+        }
+
+        // const res = getValue1(2273);
+        const res = getValue2(2273);
+        // console.log(res);
+    })();
+</script>
+<p class="red">263.丑数</p>
+<script data-msg="263.丑数">
+    (() => {
+        function getValue(n) {
+            //  用这些因数除，直到除到除不尽
+            for (let i = 0; i < arr.length; i++) {
+                while (n % arr[i] === 0) {
+                    n /= arr[i];
+                }
+            }
+            //  除不尽就是有其他到因数
+            return n === 1;
+        }
+
+        //  只有这些因数
+        const arr = [2, 3, 5];
+        const res = getValue(128);
+        // console.log(res);
+    })();
+</script>
+<p>268.缺失数字</p>
+<script data-msg="268.缺失数字">
+    (() => {
+        const arr = [9, 6, 4, 2, 3, 5, 7, 0, 1];
+
+        function getValue(arr) {
+            const obj = {};
+            for (let i = 0; i < arr.length; i++) {
+                obj[arr[i]] = 1;
+            }
+            for (let i = 0; i <= arr.length; i++) {
+                if (obj[i] === undefined) {
+                    return i;
+                }
+            }
+        }
+
+        const res = getValue(arr);
+        // console.log(res);
     })();
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
