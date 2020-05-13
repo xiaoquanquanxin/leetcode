@@ -16,7 +16,7 @@
 <p class="red">121.买股票的最佳时机</p>
 <script data-msg="121.买股票的最佳时机">
     (() => {
-        function getValue(arr) {
+        function getValue(arr){
             //  如果一共就一天，没得买
             if (arr.length < 2) {
                 return 0;
@@ -37,7 +37,7 @@
                     _diff = arr[i] - arr[_minIndex];
                 }
             }
-            return {_minIndex, _diff}
+            return { _minIndex, _diff };
         }
 
         const arr = [2, 0, 2, -33, 33, 3, 9, 43, -214, -222];
@@ -49,7 +49,7 @@
     (() => {
         const arr = [2, 32, 60, -1, 43, 43, 32, -333, 3];
 
-        function getValue(arr) {
+        function getValue(arr){
             if (arr.length < 1) {
                 return 0;
             }
@@ -66,7 +66,7 @@
             }
             return {
                 total,
-            }
+            };
         }
 
         // console.log(getValue(arr));
@@ -77,7 +77,7 @@
     (() => {
         let str = '1112345432111';
 
-        function getValue(str) {
+        function getValue(str){
             let len = str.length;
             for (let i = 0; i < len / 2; i++) {
                 if (str[i] !== str[(len - 1) - i]) {
@@ -92,7 +92,7 @@
 </script>
 <p class="red">136.只有一次的数字</p>
 <script data-msg="136.只有一次的数字">
-    (function () {
+    (function (){
         //  异或计算，一趟搞定。时间复杂度o(n)，答案为３，因为两个相同的数异或为０．
         const arr = [23, 4, 23, 43, 23, 44, 2, 4, 43, 23, 44, 2, 37];
         let value = 0;
@@ -123,10 +123,10 @@
     (() => {
         const arr = createList(10);
 
-        function createList(len) {
+        function createList(len){
             const arr = new Array(len);
             for (let i = len - 1; i >= 0; i--) {
-                arr[i] = {value: i, next: arr[i + 1] || null};
+                arr[i] = { value: i, next: arr[i + 1] || null };
             }
             return arr;
         }
@@ -134,7 +134,7 @@
         // console.log(arr);
         // arr[9].next = arr[3];
 
-        function circle(node) {
+        function circle(node){
             //  如果没有了
             if (!node) {
                 return false;
@@ -158,7 +158,7 @@
 <p>160.相交链表</p>
 <script data-msg="160.相交链表">
     (() => {
-        function setFlag(node) {
+        function setFlag(node){
             if (!node) {
                 return false;
             }
@@ -175,7 +175,7 @@
     (() => {
         const arr = [1, 2, 4, 5, 8, 322, 566, 881];
 
-        function getValue(arr, target) {
+        function getValue(arr, target){
             const hash = {};
             for (let i = 0; i < arr.length; i++) {
                 const _hashVal = hash[target - arr[i]];
@@ -199,7 +199,7 @@
 
         // console.log(el);
 
-        function getValue(num) {
+        function getValue(num){
             const arr = [];
             while (num > 0) {
                 if (num === 26) {
@@ -217,7 +217,7 @@
 
         // console.log(res);
 
-        function a(n) {
+        function a(n){
             let ans = '';
             while (n) {
                 if (n % 26 === 0) {
@@ -239,11 +239,11 @@
     (() => {
         const arr = [12, 3, 4, 5, 23, 123545, 231, 51, 2343, 5, 87, 23, 5, 6, 7, 8, 7, 6, 4, 8, 3, 3983, 31, 756, 13, 8, 42, 7, 3, 2];
 
-        function getValue(arr) {
+        function getValue(arr){
             const hash = {};
             let max = -Infinity;
             let maxValue = 0;
-            arr.forEach(function (item, index) {
+            arr.forEach(function (item, index){
                 hash[item] = hash[item] || 0;
                 hash[item]++;
                 if (max < hash[item]) {
@@ -261,7 +261,7 @@
 <p class="red">172.阶乘后的零</p>
 <script data-msg="172.阶乘后的零">
     (() => {
-        function getValue(n, prev) {
+        function getValue(n, prev){
             prev = prev || BigInt(1);
             n = BigInt(n);
             if (n === BigInt(1)) {
@@ -274,8 +274,7 @@
             return getValue(n - BigInt(1), prev);
         }
 
-
-        function getZeroCount(n) {
+        function getZeroCount(n){
             n = BigInt(n);
             let _n = 0;
             while (n > BigInt(10) && n % BigInt(10) === BigInt(0)) {
@@ -289,8 +288,7 @@
         // console.log(res);
         // console.log(getZeroCount(res));
 
-
-        function tra(n) {
+        function tra(n){
             let ans = 0;
             while (n) {
                 n = Math.floor(n / 5);
@@ -305,11 +303,11 @@
 <p>189.旋转数组</p>
 <script data-msg="189.旋转数组">
     (() => {
-        let arr = ["1", "2", "3", "4", "5", "6", "7"];
+        let arr = ['1', '2', '3', '4', '5', '6', '7'];
         const len = arr.length;
 
         //  1.
-        function getValue1(n) {
+        function getValue1(n){
             n = n % len;
             if (n === 0) {
                 return;
@@ -327,7 +325,7 @@
         // console.log(arr);
 
         //  2.
-        function getValue2(n) {
+        function getValue2(n){
             n = n % len;
             if (n === 0) {
                 return;
@@ -347,11 +345,11 @@
         //  需理解题意
         const num = 43261596;
 
-        function getValue1(n = 0) {
+        function getValue1(n = 0){
             return parseInt(n.toString(2).split('').reverse().join(''), 2);
         }
 
-        function getValue2(n) {
+        function getValue2(n){
             let str = [];
             //  先转二进制
             while (n) {
@@ -374,7 +372,7 @@
 
         // console.log(sum);
 
-        function getValue3(n = 0) {
+        function getValue3(n = 0){
             const temp = ('00000000000000000000000000000000' + n.toString(2)).slice(-32);
             let ans = 0;
             for (let i = 0, len = temp.length; i < len; i++) {
@@ -391,12 +389,12 @@
 <p>191.位1的个数</p>
 <script data-msg="191.位1的个数">
     (() => {
-        function getValue1(n = 0) {
+        function getValue1(n = 0){
             return n.toString(2).match(/1/ig).length;
         }
 
         // console.log(getValue1(65535));
-        function getValue2(n) {
+        function getValue2(n){
             let ans = 0;
             while (n) {
                 const yu = n % 2;
@@ -413,7 +411,7 @@
     (() => {
         const arr = [2, 43, 8, 2, 89, 0, 3, 12, 5, 8, 4, 21];
 
-        function getValue1() {
+        function getValue1(){
             const data = [];
             data[0] = [];
             data[1] = [];
@@ -425,7 +423,7 @@
             }
         }
 
-        function getValue2(nums) {
+        function getValue2(nums){
             const len = nums.length;
             if (!len) {
                 return 0;
@@ -443,8 +441,7 @@
             return Math.max(dp[len - 1][0], dp[len - 1][1]);
         }
 
-
-        function getValue3(n, total) {
+        function getValue3(n, total){
             n = n || 0;
             total = total || 0;
             if (n >= arr.length) {
@@ -481,7 +478,7 @@
     //  因为爬楼梯到第n层，最后一步可能是1层，也可能是两层，有且只有这两种情况。所以是n-1层步数和n-2层步数的和。
     //  问的是多少方法，所以n-1层的步数不需要最后+1，n-2也不需要+2。
     (() => {
-        function getValue(n) {
+        function getValue(n){
             if (n <= 0) {
                 return 0;
             }
@@ -508,7 +505,7 @@
         //  4.5
         //  5.8
         //  6.13
-        function f(n) {
+        function f(n){
             let a = 0;
             let b = 1;
             if (n <= 1) {
@@ -531,7 +528,7 @@
          * @param:_total,前一次的
          * @param:total，当前总数
          * */
-        function f1(n, _total, total) {
+        function f1(n, _total, total){
             _total = _total || 1;
             total = total || 1;
             if (n <= 1) {
@@ -548,7 +545,7 @@
 <p>202.快乐数</p>
 <script data-msg="202.快乐数">
     (() => {
-        function getValue(n) {
+        function getValue(n){
             let arr = [];
             let _n = n;
             do {
@@ -580,7 +577,7 @@
     (() => {
         let _arr = [];
 
-        function deleteValue(value) {
+        function deleteValue(value){
             for (let i = 0; i < _arr.length; i++) {
                 if (_arr[i].value === value) {
                     _arr.splice(i, 1);
@@ -605,7 +602,7 @@
             1: 0,
         };
 
-        function getValue(n) {
+        function getValue(n){
             if (arr[n] !== undefined) {
                 return arr[n];
             }
@@ -637,7 +634,7 @@
 <p>205.同构字符串</p>
 <script data-msg="205.同构字符串">
     (() => {
-        function getValue(str1, str2) {
+        function getValue(str1, str2){
             str1 = str1.toString();
             str2 = str2.toString();
             let obj1 = {};
@@ -658,7 +655,7 @@
 <p>217.存在重复元素</p>
 <script data-msg="217.存在重复元素">
     (() => {
-        function getValue(arr) {
+        function getValue(arr){
             const hash = {};
             for (let i = 0; i < arr.length; i++) {
                 //  重复
@@ -676,7 +673,7 @@
 <p>219.存在重复元素二</p>
 <script data-msg="219.存在重复元素二">
     (() => {
-        function getValue(arr, _dif) {
+        function getValue(arr, _dif){
             const hash = {};
             for (let i = 0; i < arr.length; i++) {
                 //  如果有重复
@@ -702,13 +699,13 @@
 <p>225.用队列实现栈</p>
 <script data-msg="225.用队列实现栈">
     (() => {
-        function Stack() {
+        function Stack(){
             this.arr = [];
         }
 
-        Stack.prototype.push = function (x) {
+        Stack.prototype.push = function (x){
             this.arr.push(x);
-        }
+        };
     })();
 </script>
 <p>226.反转二叉树</p>
@@ -730,7 +727,7 @@
             }
         };
 
-        function getValue(obj) {
+        function getValue(obj){
             const prev = obj.prev;
             obj.prev = obj.next || null;
             obj.next = prev || null;
@@ -746,7 +743,7 @@
 <p>231.2的幂</p>
 <script data-msg="231.2的幂">
     (() => {
-        function getValue(n) {
+        function getValue(n){
             return ((Math.log(n) / Math.log(2)) % 1) === 0;
         }
 
@@ -778,7 +775,7 @@
             }
         };
 
-        function getValue(obj) {
+        function getValue(obj){
             let str = '';
             do {
                 str += obj.value;
@@ -833,7 +830,7 @@
 
         // console.log(res);
 
-        function getValue(obj, prev, next) {
+        function getValue(obj, prev, next){
             let value = obj.value;
             let pValue = prev.value;
             let nValue = next.value;
@@ -861,7 +858,7 @@
 <script data-msg="242.有效的字母异位词">
     (() => {
         //  就是用的字母都一样，排序变了
-        function getValue(str1, str2) {
+        function getValue(str1, str2){
             if (str1.length !== str2.length) {
                 return false;
             }
@@ -881,7 +878,7 @@
 <p>258.各位相加</p>
 <script data-msg="258.各位相加">
     (() => {
-        function getValue1(n) {
+        function getValue1(n){
             n = n.toString();
             while (n >= 10) {
                 n = n.toString();
@@ -895,7 +892,7 @@
         }
 
         //  谁tm知道了？
-        function getValue2(n) {
+        function getValue2(n){
             return 1 + (n - 1) % 9;
         }
 
@@ -907,7 +904,7 @@
 <p class="red">263.丑数</p>
 <script data-msg="263.丑数">
     (() => {
-        function getValue(n) {
+        function getValue(n){
             //  用这些因数除，直到除到除不尽
             for (let i = 0; i < arr.length; i++) {
                 while (n % arr[i] === 0) {
@@ -929,7 +926,7 @@
     (() => {
         const arr = [9, 6, 4, 2, 3, 5, 7, 0, 1];
 
-        function getValue(arr) {
+        function getValue(arr){
             const obj = {};
             for (let i = 0; i < arr.length; i++) {
                 obj[arr[i]] = 1;
@@ -943,6 +940,130 @@
 
         const res = getValue(arr);
         // console.log(res);
+    })();
+</script>
+<p>278.第一个错误的版本</p>
+<script data-msg="278.第一个错误的版本">
+    (() => {
+        return;
+        //  用了二分法，注意判断 <=
+        const solution = function (isBadVersion){
+            return function (n){
+                let start = 1;
+                let end = n;
+                while (start <= end) {
+                    const mid = Math.floor((start + end) / 2);
+                    //  如果是错的，那么错的可能在更前面
+                    if (!isBadVersion(mid)) {
+                        end = mid - 1;
+                    } else {
+                        start = mid + 1;
+                    }
+                }
+                return start;
+            };
+        };
+        const fn = solution(function (n){
+            return Math.random() > 0.5;
+        });
+        console.log(fn(14));
+    })();
+</script>
+<p>283.移动零</p>
+<script>
+    (() => {
+        return;
+        const arr = ['0', '2', '3', '0', '0', '2', '3', '0', '2', '3', '0', '2', '3', '2', '3', '4', '0', '3', '4', '0', '4', '3', '0', '3', '4', '2', '0', '2', '3', '1', '2', '3', '0', '3', '4', '0', '3', '4', '5', '0', '0', '4', '5', '0', '4', '5', '0', '5', '4', '0', '2', '4', '2', '1', '3', '0', '1', '2', '3', '0', '0', '1', '3', '0', '2', '3', '0'];
+
+        function moveZero(arr){
+            let count = 0;
+            const len = arr.length;
+            for (let i = 0; i < len - count; i++) {
+                if (Number(arr[i]) === 0) {
+                    arr.splice(i, 1);
+                    arr.push(0);
+                    i--;
+                    count++;
+                }
+            }
+            // console.log(len - count);
+            return arr;
+        }
+
+        console.log(moveZero(arr));
+    })();
+</script>
+<p>290. 单词规律</p>
+<script data-msg="290. 单词规律">
+    (() => {
+        return;
+
+        //  pattern = "abba", str = "dog cat cat dog"
+        function wordLaw(pattern, str){
+            const patternArr = pattern.split('');
+            const strArr = str.split(' ');
+            const strMap = {};
+            patternArr.forEach((key, index) => {
+                strMap[key] = strArr[index];
+            });
+            const patternStr = patternArr.map(item => {
+                return strMap[item];
+            }).join(' ');
+            return patternStr === str;
+        }
+
+        const result = wordLaw('abbaccc', 'dog cat cat dog a a a');
+        console.log(result);
+    })();
+</script>
+<p>292. Nim 游戏</p>
+<script data-msg="292. Nim 游戏">
+    (() => {
+        return;
+
+        /**
+         * @return:boolean
+         * */
+        function canWinNim(n){
+            return n % 4 !== 0;
+        }
+
+        const result = canWinNim(3);
+        console.log(result);
+    })();
+</script>
+<p>299. 猜数字游戏</p>
+<script data-msg="299. 猜数字游戏">
+    (() => {
+        //   secret = "1123", guess = "0111"
+        const guessFn = (secret, guess) => {
+            //  完全正确
+            const A = [];
+            //  秘密的剩余的
+            const reSec = [];
+            //  位置错误
+            let B = {};
+            for (let i = 0; i < secret.length; i++) {
+                if (secret[i] === guess[i]) {
+                    A.push(i);
+                } else {
+                    reSec.push(secret[i]);
+                    B[guess[i]] = 1;
+                }
+            }
+
+            return {
+                A: A.length,
+                B: reSec.reduce((prev, current) => {
+                    const res = prev + (B[current] || 0);
+                    delete B[current];
+                    return res;
+                }, 0),
+            };
+        };
+        const result = guessFn('112341', '011000');
+        // const result = guessFn('1807', '7810');
+        console.log(result);
     })();
 </script>
 </body>
