@@ -1559,10 +1559,94 @@
         console.log(res);
     })();
 </script>
-<p>409. 最长回文串</p>
-<script data-msg="409. 最长回文串">
+<p>409. 最长回文串,给定一个包含大写字母和小写字母的字符串，找到通过这些字母构造成的最长的回文串。</p>
+<script data-msg="409. 最长回文串,给定一个包含大写字母和小写字母的字符串，找到通过这些字母构造成的最长的回文串">
     (() => {
-    
+        return;
+
+        function longestPalindrome(str){
+            let sum = 0;
+            for (let i = 0; i < str.length; i++) {
+                const index = str.lastIndexOf(str[i]);
+                //  奇数
+                if (index === i) {
+                    continue;
+                }
+                str = str.slice(0, i) + str.slice(i + 1, index) + str.slice(index + 1);
+                sum += 2;
+                i--;
+            }
+            if (str.length % 2 === 1) {
+                sum++;
+            }
+            return sum;
+        }
+
+        const res = longestPalindrome('dccaccd');
+        console.log(res);
+    })();
+</script>
+<p>412. Fizz Buzz.写一个程序，输出从 1 到 n 数字的字符串表示。 1. 如果 n 是3的倍数，输出“Fizz”； 2. 如果 n 是5的倍数，输出“Buzz”； 3.如果 n 同时是3和5的倍数，输出
+    “FizzBuzz”。</p>
+<script data-msg="412. Fizz Buzz.写一个程序，输出从 1 到 n 数字的字符串表示。 1. 如果 n 是3的倍数，输出“Fizz”； 2. 如果 n 是5的倍数，输出“Buzz”； 3.如果 n 同时是3和5的倍数，输出 “FizzBuzz”。">
+    (() => {
+        return;
+
+        function fizzBuzz(n){
+            const arr = [];
+            for (let i = 1; i <= n; i++) {
+                if (i % 3 !== 0 && i % 5 !== 0) {
+                    arr.push(i.toString());
+                    continue;
+                }
+                let str = '';
+                if (i % 3 === 0) {
+                    str += 'Fizz';
+                }
+                if (i % 5 === 0) {
+                    str += 'Buzz';
+                }
+                arr.push(str);
+            }
+            return arr;
+        }
+
+        console.log(fizzBuzz(15));
+    })();
+</script>
+<p>414. 第三大的数.给定一个非空数组，返回此数组中第三大的数。如果不存在，则返回数组中最大的数。要求算法时间复杂度必须是O(n)。</p>
+<script data-msg="414. 第三大的数.给定一个非空数组，返回此数组中第三大的数。如果不存在，则返回数组中最大的数。要求算法时间复杂度必须是O(n)。">
+    (() => {
+        const arr = [1, 2, -2147483648, -2147483648];
+
+        function thirdMax(arr){
+            let max = -Infinity;
+            let second = -Infinity;
+            let third = -Infinity;
+            for (let key of arr) {
+                if (key > max) {
+                    third = second;
+                    second = max;
+                    max = key;
+                    continue;
+                }
+                if (key > second) {
+                    third = second;
+                    second = key;
+                    continue;
+                }
+                if (key > third) {
+                    third = key;
+                }
+            }
+            if (String.prototype.indexOf.call(arr, third) !== String.prototype.lastIndexOf.call(arr, third)) {
+                return max;
+            }
+            return third;
+        }
+
+        const res = thirdMax(arr);
+        console.log(res);
     })();
 </script>
 </body>
