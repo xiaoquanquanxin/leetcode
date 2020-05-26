@@ -2197,6 +2197,8 @@
     有如下定义：，结点左子树中所含结点的值小于等于当前结点的值，结点右子树中所含结点的值大于等于当前结点的值，左子树和右子树都是二叉搜索树</p>
 <script data-msg=">501. 二叉搜索树中的众数，给定一个有相同值的二叉搜索树（BST），找出 BST 中的所有众数（出现频率最高的元素）。 假定 BST 有如下定义：，结点左子树中所含结点的值小于等于当前结点的值，结点右子树中所含结点的值大于等于当前结点的值，左子树和右子树都是二叉搜索树">
     (() => {
+        return;
+
         //  中序遍历，然后就是一个有序数组了，不需要额外的空间，中序遍历难，那就快排递归
         function findMode(root){
             console.log(root);
@@ -2205,7 +2207,7 @@
             let max = 0;
             let item = null;
             let sum = 0;
-            
+
             for (let i = 0; i < root.length; i++) {
                 if (root[i] === item) {
                     sum++;
@@ -2241,6 +2243,144 @@
         }
 
         const res = findMode([1, null, 2, 2]);
+        console.log(res);
+    })();
+</script>
+<p>504. 七进制数，给定一个整数，将其转化为7进制，并以字符串形式输出。</p>
+<script data-msg="504. 七进制数，给定一个整数，将其转化为7进制，并以字符串形式输出。">
+    (() => {
+        return;
+
+        function convertToBase7(num){
+            const arr = [];
+            while (num > 0) {
+                const res = num % 7;
+                arr.unshift(res);
+                num = Math.floor(num / 7);
+            }
+            return arr.join('');
+        }
+
+        const res = convertToBase7(100);
+        console.log(res);
+    })();
+</script>
+<p>506. 相对名次，给出 N 名运动员的成绩，找出他们的相对名次并授予前三名对应的奖牌。前三名运动员将会被分别授予 “金牌”，“银牌” 和“ 铜牌”（"Gold Medal", "Silver Medal", "Bronze
+    Medal"）。(注：分数越高的选手，排名越靠前。)</p>
+<script data-msg="506. 相对名次，给出 N 名运动员的成绩，找出他们的相对名次并授予前三名对应的奖牌。前三名运动员将会被分别授予 “金牌”，“银牌” 和“ 铜牌”（Gold Medal）。(注：分数越高的选手，排名越靠前。)">
+    (() => {
+        return;
+
+        function findRelativeRanks(list){
+            const price = ['Gold Medal', 'Silver Medal', 'Bronze Medal'];
+            let len = price.length;
+            while (len) {
+                const min = Math.min.apply(null, list);
+                const index = list.indexOf(min);
+                list.splice(index, 1);
+                len--;
+            }
+            return price.concat(list);
+        }
+
+        const res = findRelativeRanks([5, 4, 3, 2, 1]);
+        console.log(res);
+    })();
+</script>
+<p>507. 完美数，对于一个 正整数，如果它和除了它自身以外的所有正因子之和相等，我们称它为“完美数”。给定一个 整数 n， 如果他是完美数，返回 True，否则返回 False</p>
+<script data-msg="507. 完美数，对于一个 正整数，如果它和除了它自身以外的所有正因子之和相等，我们称它为“完美数”。给定一个 整数 n， 如果他是完美数，返回 True，否则返回 False">
+    (() => {
+        return;
+
+        function checkPerfectNumber(num){
+            const sqrt = Math.sqrt(num);
+            let i = 1;
+            let sum = 0;
+            while (i <= sqrt) {
+                if (num % i === 0) {
+                    console.log(i, num / i);
+                    sum += i;
+                    sum += num / i;
+                }
+                i++;
+            }
+            if (sqrt % 1 === 0) {
+                sum -= sqrt;
+            }
+            sum /= 2;
+            console.log(sum);
+            return sum === num;
+        }
+
+        const res = checkPerfectNumber(18);
+        console.log(res);
+    })();
+</script>
+<p>509. 斐波那契数</p>
+<script data-msg="509. 斐波那契数">
+    (() => {
+        return;
+        // function fib(n){
+        //     if (n <= 2) {
+        //         return 1;
+        //     }
+        //     return fib(n - 1) + fib(n - 2);
+        // }
+
+        // function fib(n){
+        //     let a = 0;
+        //     let b = 1;
+        //     let c;
+        //     while (n) {
+        //         c = a;
+        //         a = b;
+        //         b = c + b;
+        //         n--;
+        //     }
+        //     return a;
+        // }
+
+        function fib(n, a, b){
+            a = a || 0;
+            b = b || 1;
+            if (n <= 2) {
+                return a + b;
+            }
+            return fib(--n, b, a + b);
+        }
+
+        for (let i = 1; i < 10; i++) {
+            const res = fib(i);
+            console.log(res);
+        }
+
+    })();
+</script>
+<p>520. 检测大写字母，给定一个单词，你需要判断单词的大写使用是否正确。
+    我们定义，在以下情况时，单词的大写用法是正确的：
+    全部字母都是大写，比如"USA"。
+    单词中所有字母都不是大写，比如"leetcode"。
+    如果单词不只含有一个字母，只有首字母大写， 比如 "Google"。
+    否则，我们定义这个单词没有正确使用大写字母。</p>
+<script data-msg="520. 检测大写字母，给定一个单词，你需要判断单词的大写使用是否正确。我们定义，在以下情况时，单词的大写用法是正确的：   全部字母都是大写，比如'USA'。 单词中所有字母都不是大写，比如'leetcode'。 如果单词不只含有一个字母，只有首字母大写， 比如 'Google'。 否则，我们定义这个单词没有正确使用大写字母。">
+    (() => {
+        //  合法？
+        function detectCapitalUse(word){
+            let n = word.length;
+            //  是小写
+            const arr = [];
+            while (n--) {
+                arr.push(word[n].charCodeAt(0) >= 97);
+            }
+            //  都是小写
+            if (arr.every(item => {
+                return item === true;
+            })) {
+                return true;
+            }
+        }
+
+        const res = detectCapitalUse('FlaG');
         console.log(res);
     })();
 </script>
