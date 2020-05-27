@@ -10,6 +10,10 @@
         .red {
             color: red;
         }
+        
+        .orange {
+            color: orange;
+        }
     </style>
 </head>
 <body>
@@ -2364,24 +2368,378 @@
     否则，我们定义这个单词没有正确使用大写字母。</p>
 <script data-msg="520. 检测大写字母，给定一个单词，你需要判断单词的大写使用是否正确。我们定义，在以下情况时，单词的大写用法是正确的：   全部字母都是大写，比如'USA'。 单词中所有字母都不是大写，比如'leetcode'。 如果单词不只含有一个字母，只有首字母大写， 比如 'Google'。 否则，我们定义这个单词没有正确使用大写字母。">
     (() => {
-        //  合法？
-        function detectCapitalUse(word){
-            let n = word.length;
-            //  是小写
-            const arr = [];
-            while (n--) {
-                arr.push(word[n].charCodeAt(0) >= 97);
-            }
-            //  都是小写
-            if (arr.every(item => {
-                return item === true;
-            })) {
-                return true;
-            }
+        return;
+
+        // function detectCapitalUse(word){
+        //     let n = word.length;
+        //     let res = 0;
+        //     while (n--) {
+        //         //  是小写
+        //         if (word[n].charCodeAt(0) >= 97) {
+        //
+        //         } else {
+        //             res++;
+        //         }
+        //     }
+        //     if (res === word.length || res === 0) {
+        //         return true;
+        //     }
+        //     if (res === 1 && word[0].charCodeAt(0) < 97) {
+        //         return true;
+        //     }
+        //     return false;
+        // }
+
+        //
+        var detectCapitalUse = function (word){
+            let reg1 = /^[A-Z]*$/;
+            let reg2 = /^[A-Z][a-z]*$/;
+            let reg3 = /^[a-z]*$/;
+            return reg1.test(word) || reg2.test(word) || reg3.test(word);
+        };
+
+        const res = detectCapitalUse('FFF');
+        console.log(res);
+    })();
+</script>
+<p>530. 二叉搜索树的最小绝对差，给你一棵所有节点为非负值的二叉搜索树，请你计算树中任意两节点的差的绝对值的最小值。</p>
+<script data-msg="530. 二叉搜索树的最小绝对差，给你一棵所有节点为非负值的二叉搜索树，请你计算树中任意两节点的差的绝对值的最小值。">
+    (() => {
+        return;
+
+        function getMinimumDifference(list){
+            list = list.sort((a, b) => a - b);
+            let min = Infinity;
+            list.reduce((prev, current) => {
+                let diff = current - prev;
+                if (diff < min) {
+                    min = Infinity;
+                }
+                return current;
+            });
+            return min;
         }
 
-        const res = detectCapitalUse('FlaG');
+        console.log();
+
+    })();
+</script>
+<p class="red">532. 数组中的K-diff数对，给定一个整数数组和一个整数 k, 你需要在数组里找到不同的 k-diff 数对。这里将 k-diff 数对定义为一个整数对 (i, j), 其中 i 和 j
+    都是数组中的数字，且两数之差的绝对值是 k.</p>
+<script data-msg="532. 数组中的K-diff数对，给定一个整数数组和一个整数 k, 你需要在数组里找到不同的 k-diff 数对。这里将 k-diff 数对定义为一个整数对 (i, j), 其中 i 和 j 都是数组中的数字，且两数之差的绝对值是 k.">
+    (() => {
+        return;
+
+        //  自己写的这个还行吧
+        function findPairs(list, k){
+            if (k < 0) {
+                return 0;
+            }
+            const map = {};
+            let sum = 0;
+            list.forEach(key => {
+                map[key] = map[key] || 0;
+                if (k !== 0) {
+                    if (map[key - k] || map[key + k]) {
+                        //  保证是第一次，注意这时候我还没有++
+                        if (map[key] === 0) {
+                            sum++;
+                        }
+                    }
+                } else {
+                    if (map[key] === 1) {
+                        sum++;
+                    }
+                }
+                map[key]++;
+            });
+            return sum;
+        }
+
+        console.log(findPairs([3, 1, 4, 1, 5], 2));
+        console.log(findPairs([1, 2, 3, 4, 5], 1));
+        console.log(findPairs([1, 3, 1, 5, 4], 0));
+        console.log(findPairs([1, 3, 1, 5, 4, 3, 4, 2, 1, 1, 1, 1], 0));
+
+        // function fn(arr, n){
+        //     const hash = {};
+        //     let sum = 0;
+        //     arr.forEach(key => {
+        //         hash[key] = hash[key] || 0;
+        //         if (hash[n - key]) {
+        //             if (hash[key] === 1) {
+        //                 sum++;
+        //             }
+        //         }
+        //         hash[key]++;
+        //     });
+        //     // console.log(hash);
+        //     return sum;
+        // }
+
+        // const arr = [1, 2, 3, 3, 3, 4, 2, 5];
+        // const res = fn(arr, 4);
+        // console.log(res);
+    })();
+</script>
+<p class="red">538. 把二叉搜索树转换为累加树，给定一个二叉搜索树（Binary Search Tree），把它转换成为累加树（Greater Tree)，使得每个节点的值是原来的节点值加上所有大于它的节点值之和。</p>
+<script data-msg="538. 把二叉搜索树转换为累加树">
+    (() => {
+
+    })();
+</script>
+<p>541. 反转字符串 II，给定一个字符串 s 和一个整数 k，你需要对从字符串开头算起的每隔 2k 个字符的前 k 个字符进行反转。 如果剩余字符少于 k 个，则将剩余字符全部反转。 如果剩余字符小于 2k 但大于或等于 k
+    个，则反转前 k 个字符，其余字符保持原样。</p>
+<script data-msg="541. 反转字符串 II">
+    (() => {
+        return;
+
+        function reverseStr(s, k){
+            let str = '';
+            for (let i = 0; i < s.length; i += k) {
+                let _s = s.slice(i, i + k);
+                if (i % (k * 2) === 0) {
+                    _s = _s.split('').reverse().join('');
+                }
+                str += _s;
+            }
+            return str;
+        }
+
+        const str = reverseStr('abcdefg', 2);
+        console.log(str);
+
+    })();
+</script>
+<p class="red">543. 二叉树的直径，给定一棵二叉树，你需要计算它的直径长度。一棵二叉树的直径长度是任意两个结点路径长度中的最大值。这条路径可能穿过也可能不穿过根结点。</p>
+<script data-msg="543. 二叉树的直径">
+    (() => {
+        function diameterOfBinaryTree(root){
+            function getNode(node){
+                if (!node.value) {
+                    return;
+                }
+                if (!node.left && !node.right) {
+                    sum++;
+                    return;
+                }
+                if (node.left || node.right) {
+                    getNode(node.left);
+                    getNode(node.right);
+                }
+
+            }
+
+            let sum = 0;
+
+            getNode(root);
+        }
+    })();
+</script>
+<p>551. 学生出勤记录 I</p>
+<script data-msg="551. 学生出勤记录 I">
+    (() => {
+        return;
+
+        function checkRecord(str){
+            let l = true;
+            let a = true;
+            const arr = str.split('');
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i] === 'A') {
+                    a = false;
+                }
+                if (arr[i - 2] === 'L' && arr[i - 1] === 'L' && arr[i] === 'L') {
+                    l = false;
+                }
+                if (!a && !l) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        console.log(checkRecord('PPALLP'));
+        console.log(checkRecord('PPALLL'));
+    })();
+</script>
+<p>557. 反转字符串中的单词 III，给定一个字符串，你需要反转字符串中每个单词的字符顺序，同时仍保留空格和单词的初始顺序。</p>
+<script data-msg="557. 反转字符串中的单词 III">
+    (() => {
+        return;
+
+        function reverseWords(str){
+            const arr = str.split(' ');
+            const res = [];
+            for (let i = 0; i < arr.length; i++) {
+                res.push(arr[i].split('').reverse().join(''));
+            }
+            return res.join(' ');
+        }
+
+        console.log(reverseWords('Let\'s take LeetCode contest'));
+        console.log(reverseWords('s\'teL ekat edoCteeL tsetnoc'));
+    })();
+</script>
+<p>559. N叉树的最大深度，给定一个 N 叉树，找到其最大深度。 最大深度是指从根节点到最远叶子节点的最长路径上的节点总数。</p>
+<script data-msg="N叉树的最大深度">
+    (() => {
+        return;
+
+        function maxDepth(root){
+            let max = 0;
+
+            function setDepth(root, n){
+                root.depth = n;
+                max = Math.max(max, root.depth);
+                if (root.children) {
+                    root.children.forEach(item => {
+                        setDepth(item, root.depth + 1);
+                    });
+                }
+
+            }
+
+            setDepth(root, 1);
+            return max;
+        }
+    })();
+</script>
+<p>561. 数组拆分 I，给定长度为 2n 的数组, 你的任务是将这些数分成 n 对, 例如 (a1, b1), (a2, b2), ..., (an, bn) ，使得从1 到 n 的 min(ai, bi) 总和最大。</p>
+<script data-msg="561. 数组拆分 I">
+    (() => {
+        function arrayPairSum(list){
+            if (list % 2) {
+                throw new Error('错误的数据');
+            }
+            list = list.sort((a, b) => a - b);
+            const map = {};
+            for (let i = 0; i < list.length; i += 2) {
+                map[i] = [list[i], list[i + 1]];
+            }
+            return map;
+        }
+
+    })();
+</script>
+<p>563. 二叉树的坡度，给定一个二叉树，计算整个树的坡度。 一个树的节点的坡度定义即为，该节点左子树的结点之和和右子树结点之和的差的绝对值。空结点的的坡度是0。 整个树的坡度就是其所有节点的坡度之和。</p>
+<script data-msg="563. 二叉树的坡度">
+    (() => {
+
+        function findTilt(root){
+            let leftSum = 0;
+            let rightSum = 0;
+
+            function fn(node){
+                if (!node.value) {
+                    return;
+                }
+                if (node.left) {
+                    leftSum += fn(node.left);
+                }
+                if (node.right) {
+                    rightSum += fn(node.right);
+                }
+                return node.value;
+            }
+
+            fn(root);
+
+            return Math.abs(leftSum - rightSum);
+        }
+
+    })();
+</script>
+<p>566.重塑矩阵</p>
+<script data-msg="566.重塑矩阵">
+    (() => {
+        return;
+
+        //  行，列
+        function matrixReshape(nums, r, c){
+            let len = nums.length;
+            len += nums[0].length;
+            //  原数组
+            if (r * c !== len) {
+                return nums;
+            }
+            const arr = [];
+            //  行
+            for (let i = 0; i < r; i++) {
+                const arrRow = arr[i] || [];
+                arr[i] = arrRow;
+                for (let j = 0; j < c; j++) {
+                    arrRow[j] = nums[0].splice(0, 1)[0];
+                    if (nums[0].length !== 0) {
+                        continue;
+                    }
+                    nums.splice(0, 1);
+                }
+            }
+            return arr;
+        }
+
+        const res = matrixReshape([[1, 2], [3, 4]], 2, 2);
         console.log(res);
+    })();
+</script>
+<p class="red">572. 另一个树的子树，给定两个非空二叉树 s 和 t，检验 s 中是否包含和 t 具有相同结构和节点值的子树。s 的一个子树包括 s 的一个节点和这个节点的所有子孙。s 也可以看做它自身的一棵子树。</p>
+<script data-msg="572. 另一个树的子树">
+    (() => {
+        function isSubtree(s, t){
+            // if( )
+        }
+
+    })();
+</script>
+<p>575. 分糖果，给定一个偶数长度的数组，其中不同的数字代表着不同种类的糖果，每一个数字代表一个糖果。你需要把这些糖果平均分给一个弟弟和一个妹妹。返回妹妹可以获得的最大糖果的种类数。</p>
+<script data-msg="575. 分糖果">
+    (() => {
+        return;
+
+        function distributeCandies(candies){
+            return Math.min([...new Set(candies)].length, candies.length / 2);
+        }
+
+        const res = distributeCandies([1, 1, 2, 2, 3, 3]);
+        console.log(res);
+    })();
+</script>
+<p class="orange">581. 最短无序连续子数组，给定一个整数数组，你需要寻找一个连续的子数组，如果对这个子数组进行升序排序，那么整个数组都会变为升序排序。 你找到的子数组应是最短的，请输出它的长度。</p>
+<script data-msg="581. 最短无序连续子数组">
+    (() => {
+        //  ⚠️思路：假设中间有一个子数组，把它往两边扩张，那么需要从左到右推右边，从右到左推左边
+        function findUnsortedSubarray(list){
+            let min = Infinity;
+            let left = null;
+            for (let i = list.length - 1; i >= 0; i--) {
+                min = Math.min(min, list[i]);
+                if (min >= list[i]) {
+                    continue;
+                }
+                left = i;
+            }
+            let max = -Infinity;
+            let right = null;
+            for (let i = 0; i < list.length; i++) {
+                max = Math.max(list[i], max);
+                if (max <= list[i]) {
+                    continue;
+                }
+                right = i;
+            }
+            if (left === null || right === null) {
+                return 0;
+            }
+            console.log(left, right);
+            return right - left + 1;
+        }
+
+        const res = findUnsortedSubarray([2, 4, 6, 7, 5, 1, 4, 8, 10, 9, 15]);
+        // const res = findUnsortedSubarray([1, 2, 3, 4]);
+        // const res = findUnsortedSubarray([2, 1]);
+        console.log(res);
+
     })();
 </script>
 </body>
