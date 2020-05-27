@@ -2708,6 +2708,8 @@
 <p class="orange">581. 最短无序连续子数组，给定一个整数数组，你需要寻找一个连续的子数组，如果对这个子数组进行升序排序，那么整个数组都会变为升序排序。 你找到的子数组应是最短的，请输出它的长度。</p>
 <script data-msg="581. 最短无序连续子数组">
     (() => {
+        return;
+
         //  ⚠️思路：假设中间有一个子数组，把它往两边扩张，那么需要从左到右推右边，从右到左推左边
         function findUnsortedSubarray(list){
             let min = Infinity;
@@ -2739,6 +2741,49 @@
         // const res = findUnsortedSubarray([1, 2, 3, 4]);
         // const res = findUnsortedSubarray([2, 1]);
         console.log(res);
+
+    })();
+</script>
+<p class="red">589. N叉树的前序遍历，给定一个 N 叉树，返回其节点值的前序遍历。</p>
+<script data-msg="589. N叉树的前序遍历">
+    (() => {
+        // function preorder(root){
+        //     const arr = [];
+        //
+        //     function preorderFn(node){
+        //         if (!node.value) {
+        //             return;
+        //         }
+        //         const left = preorderFn(node.left);
+        //         if (left) {
+        //             arr.push(left);
+        //         }
+        //         const right = preorderFn(node.right);
+        //         if (left) {
+        //             arr.push(right);
+        //         }
+        //         arr.push(node.value);
+        //         return node.value;
+        //     }
+        //
+        //     preorderFn(root);
+        //     return arr;
+        // }
+
+        var preorder2 = function (root){
+            if (!root) return [];
+
+            var res = [], arr = [root];
+            while (arr.length) {
+                var current = arr.pop();
+                res.push(current.val);
+
+                for (var i = current.children.length - 1; i >= 0; i--) {
+                    arr.push(current.children[i]);
+                }
+            }
+            return res;
+        };
 
     })();
 </script>
