@@ -1,0 +1,939 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>203-404</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+
+<p>203.删除链表中的节点</p>
+<script data-msg="203.删除链表中的节点">
+    (() => {
+        let _arr = [];
+
+        function deleteValue(value){
+            for (let i = 0; i < _arr.length; i++) {
+                if (_arr[i].value === value) {
+                    _arr.splice(i, 1);
+                    if (_arr[i - 1]) {
+                        if (_arr[i]) {
+                            _arr[i - 1].next = _arr[i];
+                        }
+                    } else {
+                        _arr[i].isHead = true;
+                    }
+                    break;
+                }
+            }
+        }
+    })();
+</script>
+<p>204.计数质数</p>
+<script data-msg="204.计数质数">
+    (() => {
+        //  key：第几个数，value：有几个质数
+        const arr = {
+            1: 0,
+        };
+
+        function getValue(n){
+            if (arr[n] !== undefined) {
+                return arr[n];
+            }
+            arr[n] = arr[n - 1];
+            let _n = 2;
+            const s_n = Math.sqrt(n);
+            let isHe = false;
+            while (_n <= s_n) {
+                if (n % _n === 0) {
+                    isHe = true;
+                    break;
+                }
+                _n++;
+            }
+            if (!isHe) {
+                arr[n] = arr[n - 1] + 1;
+            }
+            return arr.length;
+        }
+
+        for (let i = 1; i < 100; i++) {
+            let res = getValue(i);
+            // console.log(res);
+        }
+        // console.log(arr);
+        // console.log(getValue(10))
+    })();
+</script>
+<p>205.同构字符串</p>
+<script data-msg="205.同构字符串">
+    (() => {
+        function getValue(str1, str2){
+            str1 = str1.toString();
+            str2 = str2.toString();
+            let obj1 = {};
+            let obj2 = {};
+            for (let i = 0; i < str1.length; i++) {
+                obj1[str1[i]] = (obj1[str1[i]] || 0) + 1;
+                obj2[str2[i]] = (obj2[str2[i]] || 0) + 1;
+            }
+            // console.log(obj1);
+            // console.log(obj2);
+            return obj1.toString() === obj2.toString();
+        }
+
+        const res = getValue(12122, 'ababb');
+        // console.log(res);
+    })();
+</script>
+<p>217.存在重复元素</p>
+<script data-msg="217.存在重复元素">
+    (() => {
+        function getValue(arr){
+            const hash = {};
+            for (let i = 0; i < arr.length; i++) {
+                //  重复
+                if (hash[arr[i]]) {
+                    return true;
+                }
+                hash[arr[i]] = 1;
+            }
+        }
+
+        const arr = [1, 2, 3, 5, 4, 3];
+        // console.log(getValue(arr));
+    })();
+</script>
+<p>219.存在重复元素二</p>
+<script data-msg="219.存在重复元素二">
+    (() => {
+        function getValue(arr, _dif){
+            const hash = {};
+            for (let i = 0; i < arr.length; i++) {
+                //  如果有重复
+                if (hash[arr[i]]) {
+                    //  判断距离
+                    if (hash[arr[i]] + _dif <= i) {
+                        console.log(hash, arr[i]);
+                        return true;
+                    }
+                }
+                //  是新的数
+                hash[arr[i]] = i;
+            }
+            console.log(hash);
+            return false;
+        }
+
+        const arr = [21, 34, 3, 63, 21, 2, 4, 73, 12, 1, 3, 1, 3];
+        // const res = getValue(arr, 3);
+        // console.log(res);
+    })();
+</script>
+<p>225.用队列实现栈</p>
+<script data-msg="225.用队列实现栈">
+    (() => {
+        function Stack(){
+            this.arr = [];
+        }
+
+        Stack.prototype.push = function (x){
+            this.arr.push(x);
+        };
+    })();
+</script>
+<p>226.反转二叉树</p>
+<script data-msg="226.反转二叉树">
+    (() => {
+        const obj = {
+            value: 4,
+            prev: {
+                value: 2,
+                prev: {
+                    value: 1,
+                },
+            },
+            next: {
+                value: 6,
+                prev: {
+                    value: 5,
+                }
+            }
+        };
+
+        function getValue(obj){
+            const prev = obj.prev;
+            obj.prev = obj.next || null;
+            obj.next = prev || null;
+            obj.prev && getValue(obj.prev);
+            obj.next && getValue(obj.next);
+        }
+
+        // console.log(JSON.parse(JSON.stringify(obj)));
+        getValue(obj);
+        // console.log(obj);
+    })();
+</script>
+<p>231.2的幂</p>
+<script data-msg="231.2的幂">
+    (() => {
+        function getValue(n){
+            return ((Math.log(n) / Math.log(2)) % 1) === 0;
+        }
+
+        // console.log(getValue(17))
+    })();
+</script>
+<p>232.用栈实现队列</p>
+<script data-msg="232.用栈实现队列">
+    (() => {
+        //  略
+    })();
+</script>
+<p>234.回文链表</p>
+<script data-msg="234.回文链表">
+    (() => {
+        const obj = {
+            value: 1,
+            next: {
+                value: 2,
+                next: {
+                    value: 3,
+                    next: {
+                        value: 2,
+                        next: {
+                            value: 1
+                        }
+                    }
+                }
+            }
+        };
+
+        function getValue(obj){
+            let str = '';
+            do {
+                str += obj.value;
+                obj = obj.next;
+            } while (obj);
+            for (let i = 0; i < str.length; i++) {
+                if (str[i] !== str[str.length - 1 - i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        const res = getValue(obj);
+        // console.log(res);
+    })();
+</script>
+<p class="red">235.二叉搜索树的最近公共祖先</p>
+<script data-msg="235.二叉搜索树的最近公共祖先">
+    (() => {
+        //  二叉搜索树是按大小排序的
+        const next = {
+            value: 11,
+            prev: {
+                value: 10,
+            }
+        };
+        const prev = {
+            value: 8,
+        };
+        const obj = {
+            value: 5,
+            prev: {
+                value: 3,
+                next: {
+                    value: 4,
+                },
+            },
+            next: {
+                value: 9,
+                prev: {
+                    value: 7,
+                    next: next
+                },
+                next: {
+                    value: 14,
+                    prev: prev,
+                }
+            }
+        };
+        const res = getValue(obj, prev, next);
+
+        // console.log(res);
+
+        function getValue(obj, prev, next){
+            let value = obj.value;
+            let pValue = prev.value;
+            let nValue = next.value;
+            //  夹击
+            if (value > pValue && value < nValue) {
+                return obj;
+            }
+            //  向右查找
+            if (value < pValue) {
+                return getValue(obj.next, prev, next);
+            }
+            if (value > nValue) {
+                return getValue(obj.prev, prev, next);
+            }
+        }
+    })();
+</script>
+<p>237.删除链表节点</p>
+<script data-msg="237.删除链表节点">
+    (() => {
+        //  略
+    })();
+</script>
+<p>242.有效的字母异位词</p>
+<script data-msg="242.有效的字母异位词">
+    (() => {
+        //  就是用的字母都一样，排序变了
+        function getValue(str1, str2){
+            if (str1.length !== str2.length) {
+                return false;
+            }
+            return (str1.split('').sort().join() === str2.split('').sort().join());
+        }
+
+        const res = getValue('323221,', '221,321');
+        // console.log(res);
+    })();
+</script>
+<p class="red">257.二叉树的所有路径</p>
+<script data-msg="257.二叉树的所有路径">
+    (() => {
+        //  略，有几个叶子节点就有几个路径
+    })();
+</script>
+<p>258.各位相加</p>
+<script data-msg="258.各位相加">
+    (() => {
+        function getValue1(n){
+            n = n.toString();
+            while (n >= 10) {
+                n = n.toString();
+                let res = 0;
+                for (let i = 0; i < n.length; i++) {
+                    res += +n[i];
+                }
+                n = res;
+            }
+            return n;
+        }
+
+        //  谁tm知道了？
+        function getValue2(n){
+            return 1 + (n - 1) % 9;
+        }
+
+        // const res = getValue1(2273);
+        const res = getValue2(2273);
+        // console.log(res);
+    })();
+</script>
+<p class="red">263.丑数</p>
+<script data-msg="263.丑数">
+    (() => {
+        function getValue(n){
+            //  用这些因数除，直到除到除不尽
+            for (let i = 0; i < arr.length; i++) {
+                while (n % arr[i] === 0) {
+                    n /= arr[i];
+                }
+            }
+            //  除不尽就是有其他到因数
+            return n === 1;
+        }
+
+        //  只有这些因数
+        const arr = [2, 3, 5];
+        const res = getValue(128);
+        // console.log(res);
+    })();
+</script>
+<p>268.缺失数字</p>
+<script data-msg="268.缺失数字">
+    (() => {
+        const arr = [9, 6, 4, 2, 3, 5, 7, 0, 1];
+
+        function getValue(arr){
+            const obj = {};
+            for (let i = 0; i < arr.length; i++) {
+                obj[arr[i]] = 1;
+            }
+            for (let i = 0; i <= arr.length; i++) {
+                if (obj[i] === undefined) {
+                    return i;
+                }
+            }
+        }
+
+        const res = getValue(arr);
+        // console.log(res);
+    })();
+</script>
+<p>278.第一个错误的版本</p>
+<script data-msg="278.第一个错误的版本">
+    (() => {
+        return;
+        //  用了二分法，注意判断 <=
+        const solution = function (isBadVersion){
+            return function (n){
+                let start = 1;
+                let end = n;
+                while (start <= end) {
+                    const mid = Math.floor((start + end) / 2);
+                    //  如果是错的，那么错的可能在更前面
+                    if (!isBadVersion(mid)) {
+                        end = mid - 1;
+                    } else {
+                        start = mid + 1;
+                    }
+                }
+                return start;
+            };
+        };
+        const fn = solution(function (n){
+            return Math.random() > 0.5;
+        });
+        console.log(fn(14));
+    })();
+</script>
+<p>283.移动零</p>
+<script>
+    (() => {
+        return;
+        const arr = ['0', '2', '3', '0', '0', '2', '3', '0', '2', '3', '0', '2', '3', '2', '3', '4', '0', '3', '4', '0', '4', '3', '0', '3', '4', '2', '0', '2', '3', '1', '2', '3', '0', '3', '4', '0', '3', '4', '5', '0', '0', '4', '5', '0', '4', '5', '0', '5', '4', '0', '2', '4', '2', '1', '3', '0', '1', '2', '3', '0', '0', '1', '3', '0', '2', '3', '0'];
+
+        function moveZero(arr){
+            let count = 0;
+            const len = arr.length;
+            for (let i = 0; i < len - count; i++) {
+                if (Number(arr[i]) === 0) {
+                    arr.splice(i, 1);
+                    arr.push(0);
+                    i--;
+                    count++;
+                }
+            }
+            // console.log(len - count);
+            return arr;
+        }
+
+        console.log(moveZero(arr));
+    })();
+</script>
+<p>290. 单词规律</p>
+<script data-msg="290. 单词规律">
+    (() => {
+        return;
+
+        //  pattern = "abba", str = "dog cat cat dog"
+        function wordLaw(pattern, str){
+            const patternArr = pattern.split('');
+            const strArr = str.split(' ');
+            const strMap = {};
+            patternArr.forEach((key, index) => {
+                strMap[key] = strArr[index];
+            });
+            const patternStr = patternArr.map(item => {
+                return strMap[item];
+            }).join(' ');
+            return patternStr === str;
+        }
+
+        const result = wordLaw('abbaccc', 'dog cat cat dog a a a');
+        console.log(result);
+    })();
+</script>
+<p>292. Nim 游戏</p>
+<script data-msg="292. Nim 游戏">
+    (() => {
+        return;
+
+        /**
+         * @return:boolean
+         * */
+        function canWinNim(n){
+            return n % 4 !== 0;
+        }
+
+        const result = canWinNim(3);
+        console.log(result);
+    })();
+</script>
+<p>299. 猜数字游戏</p>
+<script data-msg="299. 猜数字游戏">
+    (() => {
+        return;
+        //   secret = "1123", guess = "0111"
+        const guessFn = (secret, guess) => {
+            //  完全正确
+            const A = [];
+            //  秘密的剩余的
+            const reSec = [];
+            //  位置错误
+            let B = {};
+            for (let i = 0; i < secret.length; i++) {
+                if (secret[i] === guess[i]) {
+                    A.push(i);
+                } else {
+                    reSec.push(secret[i]);
+                    B[guess[i]] = 1;
+                }
+            }
+
+            return {
+                A: A.length,
+                B: reSec.reduce((prev, current) => {
+                    const res = prev + (B[current] || 0);
+                    delete B[current];
+                    return res;
+                }, 0),
+            };
+        };
+        const result = guessFn('112341', '011000');
+        // const result = guessFn('1807', '7810');
+        console.log(result);
+    })();
+</script>
+<p>303. 区域和检索 - 数组不可变</p>
+<script data-msg="303. 区域和检索 - 数组不可变">
+    (() => {
+        return;
+        const arr = [-2, 0, 3, -5, 2, -1];
+        const map = {};
+
+        function sumRange(a, b){
+            const key = `${a},${b}`;
+            if (map[key]) {
+                console.log(map, key);
+                return map[key];
+            }
+            const res = arr.slice(a, b + 1).reduce((prev, item) => {
+                return prev + item;
+            }, 0);
+            map[key] = res;
+            return res;
+        }
+
+        console.log(sumRange(0, 2));
+        console.log(sumRange(0, 2));
+        console.log(sumRange(0, 2));
+        console.log(sumRange(2, 5));
+    })();
+</script>
+<p>326. 3的幂</p>
+<script data-msg="326. 3的幂">
+    (() => {
+        return;
+
+        function getValue(n){
+            while (n >= 3 && (n /= 3) >= 3) {
+
+            }
+            return (n % 3 === 1);
+        }
+
+        for (let i = 0; i < 100; i++) {
+            if (getValue(i)) {
+                console.log(i);
+            }
+        }
+    })();
+</script>
+<p>342. 4的幂</p>
+<script data-msg="342. 4的幂">
+    (() => {
+        return;
+
+        function isPowerOfFour(n){
+            while (n >= 4 && (n % 1 === 0)) {
+                n /= 4;
+            }
+            return (n === 1);
+        }
+
+        for (let i = 0; i < Math.pow(2, 22); i++) {
+            if (isPowerOfFour(i)) {
+                console.log(i);
+            }
+        }
+    })();
+</script>
+<p>345. 反转字符串中的元音字母</p>
+<script data-msg="345. 反转字符串中的元音字母">
+    (() => {
+        return;
+        const map = {
+            a: true,
+            e: true,
+            i: true,
+            o: true,
+            u: true,
+        };
+
+        // function getValue(str){
+        //     const _str = str.split('');
+        //     //  str里的元音音素
+        //     const yArr = [];
+        //     _str.forEach((item, index) => {
+        //         if (map[item]) {
+        //             yArr.push(item);
+        //         }
+        //     });
+        //     return _str.map((item, index) => {
+        //         if (map[item]) {
+        //             return yArr.pop();
+        //         }
+        //         return item;
+        //     }).join('');
+        // }
+
+        function getValue(str){
+            let start = 0;
+            let end = 0;
+            startLabel:for (let i = 0; i < str.length - end; i++) {
+                if (!map[str[i]]) {
+                    continue;
+                }
+                start = i;
+                for (let j = str.length - 1 - end; j > i; j--) {
+                    if (!map[str[j]]) {
+                        continue;
+                    }
+                    end = str.length - j;
+                    str = str.slice(0, i) + str[j] + str.slice(i + 1, j) + str[i] + str.slice(j + 1);
+                    continue startLabel;
+                }
+
+            }
+            return str;
+        }
+
+        console.log(getValue('kobe bryant lebron james micheal jordan'));
+        console.log(getValue('kabo bryant lebrin jemas mocheal jerdon'));
+    })();
+</script>
+<p>349. 两个数组的交集</p>
+<script data-msg="349. 两个数组的交集">
+    (() => {
+        return;
+        const nums1 = [1, 2, 2, 1];
+        const nums2 = [2, 2];
+
+        function getValue(n1, n2){
+            const map = {};
+            n1.forEach(item => {
+                map[item] = true;
+            });
+            const result = n2.filter(item => {
+                if (map[item]) {
+                    delete map[item];
+                    return item;
+                }
+            });
+            return result;
+        }
+
+        console.log(getValue(nums1, nums2));
+    })();
+</script>
+<p>367. 有效的完全平方数</p>
+<script data-msg="367. 有效的完全平方数">
+    (() => {
+        return;
+
+        //  不要使用任何内置的库函数
+        function isPowerNum(n){
+            console.log(`输入${n}`);
+            //  结果的位数
+            let w = Math.floor((n.toString().length + 1) / 2);
+            console.log(`结果的位数:${w}`);
+            const result = new Array(w).fill(0);
+            while (w--) {
+                //  从1-9去试试
+                for (let i = 1; i < 10; i++) {
+                    result[result.length - 1 - w] = i * Math.pow(10, w);
+                    const resValue = Math.pow(result.reduce(((previousValue, currentValue1) => previousValue + currentValue1)), 2);
+                    //  如果不足
+                    if (resValue < n) {
+                        // 继续
+                        continue;
+                    } else if (resValue === n) {
+                        console.log(`有${result}`);
+                        //  找到了
+                        return true;
+                    } else {
+                        result[result.length - 1 - w] = (i - 1) * Math.pow(10, w);
+                        break;
+                    }
+                }
+            }
+            console.log(`无${result}`);
+            return false;
+        }
+
+        isPowerNum(Number.MAX_SAFE_INTEGER);
+    })();
+</script>
+<p>371. 两整数之和</p>
+<script data-msg="371. 两整数之和">
+    (() => {
+        return;
+        const res = getSum(12, 21);
+        console.log(res);
+
+        function getSum(a, b){
+            //  保证a>b
+            if (b > a) {
+                let c = a;
+                a = b;
+                b = c;
+            }
+            let bs_a = ('0' + a.toString(2)).split('').reverse();
+            let bs_b = b.toString(2).split('').reverse();
+            //  进位符号
+            let isOver = false;
+            const resultArr = [];
+            // console.log(bs_b, bs_a);
+            //  循环大二进制数
+            bs_a.forEach((item, index) => {
+                // debugger
+                let _arr = [];
+                if (item === '1') {
+                    _arr.push(1);
+                }
+                if (bs_b[index] === '1') {
+                    _arr.push(1);
+                }
+                if (isOver) {
+                    _arr.push(1);
+                }
+                switch (_arr.length) {
+                    case 0:
+                        isOver = false;
+                        resultArr.push(0);
+                        break;
+                    case 1:
+                        isOver = false;
+                        resultArr.push(1);
+                        break;
+                    case 2:
+                        isOver = true;
+                        resultArr.push(0);
+                        break;
+                    case 3:
+                        isOver = true;
+                        resultArr.push(1);
+                        break;
+                }
+            });
+            return parseInt(resultArr.reverse().join(''), 2);
+        }
+
+    })();
+</script>
+<p>374. 猜数字大小</p>
+<script data-msg="374. 猜数字大小">
+    (() => {
+        return;
+        const res = getValue(2132, 1321);
+        console.log(res);
+
+        //  二分
+        function getValue(n, guessValue){
+            let min = 1;
+            let max = n;
+            while (true) {
+                let center = Math.floor((min + max) / 2);
+                if (center === guessValue) {
+                    return center;
+                }
+                //  需要减小
+                if (center > guessValue) {
+                    max = center - 1;
+                }
+                //  需要增加
+                if (center < guessValue) {
+                    min = center + 1;
+                }
+            }
+        }
+    })();
+</script>
+<p>383. 赎金信</p>
+<script data-msg="383. 赎金信">
+    (() => {
+        return;
+        const a = canConstruct('a', 'b');
+        const b = canConstruct('aa', 'ab');
+        const c = canConstruct('aa', 'aab');
+        console.log(a, b, c);
+
+        function canConstruct(a, b){
+            const mapA = {};
+            b.split('').forEach(item => {
+                mapA[item] = mapA[item] || 0;
+                mapA[item]++;
+            });
+            let arr = a.split('');
+            for (let i = 0; i < arr.length; i++) {
+                if (mapA[arr[i]] === undefined || mapA[arr[i]] === 0) {
+                    return false;
+                }
+                mapA[arr[i]]--;
+            }
+            return true;
+        }
+    })();
+</script>
+<p>387. 字符串中的第一个唯一字符</p>
+<script data-msg="387. 字符串中的第一个唯一字符">
+    (() => {
+        return;
+        const a = firstUniqChar('leetcode');
+        const b = firstUniqChar('loveleetcode');
+        console.log(a);
+        console.log(b);
+
+        function firstUniqChar(str){
+            const map = {};
+            for (let i = 0; i < str.length; i++) {
+                map[str[i]] = map[str[i]] || 0;
+                map[str[i]]++;
+                if (map[str[i]] > 1) {
+                    const char = str[i];
+                    str = str.replace(new RegExp(char, 'ig'), ' ');
+                }
+            }
+            return str.indexOf(str.trim()[0]);
+        }
+
+        //  或者
+        //  indexOf === lastIndexOf
+
+    })();
+</script>
+<p>389. 找不同</p>
+<script data-msg="389. 找不同">
+    (() => {
+        return;
+        const a = 'abd';
+        const b = 'abcd';
+
+        const res = findTheDifference(a, b);
+        console.log(res);
+
+        // function findTheDifference(s, t){
+        //     for (let i = 0; i < s.length; i++) {
+        //         t = t.replace(new RegExp(s[i], 'ig'), '');
+        //     }
+        //     return t;
+        // }
+
+        //  位运算
+        function findTheDifference(s, t){
+            const total = s + t;
+            let i = 0;
+            let res = 0;
+            while (i < total.length) {
+                res ^= total.charCodeAt(i);
+                console.log(res);
+                i++;
+            }
+            return String.fromCharCode(res);
+        }
+    })();
+</script>
+<p>392. 判断子序列</p>
+<script data-msg="392. 判断子序列">
+    (() => {
+        return;
+        //  就你叫贪心算法啊？双指针法由于要遍历过多的t，不好
+        //  t长，s短
+        function isSubsequence(t, s){
+            let index = 0;
+            for (let i = 0; i < s.length; i++) {
+                index = t.indexOf(s[i], index);
+                if (index === -1) {
+                    return false;
+                }
+                console.log(index);
+            }
+            return true;
+        }
+
+        const t = 'feawfgnajwiohgobgouhovnbfrjfiebhjanbjfnnjfanruiqouhjnmfjighobnfnrmbnefnjmbaefnmnjafjbnfrbhfnjfjbhnjbfhjhfkdjbfhjhjbhfeawfgnajwiohgobgouhovnbfrjfiebhjanbjfnnjfanruiqouhjnmfjighobnfnrmbnefnjmbaefnmnjafjbnfrbhfnjfjbhnjbfhjhfkdjbfhjhjbhfeawfgnajwiohgobgouhovnbfrjfiebhjanbjfnnjfanruiqouhjnmfjighobnfnrmbnefnjmbaefnmnjafjbnfrbhfnjfjbhnjbfhjhfkdjbfhjhjbh';
+        const s = 'fbeufbeufbeu';
+        const result = isSubsequence(t, s);
+        console.log(result);
+    })();
+</script>
+<p class="red">401. 二进制手表</p>
+<script data-msg="401. 二进制手表">
+    (() => {
+        return;
+        var readBinaryWatch = function (num){
+            const res = [];
+            const hourstrs = [['0'], ['1', '2', '4', '8'], ['3', '5', '6', '9', '10'], ['7', '11']];
+            const minstrs = [
+                ['00'],
+                ['01', '02', '04', '08', '16', '32'],
+                ['03', '05', '06', '09', '10', '12', '17', '18', '20', '24', '33', '34', '36', '40', '48'],
+                ['07', '11', '13', '14', '19', '21', '22', '25', '26', '28', '35', '37', '38', '41', '42', '44', '49', '50', '52', '56'],
+                ['15', '23', '27', '29', '30', '39', '43', '45', '46', '51', '53', '54', '57', '58'],
+                ['31', '47', '55', '59']
+            ];
+            for (let i = 0; i <= Math.min(3, num); i++) {
+                if (num - i > 5) {
+                    continue;
+                }
+                const hstr = hourstrs[i];
+                const mstr = minstrs[num - i];
+                for (let j = 0; j < hstr.length; j++) {
+                    for (let k = 0; k < mstr.length; k++) {
+                        res.push(hstr[j] + ':' + mstr[k]);
+                    }
+                }
+            }
+            return res;
+        };
+        const res = readBinaryWatch(8);
+        console.log(res);
+    })();
+</script>
+<p>404. 左叶子之和</p>
+<script data-msg="404. 左叶子之和">
+    (() => {
+        return;
+
+        function sumOfLeftLeaves(node){
+            let sum = 0;
+
+            function fn(node){
+                if (node === null) {
+                    return 0;
+                }
+                if (node.left && node.left.left === null && node.left.right === null) {
+                    sum += node.left;
+                }
+                fn(node.left);
+                fn(node.right);
+            }
+
+            fn(node);
+            return sum;
+        }
+    })();
+</script>
+</body>
+</html>

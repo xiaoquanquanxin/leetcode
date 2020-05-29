@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>599-783</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+
+
+<p>599. 两个列表的最小索引总和，假设Andy和Doris想在晚餐时选择一家餐厅，并且他们都有一个表示最喜爱餐厅的列表，每个餐厅的名字用字符串表示。 你需要帮助他们用最少的索引和找出他们共同喜爱的餐厅。
+    如果答案不止一个，则输出所有答案并且不考虑顺序。 你可以假设总是存在一个答案。</p>
+<script data-msg="599. 两个列表的最小索引总和">
+    (() => {
+        function findRestaurant(list1, list2){
+            console.log(list1, list2);
+            //  list1更长
+            if (list1.length > list2.length) {
+                let c = list1;
+                list1 = list2;
+                list2 = c;
+            }
+            //  放list1
+            const map1 = {};
+            for (let i = 0; i < list1.length; i++) {
+                map1[list1[i]] = true;
+            }
+            let minLength = Infinity;
+            let res = [];
+            for (let i = 0; i < list2.length; i++) {
+                let key = list2[i];
+                console.log(key);
+                //  如果list1中有
+                if (map1[key]) {
+                    const sumIndex = list1.indexOf(key) + i;
+                    if (sumIndex === minLength) {
+                        res.push(key);
+                    } else if (sumIndex < minLength) {
+                        res = [key];
+                        minLength = sumIndex;
+                    }
+                }
+            }
+            return res;
+        }
+
+        // const res = findRestaurant(['Shogun', 'Tapioca Express', 'Burger King', 'KFC'], ['Piatti', 'The Grill at Torrey Pines', 'Hungry Hunter Steakhouse', 'Shogun']);
+        // const res = findRestaurant(['Shogun', 'Tapioca Express', 'Burger King', 'KFC'], ['KFC', 'Shogun', 'Burger King']);
+        const res = findRestaurant(['Shogun', 'Tapioca Express', 'Burger King', 'KFC'], ['KFC', 'Burger King', 'Tapioca Express', 'Shogun']);
+        console.log(res);
+    })();
+</script>
+</body>
+</html>
