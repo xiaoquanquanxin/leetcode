@@ -755,46 +755,27 @@
 <p>704. 二分查找，给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。</p>
 <script data-msg="704. 二分查找">
     (() => {
-        // function search(nums, target){
-        //     let middleIndex = Math.floor(nums.length / 2);
-        //     let s = middleIndex;
-        //     // debugger;
-        //     while (nums[middleIndex] !== target) {
-        //         if (nums.length <= 1) {
-        //             return -1;
-        //         }
-        //         //  <-
-        //         if (nums[middleIndex] > target) {
-        //             nums = nums.slice(0, middleIndex);
-        //             s -= middleIndex;
-        //             middleIndex = Math.floor(nums.length / 2);
-        //         } else {
-        //             nums = nums.slice(middleIndex);
-        //             middleIndex = Math.floor(nums.length / 2);
-        //         }
-        //         s += middleIndex;
-        //     }
-        //     return s < 0 ? 0 : s;
-        // }
+        return;
+
+        //  这是夹逼准则
         function search(nums, target){
             let left = 0;
             let right = nums.length - 1;
-            while (left <= right) {
-                if (nums[left] === target) {
-                    return left;
-                }
+            while (right >= left) {
                 if (nums[right] === target) {
                     return right;
+                } else if (nums[left] === target) {
+                    return left;
                 }
                 const center = Math.floor((left + right) / 2);
-                if (nums[center] > target) {
-                    right = center - 1;
-                    left++;
-                } else if (nums[center] < target) {
-                    left = center + 1;
-                    right--;
-                } else {
+                if (nums[center] === target) {
                     return center;
+                } else if (nums[center] > target) {
+                    left++;
+                    right = center - 1;
+                } else {
+                    right--;
+                    left = center + 1;
                 }
             }
             return -1;
@@ -812,6 +793,259 @@
             const res = search(arr[i][0], arr[i][1]);
             console.log(res);
         }
+    })();
+</script>
+<p>705. 设计哈希集合，不使用任何内建的哈希表库设计一个哈希集合.具体地说，你的设计应该包含以下的功能 add(value)：向哈希集合中插入一个值。 contains(value) ：返回哈希集合中是否存在这个值。
+    remove(value)：将给定值从哈希集合中删除。如果哈希集合中没有这个值，什么也不做。</p>
+<script data-msg="705. 设计哈希集合">
+    (() => {
+        //  略
+    })();
+</script>
+<p>706. 设计哈希映射，</p>
+<script data-msg="706. 设计哈希映射">
+    (() => {
+        //  略
+    })();
+</script>
+<p>709. 转换成小写字母，实现函数 ToLowerCase()，该函数接收一个字符串参数 str，并将该字符串中的大写字母转换成小写字母，之后返回新的字符串。</p>
+<p class="red">''.codePointAt和String.fromCodePoint对应，处理unicode32位的字符，''.charCodeAt和String.fromCharCode对应。</p>
+<script data-msg="709. 转换成小写字母">
+    (() => {
+        function toLowerCase(str){
+            let res = '';
+            for (let i = 0; i < str.length; i++) {
+                const unicode = str.codePointAt(i);
+                if (unicode >= 64 && unicode <= 89) {
+                    res += String.fromCodePoint(unicode + 32);
+                } else {
+                    res += str[i];
+                }
+            }
+            return res;
+        }
+    })();
+</script>
+<p>717. 1比特与2比特字符，有两种特殊字符。第一种字符可以用一比特0来表示。第二种字符可以用两比特(10 或 11)来表示。现给一个由若干比特组成的字符串。问最后一个字符是否必定为一个一比特字符。给定的字符串总是由0结束。</p>
+<script data-msg="717. 1比特与2比特字符">
+    (() => {
+        return;
+
+        function isOneBitCharacter(bits){
+            let len1 = bits.length - 1;
+            let len2 = len1 - 1;
+            if (bits[len1] === 0) {
+                let current = bits[len2];
+                let count = 0;
+                while (current === 1) {
+                    count++;
+                    current = bits[len2 - count];
+                }
+                if (count % 2 === 1) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        const res = isOneBitCharacter([0]);
+        console.log(res);
+    })();
+</script>
+<p>720. 词典中最长的单词，给出一个字符串数组words组成的一本英语词典。从中找出最长的一个单词，该单词是由words词典中其他单词逐步添加一个字母组成。若其中有多个可行的答案，则返回答案中字典序最小的单词。
+    若无答案，则返回空字符串。</p>
+<script data-msg="720. 词典中最长的单词">
+    (() => {
+        return;
+
+        function longestWord(words){
+            const map = {};
+            let maxLength = 0;
+            words.forEach((item, index) => {
+                map[item] = item.length;
+                maxLength = Math.max(maxLength, item.length);
+            });
+            while (maxLength) {
+                const _words = words.filter(item => item.length === maxLength).sort();
+                for (let i = 0; i < _words.length; i++) {
+                    let _str = _words[i];
+                    while (map[_str] !== undefined) {
+                        if (_str.length === 1) {
+                            return _words[i];
+                        }
+                        _str = _str.slice(0, _str.length - 1);
+                        if (_str === '') {
+                            break;
+                        }
+                    }
+                }
+                maxLength--;
+            }
+            return '';
+        }
+
+        // const res = longestWord(['w', 'wo', 'wor', 'worl', 'world']);
+        const res = longestWord(['a', 'banana', 'app', 'appl', 'ap', 'apply', 'apple']);
+
+        // const res = longestWord(['b', 'br', 'bre', 'brea', 'break', 'breakf', 'breakfa', 'breakfas', 'breakfast', 'l', 'lu', 'lun', 'lunc', 'lunch', 'd', 'di', 'din', 'dinn', 'dinne', 'dinner']);
+        // const res = longestWord(['m', 'mo', 'moc', 'moch', 'mocha', 'l', 'la', 'lat', 'latt', 'latte', 'c', 'ca', 'cat']);
+        // const res = longestWord(['yo', 'ew', 'fc', 'zrc', 'yodn', 'fcm', 'qm', 'qmo', 'fcmz', 'z', 'ewq', 'yod', 'ewqz', 'y']);
+        console.log(res);
+
+    })();
+</script>
+<p>724. 寻找数组的中心索引，给定一个整数类型的数组 nums，请编写一个能够返回数组“中心索引”的方法。 我们是这样定义数组中心索引的：数组中心索引的左侧所有元素相加的和等于右侧所有元素相加的和。
+    如果数组不存在中心索引，那么我们应该返回 -1。如果数组有多个中心索引，那么我们应该返回最靠近左边的那一个。</p>
+<script data-msg="724. 寻找数组的中心索引">
+    (() => {
+        return;
+
+        function pivotIndex(nums){
+            if (nums.length <= 1) {
+                return -1;
+            }
+            let leftSum = 0;
+            let center = 0;
+            let right = 1;
+            let rightSum = nums.slice(right).reduce(((previousValue, currentValue) => previousValue + currentValue), 0);
+
+            while (center < nums.length) {
+                if (leftSum === rightSum) {
+                    return center;
+                }
+                leftSum += nums[center];
+                rightSum -= nums[right];
+                center++;
+                right++;
+            }
+            return -1;
+        }
+
+        // const res = pivotIndex([-1, -1, -1, 0, 1, 1]);
+        const res = pivotIndex([-1, -1, 0, 1, 1, 0]);
+        console.log(res);
+
+    })();
+</script>
+<p>728. 自除数，自除数 是指可以被它包含的每一位数除尽的数。 例如，128 是一个自除数，因为 128 % 1 == 0，128 % 2 == 0，128 % 8 == 0。 还有，自除数不允许包含 0 。
+    给定上边界和下边界数字，输出一个列表，列表的元素是边界（含边界）内所有的自除数。</p>
+<script data-msg="728. 自除数">
+    (() => {
+        return;
+
+        function selfDividingNumbers(left, right){
+            const arr = [];
+            while (right >= left) {
+                const _right = left.toString();
+                //  不包含零
+                if (!_right.includes('0')) {
+                    let len = _right.length;
+                    let isValidate = true;
+                    while (len-- > 0) {
+                        if (left % _right[len] !== 0) {
+                            isValidate = false;
+                            break;
+                        }
+                    }
+                    if (isValidate) {
+                        arr.push(left);
+                    }
+                }
+                left++;
+            }
+            return arr;
+        }
+
+        const res = selfDividingNumbers(1, 22);
+        console.log(res);
+
+    })();
+</script>
+<p>733. 图像渲染，有一幅以二维整数数组表示的图画，每一个整数表示该图画的像素值大小，数值在 0 到 65535 之间。 给你一个坐标 (sr, sc) 表示图像渲染开始的像素值（行
+    ，列）和一个新的颜色值 newColor，让你重新上色这幅图像。
+    为了完成上色工作，从初始坐标开始，记录初始坐标的上下左右四个方向上像素值与初始坐标相同的相连像素点，接着再记录这四个方向上符合条件的像素点与他们对应四个方向上像素值与初始坐标相同的相连像素点，……，重复该过程。将所有有记录的像素点的颜色值改为新的颜色值。
+    最后返回经过上色渲染后的图像。</p>
+<script data-msg="733. 图像渲染">
+    (() => {
+        return;
+
+        function floodFill(arr, sr, sc, newColor){
+            function render(_sr, _sc){
+                if (arr[_sr][_sc] !== prevColor) {
+                    return;
+                }
+                arr[_sr][_sc] = newColor;
+                render(_sr, _sc - 1);
+                render(_sr, _sc + 1);
+                arr[_sr - 1] && render(_sr - 1, _sc);
+                arr[_sr + 1] && render(_sr + 1, _sc);
+            }
+
+            //  以前的颜色
+            const prevColor = arr[sr][sc];
+            if (prevColor === newColor) {
+                return arr;
+            }
+            render(sr, sc);
+            return arr;
+        }
+
+        // const res = floodFill([[0, 0, 0], [0, 1, 1]], 1, 1, 1);
+        const res = floodFill([[1, 1, 1], [1, 1, 0], [1, 0, 1]], 1, 1, 2);
+        console.log(res);
+    })();
+</script>
+<p class="orange">744. 寻找比目标字母大的最小字母，给你一个排序后的字符列表 letters ，列表中只包含小写英文字母。另给出一个目标字母 target，请你寻找在这一有序列表里比目标字母大的最小字母。
+    在比较时，字母是依序循环出现的。举个例子：
+    如果目标字母 target = 'z' 并且字符列表为 letters = ['a', 'b']，则答案返回 'a'</p>
+<script data-msg="744. 寻找比目标字母大的最小字母">
+    (() => {
+        return;
+
+        function nextGreatestLetter(letters, target){
+            const unicodeTarget = target.charCodeAt(0);
+            for (let i = 0; i < letters.length; i++) {
+                const current = letters[i].charCodeAt(0);
+                if (unicodeTarget < current) {
+                    return letters[i];
+                }
+            }
+            return letters[0];
+        }
+
+        // const res = nextGreatestLetter(['c', 'f', 'j'], 'a');
+        const res = nextGreatestLetter(['c', 'f', 'j'], 'd');
+        console.log(res);
+    })();
+</script>
+<p class="red">746. 使用最小花费爬楼梯，数组的每个索引作为一个阶梯，第 i个阶梯对应着一个非负数的体力花费值 cost[i](索引从0开始)。
+    每当你爬上一个阶梯你都要花费对应的体力花费值，然后你可以选择继续爬一个阶梯或者爬两个阶梯。
+    您需要找到达到楼层顶部的最低花费。在开始时，你可以选择从索引为 0 或 1 的元素作为初始阶梯。
+</p>
+<script data-msg="746. 使用最小花费爬楼梯">
+    (() => {
+        function minCostClimbingStairs(cost){
+
+        }
+
+    })();
+</script>
+<p>747. 至少是其他数字两倍的最大数，在一个给定的数组nums中，总是存在一个最大元素 。 查找数组中的最大元素是否至少是数组中每个其他数字的两倍。 如果是，则返回最大元素的索引，否则返回-1。</p>
+<script data-msg="747. 至少是其他数字两倍的最大数">
+    (() => {
+        return;
+
+        function dominantIndex(list){
+            const max = Math.max(...list);
+            const maxIndex = list.indexOf(max);
+            list.splice(maxIndex, 1);
+            const second = Math.max(...list);
+            if (second * 2 <= max) {
+                return maxIndex;
+            }
+            return -1;
+        }
+        dominantIndex([0, 0, 2, 3]);
     })();
 </script>
 </body>
