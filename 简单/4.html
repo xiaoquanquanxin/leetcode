@@ -1372,7 +1372,8 @@
 
     })();
 </script>
-<p class="red">811. 子域名访问计数，一个网站域名，如"discuss.leetcode.com"，包含了多个子域名。作为顶级域名，常用的有"com"，下一级则有"leetcode.com"，最低的一级为"discuss.leetcode.com"。当我们访问域名"discuss.leetcode.com"时，也同时访问了其父域名"leetcode.com"以及顶级域名 "com"。
+<p class="red">811.
+    子域名访问计数，一个网站域名，如"discuss.leetcode.com"，包含了多个子域名。作为顶级域名，常用的有"com"，下一级则有"leetcode.com"，最低的一级为"discuss.leetcode.com"。当我们访问域名"discuss.leetcode.com"时，也同时访问了其父域名"leetcode.com"以及顶级域名 "com"。
     给定一个带访问次数和域名的组合，要求分别计算每个域名被访问的次数。其格式为访问次数+空格+地址，例如："9001 discuss.leetcode.com"。
     接下来会给出一组访问次数和域名组合的列表cpdomains 。要求解析出所有域名的访问次数，输出格式和输入格式相同，不限定先后顺序。</p>
 <script data-msg="811. 子域名访问计数">
@@ -1404,8 +1405,342 @@
 
         }
 
-        // ['900 google.mail.com', '50 yahoo.com', '1 intel.mail.com', '5 wiki.org'];
         // [["900","google.mail.com"], ["50","yahoo.com"], ["1","intel.mail.com"],[ "5","wiki.org"]]
+        //  ["901 mail.com","50 yahoo.com","900 google.mail.com","5 wiki.org","5 org","1 intel.mail.com","951 com"]
+    })();
+</script>
+<p class="red">812. 最大三角形面积，给定包含多个点的集合，从其中取三个点组成三角形，返回能组成的最大三角形的面积。</p>
+<script data-msg="812. 最大三角形面积">
+    (() => {
+        function largestTriangleArea(points){
+
+        }
+
+    })();
+</script>
+<p>819. 最常见的单词，给定一个段落 (paragraph) 和一个禁用单词列表 (banned)。返回出现次数最多，同时不在禁用列表中的单词。 题目保证至少有一个词不在禁用列表中，而且答案唯一。
+    禁用列表中的单词用小写字母表示，不含标点符号。段落中的单词不区分大小写。答案都是小写字母。</p>
+<script data-msg="819. 最常见的单词">
+    (() => {
+        return;
+
+        function mostCommonWord(paragraph, banned){
+            const bannedMap = {};
+            for (let i = 0; i < banned.length; i++) {
+                bannedMap[banned[i]] = true;
+            }
+            const map = {};
+            const arr = paragraph.toLowerCase().replace(/[^a-z]/ig, ',').split(',');
+            let max = 0;
+            let maxStr = '';
+            for (let i = 0; i < arr.length; i++) {
+                const item = arr[i];
+                if (item === '') {
+                    continue;
+                }
+                if (!bannedMap[item]) {
+                    map[item] = map[item] || 0;
+                    map[item]++;
+                    if (map[item] > max) {
+                        maxStr = item;
+                        max = map[item];
+                    }
+                }
+            }
+            return maxStr;
+        }
+
+        const res = mostCommonWord('Bob hit a ball, the hit BALL flew far after it was hit.', ['hit']);
+        console.log(res);
+    })();
+</script>
+<p>821. 字符的最短距离，给定一个字符串 S 和一个字符 C。返回一个代表字符串 S 中每个字符到字符串 S 中的字符 C 的最短距离的数组。</p>
+<script data-msg="821. 字符的最短距离">
+    (() => {
+        function shortestToChar(S, C){
+            const arr = [];
+            for (let i = 0; i < S.length; i++) {
+                const leftStr = S.slice(0, i + 1);
+                const rightStr = S.slice(i);
+                const _left = leftStr.lastIndexOf(C);
+                const _right = rightStr.indexOf(C);
+                const left = _left === -1 ? Infinity : i - _left;
+                const right = _right === -1 ? Infinity : _right;
+                const min = Math.min(left, right);
+                arr.push(min);
+            }
+            return arr;
+        }
+
+        //  S = 'loveleetcode', C = 'e'
+        //  [3, 2, 1, 0, 1, 0, 0, 1, 2, 2, 1, 0];
+        shortestToChar('loveleetcode', 'e');
+
+    })();
+</script>
+<p>824. 山羊拉丁文，</p>
+<script data-msg="824. 山羊拉丁文">
+    (() => {
+        //  略
+        function toGoatLatin(S){
+
+        }
+
+    })();
+</script>
+<p>830. 较大分组的位置，在一个由小写字母构成的字符串 S 中，包含由一些连续的相同字符所构成的分组。 例如，在字符串 S = "abbxxxxzyy" 中，就含有 "a", "bb", "xxxx", "z" 和 "yy"
+    这样的一些分组。 我们称所有包含大于或等于三个连续字符的分组为较大分组。找到每一个较大分组的起始和终止位置。 最终结果按照字典顺序输出。</p>
+<script data-msg="830. 较大分组的位置">
+    (() => {
+        function largeGroupPositions(S){
+            let count = 1;
+            let charCode = '';
+            const arr = [];
+            for (let i = 0; i < S.length; i++) {
+                if (S[i] === charCode) {
+                    count++;
+                } else {
+                    if (count >= 3) {
+                        arr.push([i - count, i - 1]);
+                    }
+                    charCode = S[i];
+                    count = 1;
+                }
+            }
+            if (count >= 3) {
+                arr.push([S.length - count, S.length - 1]);
+            }
+            return arr;
+        }
+
+        largeGroupPositions('aaa');
+
+    })();
+</script>
+<p>832. 翻转图像，给定一个二进制矩阵 A，我们想先水平翻转图像，然后反转图像并返回结果。 水平翻转图片就是将图片的每一行都进行翻转，即逆序。例如，水平翻转 [1, 1, 0] 的结果是 [0, 1, 1]。
+    反转图片的意思是图片中的 0 全部被 1 替换， 1 全部被 0 替换。例如，反转 [0, 1, 1] 的结果是 [1, 0, 0]。</p>
+<script data-msg="832. 翻转图像">
+    (() => {
+        function flipAndInvertImage(A){
+            for (let i = 0; i < A.length; i++) {
+                const arr = A[i];
+                A[i] = arr.reverse();
+                for (let j = 0; j < arr.length; j++) {
+                    arr[j] = arr[j] ? 0 : 1;
+                }
+            }
+            return A;
+        }
+    })();
+</script>
+<p>836. 矩形重叠，矩形以列表 [x1, y1, x2, y2] 的形式表示，其中 (x1, y1) 为左下角的坐标，(x2, y2) 是右上角的坐标。
+    如果相交的面积为正，则称两矩形重叠。需要明确的是，只在角或边接触的两个矩形不构成重叠。 给出两个矩形，判断它们是否重叠并返回结果。</p>
+<script data-msg="836. 矩形重叠">
+    (() => {
+        // [x1, y1, x2, y2]
+        function isRectangleOverlap(rec1, rec2){
+            let top1 = rec1[3];
+            let bottom1 = rec1[1];
+            let left1 = rec1[0];
+            let right1 = rec1[2];
+
+            let top2 = rec2[3];
+            let bottom2 = rec2[1];
+            let left2 = rec2[0];
+            let right2 = rec2[2];
+
+            return (top1 > bottom2 && right1 > left2
+                && bottom1 < top2 && left1 < right2
+            );
+        }
+
+        [0, 0, 2, 2];
+        [1, 1, 3, 3];
+    })();
+</script>
+<p>840. 矩阵中的幻方，3 x 3 的幻方是一个填充有从 1 到 9 的不同数字的 3 x 3 矩阵，其中每行，每列以及两条对角线上的各数之和都相等。 给定一个由整数组成的 grid，其中有多少个 3 × 3 的 “幻方”
+    子矩阵？（每个子矩阵都是连续的）。 </p>
+<script data-msg="840. 矩阵中的幻方">
+    (() => {
+        return;
+
+        function numMagicSquaresInside(grid){
+            if (grid.length < 3 || grid[0].length < 3) {
+                return 0;
+            }
+            //  每行的和
+            const sum = 15;
+            //  核心
+            const centerPoint = 5;
+
+            let count = 0;
+            let rowLength = grid[0].length;
+
+            for (let i = 1; i < grid.length - 1; i++) {
+                const prevRow = grid[i - 1];
+                const row = grid[i];
+                const nextRow = grid[i + 1];
+                for (let j = 1; j < rowLength - 1; j++) {
+                    if (row[j] !== centerPoint) {
+                        continue;
+                    }
+                    if (
+                        row[j - 1] + row[j] + row[j + 1] !== sum
+                        || prevRow[j - 1] + prevRow[j] + prevRow[j + 1] !== sum
+                        || nextRow[j - 1] + nextRow[j] + nextRow[j + 1] !== sum
+                        || row[j - 1] + prevRow[j - 1] + nextRow[j - 1] !== sum
+                        || row[j] + prevRow[j] + nextRow[j] !== sum
+                        || row[j + 1] + prevRow[j + 1] + nextRow[j + 1] !== sum
+                        || row[j] + nextRow[j - 1] + prevRow[j + 1] !== sum
+                        || row[j] + prevRow[j - 1] + nextRow[j + 1] !== sum
+                    ) {
+                        continue;
+                    }
+                    const _arr = [...new Set([row[j], row[j - 1], row[j + 1], nextRow[j], nextRow[j - 1], nextRow[j + 1], prevRow[j], prevRow[j - 1], prevRow[j + 1]])].filter(a => Math.floor(a) === a);
+                    if (_arr.length !== 9 || Math.max.apply(null, _arr) !== 9 || Math.min.apply(null, _arr) !== 1) {
+                        continue;
+                    }
+                    count++;
+                }
+            }
+            return count;
+
+        }
+
+        debugger
+        numMagicSquaresInside([[4, 3, 8, 4], [9, 5, 1, 9], [2, 7, 6, 2]]);
+    })();
+</script>
+<p>844. 比较含退格的字符串，给定 S 和 T 两个字符串，当它们分别被输入到空白的文本编辑器后，判断二者是否相等，并返回结果。 # 代表退格字符。</p>
+<script data-msg="844. 比较含退格的字符串">
+    (() => {
+        function backspaceCompare(S, T){
+            return getArr(S) === getArr(T);
+        }
+
+        function getArr(S){
+            let arr = '';
+            for (let key of S) {
+                if (key === '#') {
+                    arr = arr.slice(0, -1);
+                } else {
+                    arr += key;
+                }
+            }
+            return arr;
+        }
+
+    })();
+</script>
+<p>849. 到最近的人的最大距离，在一排座位（ seats）中，1 代表有人坐在座位上，0 代表座位上是空的。 至少有一个空座位，且至少有一人坐在座位上。 亚历克斯希望坐在一个能够使他与离他最近的人之间的距离达到最大化的座位上。
+    返回他到离他最近的人的最大距离。</p>
+<script data-msg="849. 到最近的人的最大距离">
+    (() => {
+        function maxDistToClosest(seats){
+            //  个数，活动
+            let count = 0;
+            //  最大值
+            let maxValue = 0;
+            //  最大index
+            let index = 0;
+
+            let left = null;
+            let right = null;
+
+            for (let i = 0; i < seats.length; i++) {
+                if (seats[i] === 0) {
+                    count++;
+                    if (maxValue < count) {
+                        index = i;
+                        maxValue = count;
+                    }
+                } else {
+                    if (maxValue < count) {
+                        index = i;
+                        maxValue = count;
+                    }
+                    count = 0;
+                }
+                if (seats[0] === 0) {
+                    if (seats[i] === 1) {
+                        if (left === null) {
+                            left = i;
+                        }
+                    }
+                }
+                if (seats[seats.length - 1] === 0 && seats[seats.length - 1 - i] === 1) {
+                    if (right === null) {
+                        right = i;
+                    }
+                }
+            }
+            return Math.max(Math.ceil(maxValue / 2), right, left);
+        }
+
+        maxDistToClosest([1, 0, 0, 0]);
+    })();
+</script>
+<p>852. 山脉数组的峰顶索引，我们把符合下列属性的数组 A 称作山脉：</p>
+<script data-msg="852. 山脉数组的峰顶索引">
+    (() => {
+        return;
+
+        function peakIndexInMountainArray(A){
+            let left = 0;
+            let right = A.length - 1;
+            let center = Math.floor((left + right) / 2);
+            while (left < right) {
+                if (A[center] > A[center + 1]) {
+                    //  在下坡，要向左
+                    right = center;
+                } else {
+                    left = center;
+                }
+                center = Math.ceil((left + right) / 2);
+                if (center === left || center === right) {
+                    return center;
+                }
+                if (left === right) {
+                    return left;
+                }
+            }
+        }
+
+        const res = peakIndexInMountainArray([0, 1, 0]);
+        console.log(res);
+    })();
+</script>
+<p>859. 亲密字符串，给定两个由小写字母构成的字符串 A 和 B ，只要我们可以通过交换 A 中的两个字母得到与 B 相等的结果，就返回 true ；否则返回 false 。</p>
+<script data-msg="859. 亲密字符串">
+    (() => {
+        function buddyStrings(A, B){
+            if (A.length !== B.length) {return false;}
+            const mapA = {};
+            let isDifferent = 0;
+            let maxLen = 0;
+            for (let i = 0; i < A.length; i++) {
+                const key = A[i];
+                mapA[key] = mapA[key] || 0;
+                mapA[key]++;
+                maxLen = Math.max(maxLen, mapA[key]);
+                if (B[i] !== key) {
+                    isDifferent++;
+                }
+            }
+            if (isDifferent > 2) {
+                return false;
+            }
+            if (maxLen < 2 && isDifferent < 2) {
+                return false;
+            }
+            for (let key of B) {
+                if (mapA[key] === undefined || mapA[key] === 0) {
+                    return false;
+                }
+                mapA[key]--;
+            }
+            return true;
+        }
     })();
 </script>
 </body>
