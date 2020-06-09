@@ -1,0 +1,959 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>784-970</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+<p>788. 旋转数字，我们称一个数 X 为好数, 如果它的每位数字逐个地被旋转 180 度后，我们仍可以得到一个有效的，且和 X 不同的数。要求每位数字都要被旋转。
+    如果一个数的每位数字被旋转以后仍然还是一个数字， 则这个数是有效的。0, 1, 和 8 被旋转后仍然是它们自己；2 和 5 可以互相旋转成对方（在这种情况下，它们以不同的方向旋转，换句话说，2 和 5 互为镜像）；6 和 9
+    同理，除了这些以外其他的数字旋转以后都不再是有效的数字。
+    现在我们有一个正整数 N, 计算从 1 到 N 中有多少个数 X 是好数？</p>
+<script data-msg="788. 旋转数字">
+    (() => {
+        return;
+
+        function rotatedDigits(N){
+            let sum = 0;
+            let i = 1;
+            let validate = /2|5|6|9/;
+            let ill = /3|4|7/;
+            while (i <= N) {
+                if (!ill.test(i.toString()) && validate.test(i.toString())) {
+                    sum++;
+                }
+                i++;
+            }
+            return sum;
+        }
+
+        const res = rotatedDigits(10);
+        console.log(res);
+    })();
+</script>
+<p class="orange">796. 旋转字符串，A 的旋转操作就是将 A 最左边的字符移动到最右边。 例如, 若 A =
+    'abcde'，在移动一次之后结果就是'bcdea' 。如果在若干次旋转操作之后，A 能变成B，那么返回True。</p>
+<script data-msg="796. 旋转字符串">
+    (() => {
+        return;
+
+        function rotateString(A, B){
+            if (A.length !== B.length) {
+                return false;
+            }
+            const len = A.length;
+            let index = 1;
+            while (A !== B) {
+                A = A.slice(1) + A[0];
+                index++;
+                if (index > len) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function rotateString(A, B){
+            if (A.length !== B.length) {
+                return false;
+            }
+            A = A + A;
+            return A.includes(B);
+        }
+
+        debugger
+        rotateString('gcmbf', 'fgcmb');
+    })();
+</script>
+<p class="orange">804. 唯一摩尔斯密码词，国际摩尔斯密码定义一种标准编码方式，将每个字母对应于一个由一系列点和短线组成的字符串， 比如: "a" 对应 ".-", "b" 对应 "-...", "c" 对应
+    "-.-.", 等等。
+    为了方便，所有26个英文字母对应摩尔斯密码表如下：</p>
+<script data-msg="804. 唯一摩尔斯密码词">
+    (() => {
+        return;
+        const wordMap = {
+            'a': '.-',
+            'b': '-...',
+            'c': '-.-.',
+            'd': '-..',
+            'e': '.',
+            'f': '..-.',
+            'g': '--.',
+            'h': '....',
+            'i': '..',
+            'j': '.---',
+            'k': '-.-',
+            'l': '.-..',
+            'm': '--',
+            'n': '-.',
+            'o': '---',
+            'p': '.--.',
+            'q': '--.-',
+            'r': '.-.',
+            's': '...',
+            't': '-',
+            'u': '..-',
+            'v': '...-',
+            'w': '.--',
+            'x': '-..-',
+            'y': '-.--',
+            'z': '--..'
+        };
+
+        function uniqueMorseRepresentations(words){
+            const arr = [];
+            for (let i = 0; i < words.length; i++) {
+                arr[i] = '';
+                for (let key of words[i]) {
+                    arr[i] += wordMap[key];
+                }
+            }
+            return [...new Set(arr)].length;
+        }
+
+        function uniqueMorseRepresentations(words){
+            const wordMap = ['.-', '-...', '-.-.', '-..', '.', '..-.', '--.', '....', '..', '.---', '-.-', '.-..', '--', '-.', '---', '.--.', '--.-', '.-.', '...', '-', '..-', '...-', '.--', '-..-', '-.--', '--..'];
+            const arr = [];
+            for (let i = 0; i < words.length; i++) {
+                arr[i] = '';
+                for (let key of words[i]) {
+                    arr[i] += wordMap[key.toLowerCase().charCodeAt(0) - 97];
+                }
+            }
+            return [...new Set(arr)].length;
+        }
+
+        uniqueMorseRepresentations(['gin', 'zen', 'gig', 'msg']);
+    })();
+</script>
+<p>806. 写字符串需要的行数，我们要把给定的字符串 S 从左到右写到每一行上，每一行的最大宽度为100个单位，如果我们在写某个字母的时候会使这行超过了100
+    个单位，那么我们应该把这个字母写到下一行。我们给定了一个数组 widths ，这个数组 widths[0] 代表 'a' 需要的单位， widths[1] 代表 'b' 需要的单位，...， widths[25] 代表 'z'
+    需要的单位。 现在回答两个问题：至少多少行能放下S，以及最后一行使用的宽度是多少个单位？将你的答案作为长度为2的整数列表返回。</p>
+<script data-msg="806. 写字符串需要的行数">
+    (() => {
+        function numberOfLines(widths, S){
+            const maxLength = 100;
+            let rows = 1;
+            let sum = 0;
+            for (let key of S) {
+                const width = widths[key.charCodeAt(0) - 97];
+                if (sum + width <= maxLength) {
+                    sum += width;
+                } else {
+                    sum = width;
+                    rows++;
+                }
+            }
+            return [rows, sum];
+        }
+
+    })();
+</script>
+<p class="red">811.
+    子域名访问计数，一个网站域名，如"discuss.leetcode.com"，包含了多个子域名。作为顶级域名，常用的有"com"，下一级则有"leetcode.com"，最低的一级为"discuss.leetcode.com"。当我们访问域名"discuss.leetcode.com"时，也同时访问了其父域名"leetcode.com"以及顶级域名 "com"。
+    给定一个带访问次数和域名的组合，要求分别计算每个域名被访问的次数。其格式为访问次数+空格+地址，例如："9001 discuss.leetcode.com"。
+    接下来会给出一组访问次数和域名组合的列表cpdomains 。要求解析出所有域名的访问次数，输出格式和输入格式相同，不限定先后顺序。</p>
+<script data-msg="811. 子域名访问计数">
+    (() => {
+        function subdomainVisits(cpdomains){
+            //  右侧的str最多有多少
+            let maxStrLength = 0;
+            cpdomains.forEach(item => {
+                maxStrLength = Math.max(maxStrLength, item.split('.'));
+            });
+            cpdomains = cpdomains.map(item => {
+                return item.split(' ');
+            });
+            const map = {};
+            while (maxStrLength) {
+                maxStrLength--;
+                for (let i = 0; i < cpdomains.length; i++) {
+                    const item = cpdomains[i];
+                    //  'a.b.c.com'
+                    const str = item[1];
+                    //  com ~ org
+                    const key = str.split('.')[maxStrLength];
+                    if (!key) {
+                        continue;
+                    }
+                    map[key] = map[key] || {};
+                }
+            }
+
+        }
+
+        // [["900","google.mail.com"], ["50","yahoo.com"], ["1","intel.mail.com"],[ "5","wiki.org"]]
+        //  ["901 mail.com","50 yahoo.com","900 google.mail.com","5 wiki.org","5 org","1 intel.mail.com","951 com"]
+    })();
+</script>
+<p class="red">812. 最大三角形面积，给定包含多个点的集合，从其中取三个点组成三角形，返回能组成的最大三角形的面积。</p>
+<script data-msg="812. 最大三角形面积">
+    (() => {
+        function largestTriangleArea(points){
+
+        }
+
+    })();
+</script>
+<p>819. 最常见的单词，给定一个段落 (paragraph) 和一个禁用单词列表 (banned)。返回出现次数最多，同时不在禁用列表中的单词。 题目保证至少有一个词不在禁用列表中，而且答案唯一。
+    禁用列表中的单词用小写字母表示，不含标点符号。段落中的单词不区分大小写。答案都是小写字母。</p>
+<script data-msg="819. 最常见的单词">
+    (() => {
+        return;
+
+        function mostCommonWord(paragraph, banned){
+            const bannedMap = {};
+            for (let i = 0; i < banned.length; i++) {
+                bannedMap[banned[i]] = true;
+            }
+            const map = {};
+            const arr = paragraph.toLowerCase().replace(/[^a-z]/ig, ',').split(',');
+            let max = 0;
+            let maxStr = '';
+            for (let i = 0; i < arr.length; i++) {
+                const item = arr[i];
+                if (item === '') {
+                    continue;
+                }
+                if (!bannedMap[item]) {
+                    map[item] = map[item] || 0;
+                    map[item]++;
+                    if (map[item] > max) {
+                        maxStr = item;
+                        max = map[item];
+                    }
+                }
+            }
+            return maxStr;
+        }
+
+        const res = mostCommonWord('Bob hit a ball, the hit BALL flew far after it was hit.', ['hit']);
+        console.log(res);
+    })();
+</script>
+<p>821. 字符的最短距离，给定一个字符串 S 和一个字符 C。返回一个代表字符串 S 中每个字符到字符串 S 中的字符 C 的最短距离的数组。</p>
+<script data-msg="821. 字符的最短距离">
+    (() => {
+        function shortestToChar(S, C){
+            const arr = [];
+            for (let i = 0; i < S.length; i++) {
+                const leftStr = S.slice(0, i + 1);
+                const rightStr = S.slice(i);
+                const _left = leftStr.lastIndexOf(C);
+                const _right = rightStr.indexOf(C);
+                const left = _left === -1 ? Infinity : i - _left;
+                const right = _right === -1 ? Infinity : _right;
+                const min = Math.min(left, right);
+                arr.push(min);
+            }
+            return arr;
+        }
+
+        //  S = 'loveleetcode', C = 'e'
+        //  [3, 2, 1, 0, 1, 0, 0, 1, 2, 2, 1, 0];
+        shortestToChar('loveleetcode', 'e');
+
+    })();
+</script>
+<p>824. 山羊拉丁文，</p>
+<script data-msg="824. 山羊拉丁文">
+    (() => {
+        //  略
+        function toGoatLatin(S){
+
+        }
+
+    })();
+</script>
+<p>830. 较大分组的位置，在一个由小写字母构成的字符串 S 中，包含由一些连续的相同字符所构成的分组。 例如，在字符串 S = "abbxxxxzyy" 中，就含有 "a", "bb", "xxxx", "z" 和 "yy"
+    这样的一些分组。 我们称所有包含大于或等于三个连续字符的分组为较大分组。找到每一个较大分组的起始和终止位置。 最终结果按照字典顺序输出。</p>
+<script data-msg="830. 较大分组的位置">
+    (() => {
+        function largeGroupPositions(S){
+            let count = 1;
+            let charCode = '';
+            const arr = [];
+            for (let i = 0; i < S.length; i++) {
+                if (S[i] === charCode) {
+                    count++;
+                } else {
+                    if (count >= 3) {
+                        arr.push([i - count, i - 1]);
+                    }
+                    charCode = S[i];
+                    count = 1;
+                }
+            }
+            if (count >= 3) {
+                arr.push([S.length - count, S.length - 1]);
+            }
+            return arr;
+        }
+
+        largeGroupPositions('aaa');
+
+    })();
+</script>
+<p>832. 翻转图像，给定一个二进制矩阵 A，我们想先水平翻转图像，然后反转图像并返回结果。 水平翻转图片就是将图片的每一行都进行翻转，即逆序。例如，水平翻转 [1, 1, 0] 的结果是 [0, 1, 1]。
+    反转图片的意思是图片中的 0 全部被 1 替换， 1 全部被 0 替换。例如，反转 [0, 1, 1] 的结果是 [1, 0, 0]。</p>
+<script data-msg="832. 翻转图像">
+    (() => {
+        function flipAndInvertImage(A){
+            for (let i = 0; i < A.length; i++) {
+                const arr = A[i];
+                A[i] = arr.reverse();
+                for (let j = 0; j < arr.length; j++) {
+                    arr[j] = arr[j] ? 0 : 1;
+                }
+            }
+            return A;
+        }
+    })();
+</script>
+<p>836. 矩形重叠，矩形以列表 [x1, y1, x2, y2] 的形式表示，其中 (x1, y1) 为左下角的坐标，(x2, y2) 是右上角的坐标。
+    如果相交的面积为正，则称两矩形重叠。需要明确的是，只在角或边接触的两个矩形不构成重叠。 给出两个矩形，判断它们是否重叠并返回结果。</p>
+<script data-msg="836. 矩形重叠">
+    (() => {
+        // [x1, y1, x2, y2]
+        function isRectangleOverlap(rec1, rec2){
+            let top1 = rec1[3];
+            let bottom1 = rec1[1];
+            let left1 = rec1[0];
+            let right1 = rec1[2];
+
+            let top2 = rec2[3];
+            let bottom2 = rec2[1];
+            let left2 = rec2[0];
+            let right2 = rec2[2];
+
+            return (top1 > bottom2 && right1 > left2
+                && bottom1 < top2 && left1 < right2
+            );
+        }
+
+        [0, 0, 2, 2];
+        [1, 1, 3, 3];
+    })();
+</script>
+<p>840. 矩阵中的幻方，3 x 3 的幻方是一个填充有从 1 到 9 的不同数字的 3 x 3 矩阵，其中每行，每列以及两条对角线上的各数之和都相等。 给定一个由整数组成的 grid，其中有多少个 3 × 3 的 “幻方”
+    子矩阵？（每个子矩阵都是连续的）。 </p>
+<script data-msg="840. 矩阵中的幻方">
+    (() => {
+        return;
+
+        function numMagicSquaresInside(grid){
+            if (grid.length < 3 || grid[0].length < 3) {
+                return 0;
+            }
+            //  每行的和
+            const sum = 15;
+            //  核心
+            const centerPoint = 5;
+
+            let count = 0;
+            let rowLength = grid[0].length;
+
+            for (let i = 1; i < grid.length - 1; i++) {
+                const prevRow = grid[i - 1];
+                const row = grid[i];
+                const nextRow = grid[i + 1];
+                for (let j = 1; j < rowLength - 1; j++) {
+                    if (row[j] !== centerPoint) {
+                        continue;
+                    }
+                    if (
+                        row[j - 1] + row[j] + row[j + 1] !== sum
+                        || prevRow[j - 1] + prevRow[j] + prevRow[j + 1] !== sum
+                        || nextRow[j - 1] + nextRow[j] + nextRow[j + 1] !== sum
+                        || row[j - 1] + prevRow[j - 1] + nextRow[j - 1] !== sum
+                        || row[j] + prevRow[j] + nextRow[j] !== sum
+                        || row[j + 1] + prevRow[j + 1] + nextRow[j + 1] !== sum
+                        || row[j] + nextRow[j - 1] + prevRow[j + 1] !== sum
+                        || row[j] + prevRow[j - 1] + nextRow[j + 1] !== sum
+                    ) {
+                        continue;
+                    }
+                    const _arr = [...new Set([row[j], row[j - 1], row[j + 1], nextRow[j], nextRow[j - 1], nextRow[j + 1], prevRow[j], prevRow[j - 1], prevRow[j + 1]])].filter(a => Math.floor(a) === a);
+                    if (_arr.length !== 9 || Math.max.apply(null, _arr) !== 9 || Math.min.apply(null, _arr) !== 1) {
+                        continue;
+                    }
+                    count++;
+                }
+            }
+            return count;
+
+        }
+
+        debugger
+        numMagicSquaresInside([[4, 3, 8, 4], [9, 5, 1, 9], [2, 7, 6, 2]]);
+    })();
+</script>
+<p>844. 比较含退格的字符串，给定 S 和 T 两个字符串，当它们分别被输入到空白的文本编辑器后，判断二者是否相等，并返回结果。 # 代表退格字符。</p>
+<script data-msg="844. 比较含退格的字符串">
+    (() => {
+        function backspaceCompare(S, T){
+            return getArr(S) === getArr(T);
+        }
+
+        function getArr(S){
+            let arr = '';
+            for (let key of S) {
+                if (key === '#') {
+                    arr = arr.slice(0, -1);
+                } else {
+                    arr += key;
+                }
+            }
+            return arr;
+        }
+
+    })();
+</script>
+<p>849. 到最近的人的最大距离，在一排座位（ seats）中，1 代表有人坐在座位上，0 代表座位上是空的。 至少有一个空座位，且至少有一人坐在座位上。 亚历克斯希望坐在一个能够使他与离他最近的人之间的距离达到最大化的座位上。
+    返回他到离他最近的人的最大距离。</p>
+<script data-msg="849. 到最近的人的最大距离">
+    (() => {
+        function maxDistToClosest(seats){
+            //  个数，活动
+            let count = 0;
+            //  最大值
+            let maxValue = 0;
+            //  最大index
+            let index = 0;
+
+            let left = null;
+            let right = null;
+
+            for (let i = 0; i < seats.length; i++) {
+                if (seats[i] === 0) {
+                    count++;
+                    if (maxValue < count) {
+                        index = i;
+                        maxValue = count;
+                    }
+                } else {
+                    if (maxValue < count) {
+                        index = i;
+                        maxValue = count;
+                    }
+                    count = 0;
+                }
+                if (seats[0] === 0) {
+                    if (seats[i] === 1) {
+                        if (left === null) {
+                            left = i;
+                        }
+                    }
+                }
+                if (seats[seats.length - 1] === 0 && seats[seats.length - 1 - i] === 1) {
+                    if (right === null) {
+                        right = i;
+                    }
+                }
+            }
+            return Math.max(Math.ceil(maxValue / 2), right, left);
+        }
+
+        maxDistToClosest([1, 0, 0, 0]);
+    })();
+</script>
+<p>852. 山脉数组的峰顶索引，我们把符合下列属性的数组 A 称作山脉：</p>
+<script data-msg="852. 山脉数组的峰顶索引">
+    (() => {
+        return;
+
+        function peakIndexInMountainArray(A){
+            let left = 0;
+            let right = A.length - 1;
+            let center = Math.floor((left + right) / 2);
+            while (left < right) {
+                if (A[center] > A[center + 1]) {
+                    //  在下坡，要向左
+                    right = center;
+                } else {
+                    left = center;
+                }
+                center = Math.ceil((left + right) / 2);
+                if (center === left || center === right) {
+                    return center;
+                }
+                if (left === right) {
+                    return left;
+                }
+            }
+        }
+
+        const res = peakIndexInMountainArray([0, 1, 0]);
+        console.log(res);
+    })();
+</script>
+<p>859. 亲密字符串，给定两个由小写字母构成的字符串 A 和 B ，只要我们可以通过交换 A 中的两个字母得到与 B 相等的结果，就返回 true ；否则返回 false 。</p>
+<script data-msg="859. 亲密字符串">
+    (() => {
+        function buddyStrings(A, B){
+            if (A.length !== B.length) {return false;}
+            const mapA = {};
+            let isDifferent = 0;
+            let maxLen = 0;
+            for (let i = 0; i < A.length; i++) {
+                const key = A[i];
+                mapA[key] = mapA[key] || 0;
+                mapA[key]++;
+                maxLen = Math.max(maxLen, mapA[key]);
+                if (B[i] !== key) {
+                    isDifferent++;
+                }
+            }
+            if (isDifferent > 2) {
+                return false;
+            }
+            if (maxLen < 2 && isDifferent < 2) {
+                return false;
+            }
+            for (let key of B) {
+                if (mapA[key] === undefined || mapA[key] === 0) {
+                    return false;
+                }
+                mapA[key]--;
+            }
+            return true;
+        }
+    })();
+</script>
+<p>860. 柠檬水找零</p>
+<script data-msg="860. 柠檬水找零">
+    (() => {
+        function lemonadeChange(bills){
+            let residue5 = 0;
+            let residue10 = 0;
+            for (let i = 0; i < bills.length; i++) {
+                if (bills[i] === 5) {
+                    residue5++;
+                } else if (bills[i] === 10) {
+                    if (residue5 > 0) {
+                        residue5--;
+                        residue10++;
+                    } else {
+                        return false;
+                    }
+                } else if (bills[i] === 20) {
+                    if (residue5 === 0) {
+                        return false;
+                    }
+                    if (residue10 === 0) {
+                        if (residue5 < 3) {
+                            return false;
+                        }
+                        residue5 -= 3;
+                    } else {
+                        residue10--;
+                        residue5--;
+                    }
+                }
+            }
+            return true;
+        }
+
+        lemonadeChange([5, 5, 10, 20, 5, 5, 5, 5, 5, 5, 5, 5, 5, 10, 5, 5, 20, 5, 20, 5]);
+
+    })();
+</script>
+<p>867. 转置矩阵，给定一个矩阵 A， 返回 A 的转置矩阵。 矩阵的转置是指将矩阵的主对角线翻转，交换矩阵的行索引与列索引。</p>
+<script data-msg="867. 转置矩阵">
+    (() => {
+        function transpose(A){
+            const row = A.length;
+            const col = A[0].length;
+            const res = [];
+            for (let i = 0; i < col; i++) {
+                const item = [];
+                for (let j = 0; j < row; j++) {
+                    item.push(A[j][i]);
+                }
+                res.push(item);
+            }
+            return res;
+        }
+    })();
+</script>
+<p>868. 二进制间距，给定一个正整数 N，找到并返回 N 的二进制表示中两个连续的 1 之间的最长距离。 如果没有两个连续的 1，返回 0 。</p>
+<script data-msg="868. 二进制间距">
+    (() => {
+        function binaryGap(N){
+            let max = 0;
+            //  前一个1的index
+            let prevIndex = null;
+            let i = 0;
+            while (N) {
+                if (N % 2) {
+                    if (prevIndex !== null) {
+                        max = Math.max(max, i - prevIndex);
+                    }
+                    prevIndex = i;
+                }
+                N = Math.floor(N / 2);
+                i++;
+            }
+            return max;
+        }
+
+        binaryGap(13);
+    })();
+</script>
+<p class="green">872. 叶子相似的树</p>
+<script data-msg="872. 叶子相似的树">
+    (() => {
+        function leafSimilar(root1, root2){
+
+        }
+
+    })();
+</script>
+<p>874. 模拟行走机器人</p>
+<script data-msg="874. 模拟行走机器人">
+    (() => {
+        return;
+
+        function robotSim(commands, obstacles){
+            if (commands.length === 0) {
+                return 0;
+            }
+            const map = {};
+            for (let i = 0; i < obstacles.length; i++) {
+                map[obstacles[i]] = true;
+            }
+            let X = 0;
+            let Y = 0;
+            //  0⬆️1➡️2⬇️3⬅️
+            let turn = 0;
+            let max = 0;
+            for (let i = 0; i < commands.length; i++) {
+                let item = commands[i];
+                if (item === -1) {
+                    //  右转
+                    turn++;
+                    if (turn === 4) {
+                        turn = 0;
+                    }
+                } else if (item === -2) {
+                    //  左转
+                    turn--;
+                    if (turn === -1) {
+                        turn = 3;
+                    }
+                } else {
+                    while (item--) {
+                        let x = X;
+                        let y = Y;
+                        if (turn === 0) {
+                            y++;
+                        } else if (turn === 1) {
+                            x++;
+                        } else if (turn === 2) {
+                            y--;
+                        } else if (turn === 3) {
+                            x--;
+                        }
+                        //  如果堵住了
+                        if (map[`${x},${y}`]) {
+                            break;
+                        }
+                        X = x;
+                        Y = y;
+                    }
+                    max = Math.max(max, X * X + Y * Y);
+                }
+            }
+            return max;
+        }
+
+        const res = robotSim([1, 2, -2, 5, -1, -2, -1, 8, 3, -1, 9, 4, -2, 3, 2, 4, 3, 9, 2, -1, -1, -2, 1, 3, -2, 4, 1, 4, -1, 1, 9, -1, -2, 5, -1, 5, 5, -2, 6, 6, 7, 7, 2, 8, 9, -1, 7, 4, 6, 9, 9, 9, -1, 5, 1, 3, 3, -1, 5, 9, 7, 4, 8, -1, -2, 1, 3, 2, 9, 3, -1, -2, 8, 8, 7, 5, -2, 6, 8, 4, 6, 2, 7, 2, -1, 7, -2, 3, 3, 2, -2, 6, 9, 8, 1, -2, -1, 1, 4, 7], [[-57, -58], [-72, 91], [-55, 35], [-20, 29], [51, 70], [-61, 88], [-62, 99], [52, 17], [-75, -32], [91, -22], [54, 33], [-45, -59], [47, -48], [53, -98], [-91, 83], [81, 12], [-34, -90], [-79, -82], [-15, -86], [-24, 66], [-35, 35], [3, 31], [87, 93], [2, -19], [87, -93], [24, -10], [84, -53], [86, 87], [-88, -18], [-51, 89], [96, 66], [-77, -94], [-39, -1], [89, 51], [-23, -72], [27, 24], [53, -80], [52, -33], [32, 4], [78, -55], [-25, 18], [-23, 47], [79, -5], [-23, -22], [14, -25], [-11, 69], [63, 36], [35, -99], [-24, 82], [-29, -98], [-50, -70], [72, 95], [80, 80], [-68, -40], [65, 70], [-92, 78], [-45, -63], [1, 34], [81, 50], [14, 91], [-77, -54], [13, -88], [24, 37], [-12, 59], [-48, -62], [57, -22], [-8, 85], [48, 71], [12, 1], [-20, 36], [-32, -14], [39, 46], [-41, 75], [13, -23], [98, 10], [-88, 64], [50, 37], [-95, -32], [46, -91], [10, 79], [-11, 43], [-94, 98], [79, 42], [51, 71], [4, -30], [2, 74], [4, 10], [61, 98], [57, 98], [46, 43], [-16, 72], [53, -69], [54, -96], [22, 0], [-7, 92], [-69, 80], [68, -73], [-24, -92], [-21, 82], [32, -1], [-6, 16], [15, -29], [70, -66], [-85, 80], [50, -3], [6, 13], [-30, -98], [-30, 59], [-67, 40], [17, 72], [79, 82], [89, -100], [2, 79], [-95, -46], [17, 68], [-46, 81], [-5, -57], [7, 58], [-42, 68], [19, -95], [-17, -76], [81, -86], [79, 78], [-82, -67], [6, 0], [35, -16], [98, 83], [-81, 100], [-11, 46], [-21, -38], [-30, -41], [86, 18], [-68, 6], [80, 75], [-96, -44], [-19, 66], [21, 84], [-56, -64], [39, -15], [0, 45], [-81, -54], [-66, -93], [-4, 2], [-42, -67], [-15, -33], [1, -32], [-74, -24], [7, 18], [-62, 84], [19, 61], [39, 79], [60, -98], [-76, 45], [58, -98], [33, 26], [-74, -95], [22, 30], [-68, -62], [-59, 4], [-62, 35], [-78, 80], [-82, 54], [-42, 81], [56, -15], [32, -19], [34, 93], [57, -100], [-1, -87], [68, -26], [18, 86], [-55, -19], [-68, -99], [-9, 47], [24, 94], [92, 97], [5, 67], [97, -71], [63, -57], [-52, -14], [-86, -78], [-17, 92], [-61, -83], [-84, -10], [20, 13], [-68, -47], [7, 28], [66, 89], [-41, -17], [-14, -46], [-72, -91], [4, 52], [-17, -59], [-85, -46], [-94, -23], [-48, -3], [-64, -37], [2, 26], [76, 88], [-8, -46], [-19, -68]]);
+        console.log(res);
+    })();
+</script>
+<p>876. 链表的中间结点，给定一个带有头结点 head 的非空单链表，返回链表的中间结点。如果有两个中间结点，则返回第二个中间结点。</p>
+<script data-msg="876. 链表的中间结点">
+    (() => {
+        function middleNode(head){
+            let fast = head;
+            let slow = head;
+            while (fast && fast.next) {
+                slow = slow.next;
+                fast = fast.next.next;
+            }
+            return slow;
+        }
+    })();
+</script>
+<p>883. 三维形体投影面积，在 N * N 的网格中，我们放置了一些与 x，y，z 三轴对齐的 1 * 1 * 1 立方体。 每个值 v = grid[i][j] 表示 v 个正方体叠放在单元格 (i, j) 上。
+    现在，我们查看这些立方体在 xy、yz 和 zx 平面上的投影。 投影就像影子，将三维形体映射到一个二维平面上。 在这里，从顶部、前面和侧面看立方体时，我们会看到“影子”。 返回所有三个投影的总面积。</p>
+<script data-msg="883. 三维形体投影面积">
+    (() => {
+        function projectionArea(grid){
+            const _grid = grid.flat().filter(item => item > 0);
+            let xy = _grid.length;
+            let xz = 0;
+            let maxLen = 0;
+            for (let i = 0; i < grid.length; i++) {
+                xz += Math.max(...grid[i]);
+                maxLen = Math.max(maxLen, grid[i].length);
+            }
+            let yz = 0;
+            while (maxLen--) {
+                let max = 0;
+                for (let i = 0; i < grid.length; i++) {
+                    max = Math.max(grid[i][maxLen] || 0, max);
+                }
+                yz += max;
+            }
+            return xy + xz + yz;
+        }
+
+        const res = projectionArea([[1, 1, 1], [1, 0, 1], [1, 1, 1]]);
+
+    })();
+</script>
+<p>884. 两句话中的不常见单词</p>
+<script data-msg="884. 两句话中的不常见单词">
+    (() => {
+        function uncommonFromSentences(A, B){
+            const C = A + ' ' + B;
+            const arr = C.split(' ');
+            const map = {};
+            for (let i = 0; i < arr.length; i++) {
+                const item = arr[i];
+                map[item] = map[item] || [];
+                map[item]++;
+            }
+            const res = [];
+            Reflect.ownKeys(map).forEach(key => {
+                if (map[key] === 1) {
+                    res.push(key);
+                }
+            });
+            return res;
+        }
+
+        uncommonFromSentences('apple apple', 'banana');
+    })();
+</script>
+<p>888. 公平的糖果交换</p>
+<script data-msg="888. 公平的糖果交换">
+    (() => {
+        function fairCandySwap(A, B){
+            const mapB = {};
+            //  需要遍历A，找到B中大一个差值是diff的
+            const a = A.reduce((a, b) => a + b, 0);
+            const b = getBasic(B, mapB);
+            const average = (a + b) / 2;
+            //  差值
+            const diff = average - a;
+            for (let i = 0; i < A.length; i++) {
+                if (mapB[A[i] + diff]) {
+                    return [A[i], A[i] + diff];
+                }
+            }
+        }
+
+        function getBasic(arr, obj){
+            let sum = 0;
+            arr.forEach(item => {
+                obj[item] = 1;
+                sum += item;
+            });
+            return sum;
+        }
+    })();
+</script>
+<p>892. 三维形体的表面积</p>
+<script data-msg="892. 三维形体的表面积">
+    (() => {
+        function surfaceArea(grid){
+            let sum = 0;
+            //  x轴
+            for (let x = 0; x < grid.length; x++) {
+                const px = grid[x - 1];
+                const _x = grid[x];
+                const nx = grid[x + 1];
+                //  y轴
+                for (let y = 0; y < _x.length; y++) {
+                    const c = _x[y];
+                    if (c === 0) {
+                        continue;
+                    }
+                    //  否则一定有上下，左右，前后，分别判断
+                    //  上下
+                    sum += 2;
+                    //  左右，当前的高，才+多余的部分
+                    const _ny = nx && nx[y] || 0;
+                    if (_ny < c) {
+                        sum += (c - _ny);
+                    }
+                    const _py = px && px[y] || 0;
+                    if (_py < c) {
+                        sum += (c - _py);
+                    }
+                    //  前后，一个道理
+                    const p = _x[y - 1] || 0;
+                    const n = _x[y + 1] || 0;
+                    if (p < c) {
+                        sum += (c - p);
+                    }
+                    if (n < c) {
+                        sum += (c - n);
+                    }
+                }
+            }
+            return sum;
+        }
+    })();
+</script>
+<p class="red">893. 特殊等价字符串组</p>
+<script data-msg="893. 特殊等价字符串组">
+    (() => {
+        //  所有 A[i] 都具有相同的长度。
+        //  所有 A[i] 都只由小写字母组成。
+        function numSpecialEquivGroups(arr){
+            return [...new Set(arr.map(item => {
+                item = item.split('');
+                const event = item.filter((t, i) => i % 2 === 1).sort().join('');
+                const odd = item.filter((t, i) => i % 2 === 0).sort().join('');
+                return odd + event;
+            }))].length;
+        }
+
+        numSpecialEquivGroups(['abc', 'acb', 'bac', 'bca', 'cab', 'cba']);
+
+    })();
+</script>
+<p>896. 单调数列</p>
+<script data-msg="896. 单调数列">
+    (() => {
+        function isMonotonic(A){
+            let isUp = null;
+            let isDown = null;
+            for (let i = 0; i < A.length - 1; i++) {
+                if (A[i] < A[i + 1]) {
+                    if (isDown) {
+                        return false;
+                    }
+                    isUp = true;
+                } else if (A[i] > A[i + 1]) {
+                    if (isUp) {
+                        return false;
+                    }
+                    isDown = true;
+                }
+            }
+            return true;
+        }
+
+        isMonotonic([6, 5, 4, 4]);
+
+    })();
+</script>
+<p class="green">897. 递增顺序查找树，给你一个树，请你 按中序遍历 重新排列树，使树中最左边的结点现在是树的根，并且每个结点没有左子结点，只有一个右子结点。</p>
+<script data-msg="897. 递增顺序查找树"></script>
+<p>905. 按奇偶排序数组</p>
+<script data-msg="905. 按奇偶排序数组">
+    (() => {
+        function sortArrayByParity(A){
+            let count = 0;
+            for (let i = 0; i < A.length; i++) {
+                if (count >= A.length) {
+                    return A;
+                }
+                //  如果是奇数
+                if (A[i] % 2 === 1) {
+                    const a = A.splice(i, 1)[0];
+                    A.push(a);
+                    i--;
+                    count++;
+                }
+            }
+            return A;
+        }
+
+        function sortArrayByParity(arr){
+            return arr.filter(item => item % 2 === 0).concat(arr.filter(item => item % 2 === 1));
+        }
+
+        sortArrayByParity([0]);
+
+    })();
+</script>
+<p>908. 最小差值 I</p>
+<script data-msg="908. 最小差值 I">
+    (() => {
+        function smallestRangeI(A, K){
+            const min = Math.min.apply(null, A);
+            const max = Math.max.apply(null, A);
+            const diff = max - min;
+            return Math.max(0, diff - K * 2);
+        };
+    })();
+</script>
+<p class="red">914. 卡牌分组，这里面有一个辗转相除法</p>
+<script data-msg="914. 卡牌分组">
+    (() => {
+        return
+        function hasGroupsSizeX(deck){
+            const map = {};
+            for (let i = 0; i < deck.length; i++) {
+                const key = deck[i];
+                map[key] = map[key] || 0;
+                map[key]++;
+            }
+
+            let arr = [];
+            //  【3，6】
+            for (let key in map) {
+                arr.push(map[key]);
+            }
+            arr = [...new Set(arr)];
+
+            //  求大公约数
+            // let min = Math.min(...arr);
+            let start = arr[0];
+            for (let i = 0; i < arr.length; i++) {
+                start = gcd(start, arr[i]);
+                if (start < 2) {
+                    return false;
+                }
+            }
+
+            return true;
+
+        }
+
+        function gcd(a, b){
+            if (a % b === 0) return b;
+            return gcd(b, a % b);
+        }
+
+        const res = hasGroupsSizeX([1, 1, 1, 2, 2, 2, 2, 2, 2]);
+        // console.log(res);
+    })();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
