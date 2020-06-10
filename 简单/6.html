@@ -65,7 +65,6 @@
             return A.includes(B);
         }
 
-        debugger
         rotateString('gcmbf', 'fgcmb');
     })();
 </script>
@@ -388,7 +387,6 @@
 
         }
 
-        debugger
         numMagicSquaresInside([[4, 3, 8, 4], [9, 5, 1, 9], [2, 7, 6, 2]]);
     })();
 </script>
@@ -900,7 +898,8 @@
 <p class="red">914. 卡牌分组，这里面有一个辗转相除法</p>
 <script data-msg="914. 卡牌分组">
     (() => {
-        return
+        return;
+
         function hasGroupsSizeX(deck){
             const map = {};
             for (let i = 0; i < deck.length; i++) {
@@ -939,8 +938,126 @@
         // console.log(res);
     })();
 </script>
+<p>917. 仅仅反转字母</p>
+<script data-msg="917. 仅仅反转字母">
+    (() => {
+        function reverseOnlyLetters(S){
+            const letterArr = [];
+            for (let k of S) {
+                if (isLetter(k.charCodeAt(0))) {
+                    letterArr.unshift(k);
+                }
+            }
+            for (let i = 0; i < S.length; i++) {
+                if (isLetter(S.charCodeAt(i))) {
+                    S = S.slice(0, i) + letterArr[0] + S.slice(i + 1);
+                    letterArr.shift();
+                }
+            }
+            return S;
+        }
+
+        function isLetter(str){
+            const unicode = str.charCodeAt(0);
+            return (unicode >= 97 && unicode <= (97 + 25) || unicode >= (97 - 32) && unicode <= (97 - 32 + 25));
+        }
+
+        reverseOnlyLetters('-S2,_');
+
+        function reverseOnlyLetters(str){
+            let lastIndex = str.length - 1;
+            for (let i = 0; i < str.length; i++) {
+                if (lastIndex <= i) {
+                    return str;
+                }
+                if (isLetter(str[i])) {
+                    for (let j = lastIndex; j > i; j--) {
+                        if (isLetter(str[j])) {
+                            str = str.slice(0, i) + str[j] + str.slice(i + 1, j) + str[i] + str.slice(j + 1);
+                            lastIndex = j - 1;
+                            break;
+                        }
+                    }
+                }
+            }
+            return str;
+        }
+    })();
+</script>
+<p>922. 按奇偶排序数组 II</p>
+<script data-msg="922. 按奇偶排序数组 II">
+    (() => {
+        function sortArrayByParityII(A){
+            let event = 0;
+            let odd = 1;
+            const arr = [];
+            A.forEach(item => {
+                if (item % 2) {
+                    arr[odd] = item;
+                    odd += 2;
+                } else {
+                    arr[event] = item;
+                    event += 2;
+                }
+            });
+            return arr;
+        };
+    })();
+</script>
+<p>925. 长按键入</p>
+<script data-msg="925. 长按键入">
+    (() => {
+        //  input更长
+        function isLongPressedName(name, input){
+            if (input.length < name.length) {
+                return false;
+            }
+            for (let i = 0; i < input.length; i++) {
+                const _input = input[i];
+                if (_input !== name[i]) {
+                    if (_input !== name[i - 1]) {
+                        return false;
+                    }
+                    name = name.slice(0, i) + _input + name.slice(i);
+                }
+            }
+            return !(name.length > input.length);
+        }
+
+        'ssaaedd';
+        'saeed';
+        isLongPressedName('saeed', 'ssaaedd');
+        'aaleelx';
+        'alex';
+        // isLongPressedName('alex', 'aaleelx');
+    })();
+</script>
+<p>929. 独特的电子邮件地址</p>
+<script data-msg="929. 独特的电子邮件地址">
+    (() => {
+        function numUniqueEmails(emails){
+            const map = {};
+            emails.forEach(item => {
+                const arr = item.split('@');
+                const com = '@' + arr[1];
+                //  无点
+                const local = arr[0].replace(/\./ig, '');
+                const key = local.split('+')[0] + com;
+                map[key] = 1;
+            });
+            return Reflect.ownKeys(map).length;
+        }
+
+        // numUniqueEmails(['test.email+alex@leetcode.com', 'test.e.mail+bob.cathy@leetcode.com', 'testemail+david@lee.tcode.com']);
+        // numUniqueEmails(['test.email+alex@leetcode.com', 'test.email.leet+alex@code.com']);
+        numUniqueEmails(['test.email+alex@leetcode.com', 'test.email.leet+alex@code.com']);
+
+    })();
+</script>
 </body>
 </html>
+
+
 
 
 
