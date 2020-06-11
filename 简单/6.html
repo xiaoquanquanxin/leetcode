@@ -1213,7 +1213,120 @@
     (() => {
         function largestTimeFromDigits(A){
         }
-        
+
+    })();
+</script>
+<p class="green">965. 单值二叉树</p>
+<script data-msg="965. 单值二叉树">
+    (() => {
+        function isUnivalTree(root){
+            const val = root.val;
+            return getValue(root);
+
+            function getValue(node){
+                let k = 1;
+                if (node.val !== undefined) {
+                    if (node.val !== val) {
+                        return false;
+                    }
+                }
+                if (node.left) {
+                    k *= getValue(node.left);
+                }
+                if (k && node.right) {
+                    k *= getValue(node.right);
+                }
+                return k === 1;
+            }
+        }
+
+    })();
+</script>
+<p>953. 验证外星语词典</p>
+<script data-msg="953. 验证外星语词典">
+    (() => {
+        function isAlienSorted(words, order){
+            const map = {};
+            for (let i = 0; i < order.length; i++) {
+                map[order[i]] = i + 97;
+            }
+            let isWrong = false;
+            words.sort((a, b) => {
+                if (isWrong) {
+                    return 1;
+                }
+                let len = a.length;
+                let i = 0;
+                while (i < len) {
+                    if (a[i] === undefined || map[a[i]] < map[b[i]]) {
+                        isWrong = true;
+                        words = [];
+                        return 1;
+                    } else if (b[i] === undefined || map[a[i]] > map[b[i]]) {
+                        return +1;
+                    } else {
+                        i++;
+                    }
+                }
+                isWrong = true;
+                words = [];
+                return 1;
+            });
+            return !isWrong;
+        }
+
+        isAlienSorted(['apple', 'app'], 'abcdefghijklmnopqrstuvwxyz');
+    })();
+</script>
+<p>970. 强整数</p>
+<script data-msg="970. 强整数">
+    (() => {
+        function powerfulIntegers(x, y, bound){
+            if (x > y) {
+                x = y + x;
+                y = x - y;
+                x = x - y;
+            }
+            //  x比较小
+            //  结果的list
+            const list = [];
+            //  单值最大
+            let max = Math.log(bound) / Math.log(x);
+            let _i = max;
+            if (x === 1) {
+                _i = 1;
+                max = 20;
+            }
+            for (let i = 0; i < _i; i++) {
+                for (let j = 0; j < max; j++) {
+                    const res = Math.pow(x, i) + Math.pow(y, j);
+                    if (res > bound) {
+                        break;
+                    }
+                    list.push(res);
+                }
+            }
+            // console.log([...new Set(list)]);
+            // console.log(list);
+            return [...new Set(list)];
+        }
+
+        powerfulIntegers(2, 3, 20);
+
+    })();
+</script>
+<p>961. 重复 N 次的元素</p>
+<script data-msg="961. 重复 N 次的元素">
+    (() => {
+        function repeatedNTimes(A){
+            const map = {};
+            for( let k of A){
+                if( map[k]){
+                    return k;
+                }
+                map[k] = true
+            }
+        }
     })();
 </script>
 </body>
