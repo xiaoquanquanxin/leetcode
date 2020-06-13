@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>976-1180</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+<p>976. 三角形的最大周长</p>
+<script data-msg="976. 三角形的最大周长">
+    (() => {
+        function largestPerimeter(A){
+            A.sort((a, b) => b - a);
+            const len = A.length;
+            for (let i = 0; i < len - 2; i++) {
+                let a = A[i];
+                let b = A[i + 1];
+                let c = A[i + 2];
+                if (a < b + c) {
+                    return a + b + c;
+                }
+            }
+            return 0;
+        }
+
+        largestPerimeter([1, 2, 1]);
+    })();
+</script>
+<p>977. 有序数组的平方</p>
+<script data-msg="977. 有序数组的平方">
+    (() => {
+        // const sortedSquares = (A) => (A.map(item => item * item)).sort((a,b)=>a-b);
+        function sortedSquares(A){
+            const arr = [];
+            let i = 0;
+            let j = A.length - 1;
+            while (i <= j) {
+                const _i = A[i];
+                const _j = A[j];
+                const __i = _i * _i;
+                if (i === j) {
+                    arr.unshift(__i);
+                    break;
+                }
+                const __j = _j * _j;
+                //  如果偏右大
+                if (__i < __j) {
+                    arr.unshift(__j);
+                    j--;
+                } else if (__i > __j) {
+                    arr.unshift(__i);
+                    i++;
+                } else {
+                    arr.unshift(__i);
+                    arr.unshift(__i);
+                    i++;
+                    j--;
+                }
+            }
+            return arr;
+        }
+    })();
+</script>
+</body>
+</html>
