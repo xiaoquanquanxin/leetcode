@@ -6,7 +6,7 @@ var util = require('util');
 //创建服务
 http.createServer(function (req, res){
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-
+    console.log(`访问${new Date().toLocaleString()}`);
     //解析并且打成字符串形式返回给客户端
     res.end(JSON.stringify({
         code: 1000,
