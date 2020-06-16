@@ -64,5 +64,80 @@
         }
     })();
 </script>
+<p>985. 查询后的偶数和</p>
+<script data-msg="985. 查询后的偶数和">
+    (() => {
+        function sumEvenAfterQueries(A, queries){
+            const arr = [];
+            let prev = 0;
+            for (let i = 0, len = A.length; i < len; i++) {
+                if (A[i] % 2 === 0) {prev += A[i];}
+            }
+
+            for (let i = 0, len = A.length; i < len; i++) {
+                const index = queries[i][1];
+                const value = queries[i][0];
+                const aPrev = A[index];
+                A[index] += value;
+                const current = A[index];
+                //  如果以前是偶数
+                if (aPrev % 2 === 0) {
+                    //  如果现在还是偶数
+                    if (current % 2 === 0) {
+                        prev += value;
+                    } else {
+                        prev -= aPrev;
+                    }
+                } else {
+                    //  如果现在是偶数
+                    if (current % 2 === 0) {
+                        prev += current;
+                    }
+                }
+                arr.push(prev);
+            }
+            return arr;
+        }
+    })();
+</script>
+<p>989. 数组形式的整数加法</p>
+<script data-msg="989. 数组形式的整数加法">
+    (() => {
+        function addToArrayForm(A, K){
+            const arr = K.toString().split('').map(item => Number(item));
+            let a = A;
+            let b = arr;
+            if (arr.length > A.length) {
+                a = arr;
+                b = A;
+            }
+            let isUp = 0;
+            for (let i = 0; i < a.length; i++) {
+                const index = a.length - 1 - i;
+                const _a = a[index];
+                const b_index = b.length - 1 - i;
+                const _b = b[b_index] || 0;
+                if (_b === 0 && isUp === 0 && b_index < 0) {
+                    break;
+                }
+                a[index] = isUp + _a + _b;
+                if (a[index] > 9) {
+                    a[index] = a[index] - 10;
+                    isUp = 1;
+                } else {
+                    isUp = 0;
+                }
+
+            }
+            if (isUp) {
+                a.unshift(1);
+            }
+            return a;
+        }
+
+        const res = addToArrayForm([3, 1], 10);
+
+    })();
+</script>
 </body>
 </html>
