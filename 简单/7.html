@@ -139,5 +139,237 @@
 
     })();
 </script>
+<p class="green">993. 二叉树的堂兄弟节点</p>
+<script data-msg="993. 二叉树的堂兄弟节点">
+    (() => {
+
+    })();
+</script>
+<p class="">997. 找到小镇的法官</p>
+<script data-msg="997. 找到小镇的法官">
+    (() => {
+        function findJudge(N, trust){
+            if (trust.length === 0) {
+                return (N === 1) ? 1 : -1;
+            }
+
+            //  可能是法官，法官：1，普通人：-1
+            const map = {};
+            for (let i = 0, len = trust.length; i < len; i++) {
+                const key = trust[i][0];
+                const aim = trust[i][1];
+                //  如果这个人参选了，说明不是法官，是普通人
+                map[key] = -1;
+                //  普通人选择的目标，如果是普通人，跳过
+                if (map[aim] === -1) {
+                    continue;
+                }
+                //  这个人可能是法官
+                map[aim] = map[aim] || 0;
+                //  给法官投票
+                map[aim]++;
+            }
+            let res = -1;
+            for (let key in map) {
+                //  法官将得到N-1票
+                if (map[key] === N - 1) {
+                    //  有不止一个答案了
+                    if (res !== -1) {
+                        return -1;
+                    }
+                    res = key;
+                }
+            }
+            return res;
+        }
+
+    })();
+</script>
+<p>999. 可以被一步捕获的棋子数</p>
+<script data-msg="999. 可以被一步捕获的棋子数">
+    (() => {
+        function numRookCaptures(board){
+            const line = 8;
+            let R;
+            //  拿R的位置
+            getR :for (let i = 0; i < line; i++) {
+                const row = board[i];
+                for (let j = 0; j < line; j++) {
+                    if (row[j] === 'R') {
+                        R = [i, j];
+                        break getR;
+                    }
+                }
+            }
+            let sum = 0;
+            let canLeft = true;
+            let canRight = true;
+            //  右
+            for (let j = 1; j < line; j++) {
+                if (!canRight && !canLeft) {
+                    break;
+                }
+                if (canRight) {
+                    const right = board[R[0]][R[1] + j];
+                    if (right === undefined || right === 'B') {
+                        canRight = false;
+                    } else if (right === 'p') {
+                        sum++;
+                        canRight = false;
+                    }
+                }
+                if (canLeft) {
+                    const item = board[R[0]][R[1] - j];
+                    if (item === undefined || item === 'B') {
+                        canLeft = false;
+                    } else if (item === 'p') {
+                        sum++;
+                        canLeft = false;
+                    }
+                }
+            }
+            let canUp = true;
+            let canDown = true;
+            //  上
+            for (let i = 1; i < line; i++) {
+                if (!canUp && !canDown) {
+                    break;
+                }
+                if (canUp) {
+                    const item = board[R[0] + i] ? board[R[0] + i][R[1]] : undefined;
+                    if (item === undefined || item === 'B') {
+                        canUp = false;
+                    } else if (item === 'p') {
+                        sum++;
+                        canUp = false;
+                    }
+                }
+                if (canDown) {
+                    const item = board[R[0] - i] ? board[R[0] - i][R[1]] : undefined;
+                    if (item === undefined || item === 'B') {
+                        canDown = false;
+                    } else if (item === 'p') {
+                        sum++;
+                        canDown = false;
+                    }
+                }
+            }
+            return sum;
+        }
+
+        numRookCaptures([['.', '.', '.', '.', '.', '.', '.', '.'], ['.', 'p', 'p', 'p', 'p', 'p', '.', '.'], ['.', 'p', 'p', 'B', 'p', 'p', '.', '.'], ['.', 'p', 'B', 'R', 'B', 'p', '.', '.'], ['.', 'p', 'p', 'B', 'p', 'p', '.', '.'], ['.', 'p', 'p', 'p', 'p', 'p', '.', '.'], ['.', '.', '.', '.', '.', '.', '.', '.'], ['.', '.', '.', '.', '.', '.', '.', '.']]);
+    })();
+</script>
+<p>1002. 查找常用字符</p>
+<script data-msg="1002. 查找常用字符">
+    (() => {
+        return;
+
+        function commonChars(array){
+            const resultArr = [];
+            const firstString = array[0];
+            wrap:for (let i = 0; i < firstString.length; i++) {
+                const key = firstString.charAt(i);
+                let isRepeat = true;
+                for (let j = 1; j < array.length; j++) {
+                    const str = array[j];
+                    if (str === '') {
+                        isRepeat = false;
+                        break wrap;
+                    }
+                    const index = str.indexOf(key);
+                    if (index !== -1) {
+                        //  arr[j]变短了
+                        array[j] = str.slice(0, index) + str.slice(index + 1);
+                    } else {
+                        isRepeat = false;
+                        break;
+                    }
+                }
+                //  如果全部通过
+                if (isRepeat) {
+                    resultArr.push(key);
+                }
+            }
+            return resultArr;
+        }
+
+        const res = commonChars(['bella', 'label', 'roller']);
+        console.log(res);
+    })();
+</script>
+<p>1005. K 次取反后最大化的数组和</p>
+<script data-msg="1005. K 次取反后最大化的数组和">
+    (() => {
+        function largestSumAfterKNegations(A, K){
+            while (K > 0) {
+                const min = Math.min.apply(null, A);
+                if (min === 0) {
+                    break;
+                }
+                if (min > 0) {
+                    let i = 2;
+                    if (K % 2) {
+                        i = 1;
+                    }
+                    K = K > i ? i : K;
+                }
+                const index = A.indexOf(min);
+                A[index] = -min;
+                K--;
+            }
+            return A.reduce((prev, current) => prev + current);
+        };
+        largestSumAfterKNegations([-2, 9, 9, 8, 4], 5);
+    })();
+</script>
+<p>1009. 十进制整数的反码</p>
+<script data-msg="1009. 十进制整数的反码">
+    (() => {
+        return;
+
+        function bitwiseComplement(N){
+            let str = '';
+            while (N >= 0) {
+                str = ((N % 2) ? 0 : 1) + str;
+                N = N / 2|0;
+                if (N === 0) {
+                    break;
+                }
+            }
+            return parseInt(str, 2);
+        }
+
+        const res = bitwiseComplement(5);
+        console.log(res);
+    })();
+</script>
+<p>1010. 总持续时间可被 60 整除的歌曲</p>
+<script data-msg="1010. 总持续时间可被 60 整除的歌曲">
+    (() => {
+        return;
+
+        function numPairsDivisibleBy60(time){
+            const map = {};
+            let s = 0;
+            for (let i = 0; i < time.length; i++) {
+                const t = time[i] % 60;
+                if (map[t || 60] !== undefined) {
+                    s += map[t || 60];
+                }
+                // debugger
+                //  剩余为 etp：40s的
+                const res = 60 - t;
+                map[res] = map[res] || 0;
+                map[res]++;
+            }
+            return s;
+        }
+
+        const res = numPairsDivisibleBy60([30, 20, 150, 100, 40]);
+        // const res = numPairsDivisibleBy60([120, 120, 120]);
+        console.log(res);
+    })();
+</script>
 </body>
 </html>
