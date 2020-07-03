@@ -450,8 +450,102 @@
             return str;
         }
 
-        debugger
         removeOuterParentheses('(()())(())');
+    })();
+</script>
+<p class="green">1022. 从根到叶的二进制数之和</p>
+<script data-msg="1022. 从根到叶的二进制数之和">
+    (() => {
+        /**
+         * Definition for a binary tree node.
+         */
+        function TreeNode(val){
+            this.val = val;
+            this.left = this.right = null;
+        }
+
+        /**
+         * @param {TreeNode} root
+         * @return {number}
+         */
+        function sumRootToLeaf(root){
+            const arr = [];
+            while (root.val !== null) {
+                arr.push(traverse(root, ''));
+            }
+            return arr.reduce((previousValue, currentValue) => previousValue + parse(currentValue), 0);
+        }
+
+        //  遍历
+        function traverse(node, str){
+            if (node.val !== null) {
+                str += node.val;
+            } else {
+                return '0';
+            }
+            if (node.left !== null) {
+                return traverse(node.left, str);
+            }
+            if (node.right !== null) {
+                return traverse(node.right, str);
+            }
+            //  到头了
+            node.val = null;
+
+            return str;
+
+        }
+
+        function parse(str){
+            let sum = 0;
+            let pre = 1;
+            for (let i = str.length - 1; i >= 0; i--) {
+                sum = str[i] * pre + sum;
+                pre *= 2;
+            }
+            return sum;
+        }
+    })();
+</script>
+<p>1025. 除数博弈</p>
+<script data-msg="1025. 除数博弈">
+    (() => {
+        function divisorGame(N){
+            //  9
+            return !(N % 2);
+        };
+    })();
+</script>
+<p>1029. 两地调度</p>
+<script data-msg="1029. 两地调度">
+    (() => {
+        function twoCitySchedCost(costs){
+            //  升序
+            costs.sort((a, b) => (b[0] - b[1]) - (a[0] - a[1]));
+            let len = costs.length / 2;
+            let sum = 0;
+            for (let i = 0; i < len; i++) {
+                sum += (costs[i][1] + costs[i + len][0]);
+            }
+            return sum;
+        }
+    })();
+</script>
+<p>1030. 距离顺序排列矩阵单元格</p>
+<script data-msg="1030. 距离顺序排列矩阵单元格">
+    (() => {
+        function allCellsDistOrder(R, C, r0, c0){
+            const aa = [
+                [0, 0], [0, 1],
+                [1, 0], [1, 1],
+                [2, 0], [2, 1],
+            ];
+            const res = [];
+            while (1) {
+            
+            }
+
+        };
     })();
 </script>
 </body>
