@@ -371,5 +371,88 @@
         console.log(res);
     })();
 </script>
+<p class="orange">1013. 将数组分成和相等的三个部分</p>
+<script data-msg="1013. 将数组分成和相等的三个部分">
+    (() => {
+        function canThreePartsEqualSum(A){
+            const len = A.length;
+            let sum = A.reduce((a, b) => a + b);
+            if (sum % 3 !== 0) {
+                return false;
+            }
+            sum = sum / 3;
+            let count = 0;
+            let res = 0;
+            for (let i = 0, _len = len - 1; i < _len; i++) {
+                count += A[i];
+                if (count === sum) {
+                    if (res === 1) {
+                        return true;
+                    }
+                    res++;
+                    count = 0;
+                }
+            }
+            return false;
+        }
+
+        canThreePartsEqualSum([0, 2, 1, -6, 6, -7, 9, 1, 2, 0, 1]);
+    })();
+</script>
+<p class="red">1018. 可被 5 整除的二进制前缀</p>
+<script data-msg="1018. 可被 5 整除的二进制前缀">
+    (() => {
+        function prefixesDivBy5(A){
+            let pre = 0;
+            return A.map(item => {
+                pre = item + pre * 2;
+                if (pre > 10) {
+                    pre %= 10;
+                }
+                return pre % 5 === 0;
+            });
+        }
+
+        function prefixesDivBy5(A){
+            let pre = 0;
+            return A.map(item => {
+                pre = item + pre * 2;
+
+            });
+        }
+
+        const res = prefixesDivBy5([1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0]);
+    })();
+</script>
+<p>1021. 删除最外层的括号</p>
+<script data-msg="1021. 删除最外层的括号">
+    (() => {
+        function removeOuterParentheses(S){
+            let str = '';
+            let preCount = 0;
+            for (let i = 0; i < S.length; i++) {
+                const _str = S[i];
+                //  左
+                if (_str === '(') {
+                    //  如果以前没有东西
+                    preCount++;
+                    if (preCount === 1) {
+                        continue;
+                    }
+                } else {
+                    preCount--;
+                    if (preCount === 0) {
+                        continue;
+                    }
+                }
+                str += _str;
+            }
+            return str;
+        }
+
+        debugger
+        removeOuterParentheses('(()())(())');
+    })();
+</script>
 </body>
 </html>
