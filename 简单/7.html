@@ -535,18 +535,104 @@
 <script data-msg="1030. 距离顺序排列矩阵单元格">
     (() => {
         function allCellsDistOrder(R, C, r0, c0){
-            const aa = [
-                [0, 0], [0, 1],
-                [1, 0], [1, 1],
-                [2, 0], [2, 1],
-            ];
-            const res = [];
-            while (1) {
-            
-            }
 
-        };
+        }
+
+        const res = allCellsDistOrder(3, 5, 2, 3);
+
+    })();
+</script>
+<p>1037. 有效的回旋镖</p>
+<script data-msg="1037. 有效的回旋镖">
+    (() => {
+        function isBoomerang(points){
+            const a = points[0];
+            const b = points[1];
+            const c = points[2];
+
+            const k1 = (a[0] - b[0]) / (a[1] - b[1]);
+            const k2 = (a[0] - c[0]) / (a[1] - c[1]);
+            //  重合
+            if (k1 === k2) {
+                return false;
+            }
+            //  重复
+            if (isNaN(k1) || isNaN(k2)) {
+                return false;
+            }
+            //  垂直
+            if (Math.abs(k1) === Infinity && Math.abs(k2) === Infinity) {
+                return false;
+            }
+            return true;
+        }
+
+        isBoomerang([[1, 1], [2, 3], [3, 2]]);
+
+    })();
+</script>
+<p>1042. 不邻接植花</p>
+<script data-msg="1042. 不邻接植花">
+    (() => {
+        function gardenNoAdj(N, paths){
+            const map = {};
+            for (let i = 0; i < paths.length; i++) {
+                const item = paths[i];
+                const x = item[0];
+                const y = item[1];
+                map[x] = map[x] || [];
+                map[y] = map[y] || [];
+                const xIndex = map[x].indexOf(y);
+                if (xIndex === -1) {
+                    map[x].push(y);
+                }
+                const yIndex = map[y].indexOf(x);
+                if (yIndex === -1) {
+                    map[y].push(x);
+                }
+            }
+            const res = new Array(N);
+            //  最低是1
+            let kind = 1;
+            for (let i = 0; i < N; i++) {
+                //  1对应的【3，4】
+                const path = map[i + 1];
+                if (path === undefined) {
+                    res[i] = 1;
+                    continue;
+                }
+                const p = [];
+                for (let j = 0; j < path.length; j++) {
+                    //  实际种植的花的种类
+                    const f = res[path[j] - 1];
+                    if (f !== undefined) {
+                        p.push(f);
+                    }
+                }
+                p.sort((a, b) => a - b);
+                for (let j = 0; j < p.length; j++) {
+                    if (kind !== p[j]) {
+                        continue;
+                    }
+                    kind++;
+                }
+                res[i] = kind;
+                kind = 1;
+            }
+            return res;
+        }
+
+        const res = gardenNoAdj(5, [[4, 1], [4, 2], [4, 3], [2, 5], [1, 2], [1, 5]]);
+        console.log(res);
+        //  [1, 2, 1, 3, 3]
+        //  [1, 2, 1, 2, 3]     //  我的
     })();
 </script>
 </body>
 </html>
+
+
+
+
+
+
