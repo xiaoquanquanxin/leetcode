@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>1064-1228</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+<p>1071. 字符串的最大公因子</p>
+<script data-msg="1071. 字符串的最大公因子">
+    (() => {
+        function gcdOfStrings(str1, str2){
+            //  1。求最大公约数
+            //  2。如果最大公约数不符合，则'';
+            if (str1.length !== str2.length) {
+                if (str2.length > str1.length) {
+                    let c = str2;
+                    str2 = str1;
+                    str1 = c;
+                }
+                str1 = str1.slice(str2.length);
+                return gcdOfStrings(str1, str2);
+            }
+            if (str1 === str2) {
+                return str1;
+            }
+            return '';
+        }
+
+        const str = gcdOfStrings('ABABAB', 'ABAB');
+    })();
+</script>
+<p>1078. Bigram 分词</p>
+<script data-msg="1078. Bigram 分词">
+    (() => {
+        function findOcurrences(text, first, second){
+            let arr = text.split(' ');
+            let res = [];
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i] === first && arr[i + 1] === second && i + 2 <= arr.length - 1) {
+                    res.push(arr[i + 2]);
+                }
+            }
+            return res;
+//
+//            const map = { first, second };
+//            const arr = text.split(' ');
+//            const res = [];
+//            for (let i = 2; i < arr.length; i++) {
+//                const _first = arr[i - 2];
+//                const _second = arr[i - 1];
+//                const _third = arr[i];
+//                if (_first === map.first && _second === map.second && map[_third] === undefined) {
+//                    res.push(_third);
+//                }
+//            }
+//            return res;
+        }
+
+        const res = findOcurrences('we will we will rock you', 'we', 'will');
+
+    })();
+</script>
+<p>1089. 复写零</p>
+<script data-msg="1089. 复写零">
+    (() => {
+        function duplicateZeros(arr){
+            const len = arr.length;
+            for (let i = 0; i < len - 1; i++) {
+                if (arr[i] === 0) {
+                    arr.splice(i, 0, 0);
+                    i++;
+                }
+            }
+            arr.length = len;
+        }
+
+    })();
+</script>
+<p>1103. 分糖果 II</p>
+<script data-msg="1103. 分糖果 II">
+    (() => {
+        //  糖果，人数
+        function distributeCandies(candies, num_people){
+            //  每层需要的糖果
+            let current = getArithmeticProgression(1, num_people, num_people);
+            //  剩余的糖果
+            let resCandiesNum = candies - current;
+            //  循环了层数
+            let n = 1;
+            //  只要剩余的糖果>上一次分的糖果，就能继续分
+            while (resCandiesNum > current) {
+                n++;
+                //  循环了第一层
+                current = getArithmeticProgression(1 + n * num_people, (n + 1) * num_people, num_people);
+                resCandiesNum -= current;
+            }
+            if (resCandiesNum <= 0) {
+                resCandiesNum += current;
+                n--;
+            }
+            n = Math.max(0, n);
+            const arr = [];
+            for (let i = 0; i < num_people; i++) {
+                let _n = n;
+                let sum = 0;
+                while (_n--) {
+                    sum += num_people * _n;
+                }
+                if (resCandiesNum === 0) {
+                    arr.push(sum + 1);
+                } else {
+                    //  当前应该+的值
+                    const current = num_people * n + i + 1;
+                    if (resCandiesNum > current) {
+                        resCandiesNum -= current;
+                        arr.push(sum + current);
+                    } else {
+                        arr.push(sum + resCandiesNum);
+                        resCandiesNum = 0;
+                    }
+                }
+            }
+
+            return arr;
+        }
+
+        //  等差数列求和
+        function getArithmeticProgression(f, l, n){
+            return (f + l) * n / 2;
+        }
+
+        const res = distributeCandies(10, 3);
+        console.log(res);
+    })();
+</script>
+</body>
+</html>
+
+
+
+
+
+

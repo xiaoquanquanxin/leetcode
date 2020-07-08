@@ -659,22 +659,38 @@
 <script data-msg="1047. 删除字符串中的所有相邻重复项">
     (() => {
         function removeDuplicates(str){
-            str = str.split('');
-            for (let i = 1; i < str.length;) {
-                let prev = str[i - 1];
-                let cur = str[i];
-                if (prev === cur) {
-                    str.splice(i - 1, 2);
-                    i = Math.max(i - 2, 1);
-                } else {
-                    i++;
+            const stack = [];
+            for (let key of str) {
+                const prev = stack.pop();
+                if (key === prev) {
+                    continue;
                 }
+                stack.push(prev);
+                stack.push(key);
             }
-            return str.join('');
+            return stack.join('');
         }
 
         const res = removeDuplicates('abbaca');
-        console.log(res);
+    })();
+</script>
+<p>1051. 高度检查器</p>
+<script data-msg="1051. 高度检查器">
+    (() => {
+        function heightChecker(heights){
+            const _heights = [...heights];
+            heights.sort((a, b) => a - b);
+            let sum = 0;
+            for (let i = 0; i < heights.length; i++) {
+                if (heights[i] !== _heights[i]) {
+                    sum++;
+                }
+            }
+            return sum;
+        }
+
+        const res = heightChecker([1, 1, 4, 2, 1, 3]);
+//        console.log(res);
     })();
 </script>
 </body>
