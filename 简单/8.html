@@ -85,46 +85,36 @@
     (() => {
         //  糖果，人数
         function distributeCandies(candies, num_people){
-            //  每层需要的糖果
-            let current = getArithmeticProgression(1, num_people, num_people);
-            //  剩余的糖果
-            let resCandiesNum = candies - current;
-            //  循环了层数
-            let n = 1;
-            //  只要剩余的糖果>上一次分的糖果，就能继续分
-            while (resCandiesNum > current) {
-                n++;
-                //  循环了第一层
-                current = getArithmeticProgression(1 + n * num_people, (n + 1) * num_people, num_people);
-                resCandiesNum -= current;
+            const arr = new Array(num_people).fill(0);
+            let currentRowFirstNum = 1;
+            //  完整的层数
+            let row = 0;
+            //  第n行的和
+            let currentRow = getArithmeticProgression(currentRowFirstNum, num_people, num_people);
+            while (candies > currentRow) {
+                candies -= currentRow;
+                row++;
+                currentRowFirstNum += num_people;
+                currentRow = getArithmeticProgression(currentRowFirstNum, num_people + currentRowFirstNum - 1, num_people);
             }
-            if (resCandiesNum <= 0) {
-                resCandiesNum += current;
-                n--;
-            }
-            n = Math.max(0, n);
-            const arr = [];
+            //  得到完整的糖果的
             for (let i = 0; i < num_people; i++) {
-                let _n = n;
-                let sum = 0;
-                while (_n--) {
-                    sum += num_people * _n;
-                }
-                if (resCandiesNum === 0) {
-                    arr.push(sum + 1);
+                arr[i] = getArithmeticProgression((i + 1), (i + 1) + (row - 1) * num_people, row);
+            }
+            //  剩余的糖果
+//            console.log(candies);
+            //  当前第一个
+//            console.log(currentRowFirstNum);
+            for (let i = 0; i < num_people; i++) {
+                if (candies > currentRowFirstNum) {
+                    arr[i] += currentRowFirstNum;
+                    candies -= currentRowFirstNum;
+                    currentRowFirstNum++;
                 } else {
-                    //  当前应该+的值
-                    const current = num_people * n + i + 1;
-                    if (resCandiesNum > current) {
-                        resCandiesNum -= current;
-                        arr.push(sum + current);
-                    } else {
-                        arr.push(sum + resCandiesNum);
-                        resCandiesNum = 0;
-                    }
+                    arr[i] += candies;
+                    break;
                 }
             }
-
             return arr;
         }
 
@@ -133,8 +123,73 @@
             return (f + l) * n / 2;
         }
 
-        const res = distributeCandies(10, 3);
-        console.log(res);
+        const res = distributeCandies(60, 4);
+        //  1,2,3,4 10
+        //  5,6,7,8 26
+        //  9,10,
+//        console.log(res);
+    })();
+</script>
+<p>1108. IP 地址无效化</p>
+<script data-msg="1108. IP 地址无效化">
+    (() => {
+        function defangIPaddr(address){
+            for (let i = 0; i < address.length; i++) {
+                if (address[i] === '.') {
+                    address = address.slice(0, i) + '[.]' + address.slice(i + 1);
+                    i++;
+                }
+            }
+            return address;
+        }
+
+        defangIPaddr('12.32.43.43');
+    })();
+</script>
+<p>1122. 数组的相对排序</p>
+<script data-msg="1122. 数组的相对排序">
+    (() => {
+        function relativeSortArray(arr1, arr2){
+            const arr = [];
+            for (let value in arr2) {
+                const item = arr2[value];
+                let index = arr1.indexOf(item);
+                while (index !== -1) {
+                    arr.push(item);
+                    arr1.splice(index, 1);
+                    index = arr1.indexOf(item);
+                }
+            }
+            return arr.concat(arr1.sort((a, b) => a - b));
+        }
+
+        relativeSortArray([2, 3, 1, 3, 2, 4, 6, 7, 9, 2, 19], [2, 1, 4, 3, 9, 6]);
+    })();
+</script>
+<p>1128. 等价多米诺骨牌对的数量</p>
+<script data-msg="1128. 等价多米诺骨牌对的数量">
+    (() => {
+        function numEquivDominoPairs(dominoes){
+            const map = {};
+            for (let i = 0; i < dominoes.length; i++) {
+                dominoes[i] = JSON.stringify(dominoes[i].sort());
+                if (map[dominoes[i]] === undefined) {
+                    map[dominoes[i]] = 0;
+                } else {
+                    map[dominoes[i]]++;
+                }
+            }
+            let sum = 0;
+            for (let key in map) {
+                sum += getValue(1, map[key], map[key]);
+            }
+            return sum;
+        }
+
+        function getValue(f, l, n){
+            return (f + l) * n / 2;
+        }
+        numEquivDominoPairs([[1, 2], [2, 1], [3, 4], [5, 6]]);
     })();
 </script>
 </body>
