@@ -189,7 +189,50 @@
         function getValue(f, l, n){
             return (f + l) * n / 2;
         }
+
         numEquivDominoPairs([[1, 2], [2, 1], [3, 4], [5, 6]]);
+    })();
+</script>
+<p>1137. 第 N 个泰波那契数</p>
+<script data-msg="1137. 第 N 个泰波那契数">
+    (() => {
+        function tribonacci(n){
+
+            if (n === 0) {
+                return 0;
+            }
+            return fn(n);
+        }
+
+        function fn(n, b, c, t){
+            b = b || 0;
+            c = c || 1;
+            t = t || 1;
+            if (n <= 2) {
+                return t;
+            }
+            return fn(n - 1, c, t, c + t + b);
+        }
+
+        //  0,1,1,
+        //  1,1,2,
+        //  1,2,4,
+        //  2,4,7
+
+        function tribonacci(n){
+            if (n < 2) { return n;}
+            let a = 0;
+            let b = 1;
+            let c = 1;
+            for (let i = 0; i < n; i++) {
+                [a, b, c] = [b, c, a + b + c];
+            }
+            return a;
+        }
+
+        for (let i = 0; i < 26; i++) {
+            console.log(i, tribonacci(i));
+        }
     })();
 </script>
 </body>
