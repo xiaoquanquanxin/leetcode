@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>1184-1422</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+<p>1184. 公交站间的距离</p>
+<script data-msg="1184. 公交站间的距离">
+    (() => {
+        function distanceBetweenBusStops(distance, start, destination){
+            if (destination < start) {
+                start = start + destination;
+                destination = start - destination;
+                start = start - destination;
+            }
+            //  正向流程
+            let z = 0;
+            for (let i = start; i < destination; i++) {
+                z += distance[i];
+            }
+            let len = distance.length;
+            distance = distance.concat(distance);
+            let f = 0;
+            for (let i = destination; i < start + len; i++) {
+                f += distance[i];
+            }
+            return Math.min(f, z);
+        }
+
+        distanceBetweenBusStops([1, 2, 3, 4], 0, 1);
+
+        distanceBetweenBusStops([7, 10, 1, 12, 11, 14, 5, 0], 7, 2);
+
+    })();
+</script>
+<p>1185. 一周中的第几天</p>
+<script data-msg="1185. 一周中的第几天">
+    (() => {
+        function dayOfTheWeek(day, month, year){
+            return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date(year, month - 1, day).getDay()];
+        }
+
+    })();
+</script>
+<p>1189. “气球” 的最大数量</p>
+<script data-msg="1189. “气球” 的最大数量">
+    (() => {
+        function maxNumberOfBalloons(text){
+            if (text.length < 7) {
+                return 0;
+            }
+            const dict = { b: 0, a: 0, l: 0, o: 0, n: 0 };
+            for (let value of text) {
+                if (dict[value] === undefined) {
+                    continue;
+                }
+                dict[value]++;
+            }
+            return Math.min.apply(null, [dict.b, dict.a, dict.l / 2, dict.o / 2, dict.n])|0;
+        }
+    })();
+</script>
+</body>
+</html>
+
+
+
+
+
+

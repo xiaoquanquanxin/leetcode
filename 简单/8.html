@@ -196,6 +196,8 @@
 <p>1137. 第 N 个泰波那契数</p>
 <script data-msg="1137. 第 N 个泰波那契数">
     (() => {
+        return;
+
         function tribonacci(n){
 
             if (n === 0) {
@@ -235,6 +237,97 @@
         }
     })();
 </script>
+<p>1154. 一年中的第几天</p>
+<script data-msg="1154. 一年中的第几天">
+    (() => {
+        function dayOfYear(date){
+            const firstDay = new Date(date.slice(0, 4) + '/01/01').getTime();
+            date = new Date(date).getTime();
+            const diff = date - firstDay;
+            return Math.round(diff / 1000 / 60 / 60 / 24) + 1;
+        }
+
+    })();
+</script>
+<p>1160. 拼写单词</p>
+<script data-msg="1160. 拼写单词">
+    (() => {
+        function countCharacters(words, chars){
+            let sum = 0;
+            w:for (let i = 0; i < words.length; i++) {
+                const item = words[i];
+                const wl = item.length;
+                let _chars = chars;
+                for (let j = 0; j < wl; j++) {
+                    const index = _chars.indexOf(item[j]);
+                    if (index === -1) {
+                        continue w;
+                    }
+                    _chars = _chars.slice(0, index) + _chars.slice(index + 1);
+                }
+                sum += wl;
+            }
+            return sum;
+        }
+
+    })();
+</script>
+<p>1170. 比较字符串最小字母出现频次</p>
+<script data-msg="1170. 比较字符串最小字母出现频次">
+    (() => {
+        function numSmallerByFrequency(queries, words){
+            const _q = [];
+            for (let i = 0; i < queries.length; i++) {
+                _q.push(f(queries[i]));
+            }
+            const _w = [];
+            for (let i = 0; i < words.length; i++) {
+                _w.push(f(words[i]));
+            }
+
+            return _q.map(item => {
+                let sum = 0;
+                for (let i = 0; i < _w.length; i++) {
+                    if (_w[i] > item) {
+                        sum++;
+                    }
+                }
+                return sum;
+            });
+        }
+
+        function f(string){
+            let min = Infinity;
+            let sum = 0;
+            for (let i = 0; i < string.length; i++) {
+                const current = string[i].codePointAt(0);
+                if (current > min) {
+                    continue;
+                }
+                if (current < min) {
+                    min = current;
+                    sum = 1;
+                } else {
+                    sum++;
+                }
+            }
+            return sum;
+        }
+
+        const res = numSmallerByFrequency(['cbd'], ['zaaaz']);
+        console.log(res);
+    })();
+</script>
+<p class="red"> 1175. 质数排列</p>
+<script data-msg="1175. 质数排列">
+    (() => {
+        function numPrimeArrangements(n){
+
+        }
+
+    })();
+</script>
+<p></p>
 </body>
 </html>
 
