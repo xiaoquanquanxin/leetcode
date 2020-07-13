@@ -91,6 +91,25 @@
 
     })();
 </script>
+<p class="orange">1207. 独一无二的出现次数</p>
+<script data-msg="1207. 独一无二的出现次数">
+    (() => {
+        function uniqueOccurrences(arr){
+            const map = {};
+            for (let i = 0; i < arr.length; i++) {
+                const item = arr[i];
+                map[item] = map[item] || 0;
+                map[item]++;
+            }
+            console.log(Object.values(map));
+            console.log(Object.keys(map));
+            const values = Object.values(map);
+            return values.length === [...new Set(values)].length;
+        }
+
+        uniqueOccurrences([1, 2, 2, 1, 1, 3]);
+    })();
+</script>
 </body>
 </html>
 
