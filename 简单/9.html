@@ -65,6 +65,32 @@
         }
     })();
 </script>
+<p>1200. 最小绝对差</p>
+<script data-msg="1200. 最小绝对差">
+    (() => {
+        function minimumAbsDifference(arr){
+            arr = arr.sort(((a1, b1) => a1 - b1));
+            let minDiff = Infinity;
+            const res = [];
+            for (let i = 1; i < arr.length; i++) {
+                const current = arr[i];
+                const prev = arr[i - 1];
+                const dif = current - prev;
+                if (minDiff < dif) {
+                    continue;
+                }
+                //  有更小的
+                if (minDiff > dif) {
+                    res.length = 0;
+                    minDiff = dif;
+                }
+                res.push([prev, current]);
+            }
+            return res;
+        }
+
+    })();
+</script>
 </body>
 </html>
 
