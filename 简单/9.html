@@ -253,8 +253,127 @@
         shiftGrid([[1], [2], [3], [4], [7], [6], [5]], 1);
     })();
 </script>
+<p>1266. 访问所有点的最小时间</p>
+<script data-msg="1266. 访问所有点的最小时间">
+    (() => {
+        function minTimeToVisitAllPoints(points){
+            if (points.length < 2) {
+                return 0;
+            }
+            let sum = 0;
+            for (let i = 1; i < points.length; i++) {
+                const prev = points[i - 1];
+                const current = points[i];
+                let diffX = current[0] - prev[0];
+                let diffY = current[1] - prev[1];
+                sum += Math.max.apply(null, [diffY, -diffY, diffX, -diffX]);
+            }
+            return sum;
+        }
+    })();
+</script>
+<p>1275. 找出井字棋的获胜者</p>
+<script data-msg="1275. 找出井字棋的获胜者">
+    (() => {
+        function tictactoe(moves){
+            const AList = [];
+            const BList = [];
+            for (let i = 0; i < moves.length; i++) {
+                if (i % 2) {
+                    BList.push(moves[i]);
+                } else {
+                    AList.push(moves[i]);
+                }
+            }
+            let list = BList;
+            let winner = 'B';
+            if (moves.length % 2) {
+                list = AList;
+                winner = 'A';
+            }
+            if (checkWin(list)) {
+                return winner;
+            } else if (moves.length === 9) {
+                return 'Draw';
+            } else {
+                return 'Pending';
+            }
+        }
+
+        function checkWin(list){
+            if (list.length < 2) {
+                return false;
+            }
+            if (checkRow(list)) {
+                return true;
+            }
+            if (checkCol(list)) {
+                return true;
+            }
+            if (checkCross(list)) {
+                return true;
+            }
+            return false;
+        }
+
+        function checkRow(list){
+            for (let i = 0; i < 3; i++) {
+                //  判断某一行
+                const item = list.filter(item => {
+                    return item[0] === i;
+                });
+                if (item && item.length === 3) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function checkCol(list){
+            for (let i = 0; i < 3; i++) {
+                const item = list.filter(item => {
+                    return item[1] === i;
+                });
+                if (item && item.length === 3) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function checkCross(list){
+            const center = list.filter(item => {
+                return item[0] === 1 && item[1] === 1;
+            });
+            if (!center || !center.length) {
+                return false;
+            }
+            const r = list.filter(item => {
+                return item[0] === item[1];
+            });
+            if (r && r.length === 3) {
+                return true;
+            }
+            const l = list.filter(item => {
+                return Math.abs(item[0] - item[1]) === 2;
+            });
+            if (l && l.length === 2) {
+                return true;
+            }
+            return false;
+        }
+
+        tictactoe([[1, 0], [1, 2], [2, 0], [0, 0], [0, 2]]);
+    })();
+</script>
+<p></p>
 </body>
 </html>
+
+
+
+
+
 
 
 
