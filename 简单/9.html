@@ -366,14 +366,111 @@
         tictactoe([[1, 0], [1, 2], [2, 0], [0, 0], [0, 2]]);
     })();
 </script>
+<p>1281. 整数的各位积和之差</p>
+<script data-msg="1281. 整数的各位积和之差">
+    (() => {
+        function subtractProductAndSum(n){
+            const str = n.toString();
+            if (str.length === 0) {
+                return 0;
+            }
+            let sum = 0;
+            let mul = 1;
+            for (let value of str) {
+                sum += +value;
+                mul *= value;
+            }
+            return mul - sum;
+        }
+
+    })();
+</script>
+<p>1287. 有序数组中出现次数超过25%的元素</p>
+<script data-msg="1287. 有序数组中出现次数超过25%的元素">
+    (() => {
+        function findSpecialInteger(arr){
+            if (arr.length < 4) {
+                return arr[0];
+            }
+            const maxLen = Math.ceil(arr.length / 4);
+            for (let i = 0; i < maxLen; i++) {
+                const item1 = arr[i];
+                const item2 = arr[i + maxLen];
+                const item3 = arr[i + maxLen * 2];
+                const item4 = arr[i + maxLen * 3];
+                if (item1 === item2) {
+                    return item1;
+                }
+                if (item2 === item3) {
+                    return item2;
+                }
+                if (item3 === item4) {
+                    return item3;
+                }
+            }
+        }
+
+    })();
+</script>
+<p>1290. 二进制链表转整数</p>
+<script data-msg="1290. 二进制链表转整数">
+    (() => {
+        /**
+         * Definition for singly-linked list.
+         * function ListNode(val) {
+         *     this.val = val;
+         *     this.next = null;
+         * }
+         */
+        /**
+         * @param {ListNode} head
+         * @return {number}
+         */
+        function getDecimalValue(head){
+            let str = '';
+            let h = head;
+            while (h !== null) {
+                str += h.val;
+                h = h.next;
+            }
+            return parseInt(str, 2);
+        }
+
+    })();
+</script>
+<p>1295. 统计位数为偶数的数字</p>
+<script data-msg="1295. 统计位数为偶数的数字">
+    (() => {
+        function findNumbers(nums){
+            return nums.filter(item => item.toString().length % 2 === 0).length;
+        }
+
+    })();
+</script>
+<p>1299. 将每个元素替换为右侧最大元素</p>
+<script data-msg="1299. 将每个元素替换为右侧最大元素">
+    (() => {
+        function replaceElements(arr){
+            const res = [-1];
+            let max = arr[arr.length - 1];
+            for (let i = arr.length - 2; i >= 0; i--) {
+                const right = arr[i + 1];
+                if (right > max) {
+                    max = right;
+                }
+                res.unshift(max);
+            }
+            return res;
+        }
+
+        replaceElements([17, 18, 5, 4, 6, 1]);
+    })();
+</script>
 <p></p>
 </body>
 </html>
-
-
-
-
-
+给你一个数组 arr ，请你将每个元素用它右边最大的元素替换，如果是最后一个元素，用 -1 替换。
+完成所有替换操作后，请你返回这个数组。
 
 
 
