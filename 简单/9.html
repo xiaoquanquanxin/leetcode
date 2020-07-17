@@ -466,11 +466,113 @@
         replaceElements([17, 18, 5, 4, 6, 1]);
     })();
 </script>
-<p></p>
+<p>1304. 和为零的N个唯一整数</p>
+<script data-msg="1304. 和为零的N个唯一整数">
+    (() => {
+        function sumZero(n){
+            const res = [];
+            let i = 1;
+            //  如果有奇数个
+            if (n % 2) {
+                res.push(0);
+            }
+            while (n > 1) {
+                res.push(-i);
+                res.push(i);
+                i++;
+                n -= 2;
+            }
+            return res;
+        }
+
+    })();
+</script>
+<p>1309. 解码字母到整数映射</p>
+<script data-msg="1309. 解码字母到整数映射">
+    (() => {
+        function freqAlphabets(s){
+            const arr = s.split('#');
+            let res = '';
+            //  只有唯一一段，而且没有任何#
+            for (let i = 0; i < arr.length; i++) {
+                const str = arr[i];
+                if (i === arr.length - 1) {
+                    res += mapBasic(str);
+                    return res;
+                }
+                let more = mapMore(str.slice(-2));
+                if (str.length === 2) {
+                    res += more;
+                } else {
+                    res += mapBasic(str.slice(0, -2)) + more;
+                }
+            }
+            return res;
+        }
+
+        function mapBasic(str){
+            let res = '';
+            for (let s of str) {
+                res += String.fromCodePoint(+s + 96);
+            }
+            return res;
+        }
+
+        function mapMore(num){
+            return String.fromCodePoint(+num + 96);
+        }
+
+        function freqAlphabets(str){
+            let res = '';
+            for (let i = 0; i < str.length; i++) {
+                const item = str[i];
+                if (item === '#') {
+                    continue;
+                }
+                const next = str[i + 2];
+                if (next === '#') {
+                    const right = str[i + 1];
+                    res += String.fromCodePoint(+(item + right) + 96);
+                    i++;
+                    continue;
+                }
+                res += String.fromCodePoint(+item + 96);
+            }
+            return res;
+        }
+
+        function freqAlphabets(str){
+            let res = '';
+            for (let i = str.length - 1; i >= 0; i--) {
+                const item = str[i];
+                if (item === '#') {
+                    res = String.fromCodePoint(+(str[i - 2] + str[i - 1]) + 96) + res;
+                    i -= 2;
+                    continue;
+                }
+                res = String.fromCodePoint(+item + 96) + res;
+            }
+            return res;
+        }
+
+        freqAlphabets('10#11#12');
+    })();
+</script>
+<p>1313. 解压缩编码列表</p>
+<script data-msg="1313. 解压缩编码列表">
+    (() => {
+        function decompressRLElist(nums){
+            const res = [];
+            for (let i = 0; i < nums.length; i += 2) {
+                res.push(...new Array(nums[i]).fill(nums[i + 1]));
+            }
+            return res;
+        }
+
+    })();
+</script>
 </body>
 </html>
-给你一个数组 arr ，请你将每个元素用它右边最大的元素替换，如果是最后一个元素，用 -1 替换。
-完成所有替换操作后，请你返回这个数组。
 
 
 
