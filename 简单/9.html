@@ -571,6 +571,98 @@
 
     })();
 </script>
+<p>1317. 将整数转换为两个无零整数的和</p>
+<script data-msg="1317. 将整数转换为两个无零整数的和">
+    (() => {
+        return;
+
+        function getNoZeroIntegers(n){
+            if (n < 50) {
+                for (let i = 1; i < n; i++) {
+                    if (String(i).indexOf('0') === -1 && String(n - i).indexOf('0') === -1) {
+                        return [i, n - i];
+                    }
+                }
+            }
+            let f = 1;
+            let r = n - f;
+            let index = n - f;
+            while (String(f).indexOf(0) > -1 || String(r).indexOf(0) > -1) {
+                f = n - index;
+                r = n - f;
+                index = Math.floor(index / 2);
+                console.log(f);
+            }
+            return [f, r];
+        }
+
+        getNoZeroIntegers(101111);
+
+    })();
+</script>
+<p>1323. 6 和 9 组成的最大数字</p>
+<script data-msg="1323. 6 和 9 组成的最大数字">
+    (() => {
+        function maximum69Number(num){
+            const str = num.toString();
+            const index = str.indexOf(6);
+            if (index === -1) {
+                return num;
+            }
+            return str.slice(0, index) + '9' + str.slice(index + 1);
+        }
+
+    })();
+</script>
+<p>1331. 数组序号转换</p>
+<script data-msg="1331. 数组序号转换">
+    (() => {
+        function arrayRankTransform(arr){
+            //  原本
+            const origin = arr.slice();
+            //  去重复
+            arr = [...new Set(arr)];
+            //  排序
+            arr.sort((a, b) => a - b);
+            const map = {};
+            for (let i = 0; i < arr.length; i++) {
+                map[arr[i]] = i + 1;
+            }
+            return origin.map(item => map[item]);
+        }
+    })();
+</script>
+<p>1332. 删除回文子序列</p>
+<script data-msg="1332. 删除回文子序列">
+    (() => {
+        function removePalindromeSub(s){
+            if (s.length === 0) {
+                return 0;
+            }
+            //  判断是不是会问
+            if (isPalindrome(s)) {
+                return 1;
+            }
+            if (s.indexOf('a') === -1 || s.indexOf('b') === -1) {
+                return 1;
+            }
+            return 2;
+        }
+
+        function isPalindrome(str){
+            const middle = Math.floor(str.length / 2);
+            for (let i = 0; i < middle; i++) {
+                if (str[i] !== str[str.length - i - 1]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        removePalindromeSub('ababa');
+    })();
+</script>
+<p></p>
 </body>
 </html>
 
