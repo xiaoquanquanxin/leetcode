@@ -712,10 +712,186 @@
             }
             return false;
         }
+
         checkIfExist([10, 2, 5, 3]);
     })();
 </script>
+<p>1351. 统计有序矩阵中的负数</p>
+<script data-msg="1351. 统计有序矩阵中的负数">
+    (() => {
+        function countNegatives(grid){
+            let sum = 0;
+            let rowLen = grid.length;
+            let colLen = grid[0].length;
+            let minRow = 0;
+            for (let i = 0; i < rowLen; i++) {
+                const row = grid[i];
+                //  如果这一行的第一个就<0
+                if (row[0] < 0) {
+                    minRow = rowLen - i;
+                    break;
+                }
+                for (let j = 0; j < colLen; j++) {
+                    if (row[j] < 0) {
+                        sum += colLen - j;
+                        break;
+                    }
+                }
+            }
+            sum += minRow * colLen;
+            return sum;
+        }
+    })();
+</script>
+<p class="orange">1356. 根据数字二进制下 1 的数目排序</p>
+<script data-msg="1356. 根据数字二进制下 1 的数目排序">
+    (() => {
+        function sortByBits(arr){
+            const map = {};
+            for (let i = 0; i < arr.length; i++) {
+                const item = Array.prototype.filter.call(arr[i].toString(2), (item) => item === '1').length;
+                map[item] = map[item] || [];
+                map[item].push(arr[i]);
+            }
+            const res = [];
+            Object.keys(map).sort((a, b) => a - b).forEach(item => {
+                res.push(...map[item].sort((a, b) => a - b));
+            });
+            return res;
+        }
 
+        function sortByBits(arr){
+            return arr.sort(((a, b) => {
+                const fna = fn(a);
+                const fnb = fn(b);
+                if (fna === fnb) {
+                    return a - b;
+                }
+                return fna - fnb;
+            }));
+        }
+
+        function fn(item){
+            let sum = 0;
+            while (item > 0) {
+                const res = item % 2;
+                sum += res;
+                item -= res;
+                item /= 2;
+            }
+            return sum;
+        }
+
+        sortByBits([1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1]);
+
+    })();
+</script>
+<p>1360. 日期之间隔几天</p>
+<script data-msg="1360. 日期之间隔几天">
+    (() => {
+        function daysBetweenDates(date1, date2){
+            const difTime = new Date(date1).getTime() - new Date(date2).getTime();
+            const res = difTime / 3600 / 24 / 1000;
+            return Math.abs(res);
+        }
+
+    })();
+</script>
+<p class="orange">1365. 有多少小于当前数字的数字</p>
+<script data-msg="1365. 有多少小于当前数字的数字">
+    (() => {
+        function smallerNumbersThanCurrent(nums){
+            const _nums = nums.slice().sort((a, b) => a - b);
+            return nums.map(item => _nums.indexOf(item));
+        }
+
+        function smallerNumbersThanCurrent(nums){
+            const arr = new Array(101).fill(0);
+            //  有多少个某个数
+            nums.forEach(item => {
+                arr[item]++;
+            });
+            //  求一遍任意index下，<=arr[index]的数的和
+            for (let i = 1; i < arr.length; i++) {
+                arr[i] = arr[i - 1] + arr[i];
+            }
+
+            return nums.map(item => {
+                return arr[item - 1] || 0;
+            });
+        }
+
+        smallerNumbersThanCurrent([5, 0, 10, 0, 10, 6]);
+    })();
+</script>
+<p>1370. 上升下降字符串</p>
+<script data-msg="1370. 上升下降字符串">
+    (() => {
+        function sortString(s){
+            //  桶
+            const arr = new Array(26).fill(0);
+            for (let value of s) {
+                arr[value.codePointAt(0) - 97]++;
+            }
+            const res = [];
+            while (res.length < s.length) {
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i] === 0) {
+                        continue;
+                    }
+                    res.push(String.fromCodePoint(97 + i));
+                    arr[i]--;
+                }
+                for (let i = arr.length - 1; i >= 0; i--) {
+                    if (arr[i] === 0) {
+                        continue;
+                    }
+                    res.push(String.fromCodePoint(97 + i));
+                    arr[i]--;
+                }
+            }
+            return res.join('');
+        }
+
+    })();
+</script>
+<p>1374. 生成每种字符都是奇数个的字符串</p>
+<script data-msg="1374. 生成每种字符都是奇数个的字符串">
+    (() => {
+        function generateTheString(n){
+            return n % 2 ? 'a'.repeat(n) : 'a'.repeat(n - 1) + 'b';
+
+        }
+
+    })();
+</script>
+<p>1380. 矩阵中的幸运数</p>
+<script data-msg="1380. 矩阵中的幸运数">
+    (() => {
+        function luckyNumbers(matrix){
+            let res = [];
+            for (let i = 0; i < matrix.length; i++) {
+                const row = matrix[i];
+                const min = Math.min.apply(null, row);
+//                rowList[min] = 1;
+                //  第几列
+                const index = row.indexOf(min);
+
+                const cols = [];
+                for (let j = 0; j < matrix.length; j++) {
+                    cols.push(matrix[j][index]);
+                }
+                const max = Math.max.apply(null, cols);
+                if (min === max) {
+                    res.push(min);
+                }
+            }
+            return res;
+        }
+        
+        luckyNumbers([[3, 7, 8], [9, 11, 13], [15, 16, 17]]);
+    })();
+</script>
 </body>
 </html>
 
