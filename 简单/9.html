@@ -888,8 +888,75 @@
             }
             return res;
         }
-        
+
         luckyNumbers([[3, 7, 8], [9, 11, 13], [15, 16, 17]]);
+    })();
+</script>
+<p class="red">1385. 两个数组间的距离值</p>
+<script data-msg="1385. 两个数组间的距离值">
+    (() => {
+        return;
+
+        function findTheDistanceValue(arr1, arr2, d){
+            arr1.sort((a, b) => a - b);
+            arr2.sort((a, b) => a - b);
+            let i = 0;
+            let j = 0;
+            const arr = [];
+            while (arr1.length > i || arr2.length > j) {
+                const current1 = arr1[i];
+                const current2 = arr2[j];
+                const prev = arr2[j - 1] === undefined ? -Infinity : arr2[j - 1];
+                if (isValidate(prev, current1, current2, d)) {
+                    arr.push(current1);
+                }
+                if (current1 < current2) {
+                    i++;
+                } else if (current1 > current2) {
+                    j++;
+                } else {
+                    i++;
+                }
+            }
+            console.log(arr);
+            return arr.length;
+        }
+
+        function isValidate(a, b, c, d){
+            return b - a > d && c - b > d;
+        }
+
+        const res = findTheDistanceValue(
+            [4, 5, 8],
+            [10, 9, 1, 8],
+            2
+        );
+        console.log(res);
+    })();
+</script>
+<p>1389. 按既定顺序创建目标数组</p>
+<script data-msg="1389. 按既定顺序创建目标数组">
+    (() => {
+        function createTargetArray(nums, index){
+            const res = [];
+            for (let i = 0; i < index.length; i++) {
+                res.splice(index[i], 0, nums[i]);
+            }
+            return res;
+        }
+
+        debugger
+        createTargetArray([0, 1, 2, 3, 4], [0, 1, 2, 2, 1]);
+
+    })();
+</script>
+<p>1394. 找出数组中的幸运数</p>
+<script data-msg="1394. 找出数组中的幸运数">
+    (() => {
+        function findLucky(arr){
+
+        }
+        
     })();
 </script>
 </body>
