@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>1431-剑指 Offer 30</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+<p>1431. 拥有最多糖果的孩子</p>
+<script data-msg="1431. 拥有最多糖果的孩子">
+    (() => {
+        function kidsWithCandies(candies, extraCandies){
+            const max = Math.max.apply(null, candies);
+            const res = [];
+            for (let i = 0; i < candies.length; i++) {
+                res.push(candies[i] + extraCandies >= max);
+            }
+            return res;
+        }
+
+    })();
+</script>
+<p>1436. 旅行终点站</p>
+<script data-msg="1436. 旅行终点站">
+    (() => {
+        function destCity(paths){
+            //  起点的map
+            const map = {};
+            for (let value of paths) {
+                map[value[0]] = true;
+            }
+            for (let value of paths) {
+                if (map[value[1]] === undefined) {
+                    return value[1];
+                }
+            }
+        }
+
+        destCity([['London', 'New York'], ['New York', 'Lima'], ['Lima', 'Sao Paulo']]);
+    })();
+</script>
+<p>1441. 用栈操作构建数组</p>
+<script data-msg="1441. 用栈操作构建数组">
+    (() => {
+        function buildArray(target, n){
+            const res = [];
+            let index = 0;
+            for (let i = 1; ; i++) {
+                const tar = target[index];
+                if (tar === undefined) {
+                    return res;
+                }
+                res.push('Push');
+                //  如果当前的i和第target的元素相同
+                if (tar === i) {
+                    index++;
+                    continue;
+                }
+                res.push('Pop');
+            }
+        }
+    })();
+</script>
+<p>1446. 连续字符</p>
+<script data-msg="1446. 连续字符">
+    (() => {
+        function maxPower(s){
+            let max = 1;
+            let pre = '';
+            let sum = 0;
+            for (let value of s) {
+                if (value === pre) {
+                    sum++;
+                    if (sum > max) {
+                        max = sum;
+                    }
+                } else {
+                    pre = value;
+                    sum = 1;
+                }
+            }
+            return max;
+        }
+
+    })();
+</script>
+<p>1450. 在既定时间做作业的学生人数</p>
+<script data-msg="1450. 在既定时间做作业的学生人数">
+    (()=>{
+    
+    })()
+</script>
+</body>
+</html>
+
+
+
+
+
+
