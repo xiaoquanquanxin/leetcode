@@ -43,7 +43,7 @@
     })();
 </script>
 <p>1441. 用栈操作构建数组</p>
-<script data-msg="1441. 用栈操作构建数组">
+<script data-msg="1441. 用栈操作构建 数组">
     (() => {
         function buildArray(target, n){
             const res = [];
@@ -89,9 +89,182 @@
 </script>
 <p>1450. 在既定时间做作业的学生人数</p>
 <script data-msg="1450. 在既定时间做作业的学生人数">
-    (()=>{
-    
-    })()
+    (() => {
+        function busyStudent(startTime, endTime, queryTime){
+            let len = startTime.length;
+            let sum = 0;
+            for (let i = 0; i < len; i++) {
+                if (startTime[i] <= queryTime && endTime[i] >= queryTime) {
+                    sum++;
+                }
+            }
+            return sum;
+        }
+
+    })();
+</script>
+<p>1455. 检查单词是否为句中其他单词的前缀</p>
+<script data-msg="1455. 检查单词是否为句中其他单词的前缀">
+    (() => {
+        function isPrefixOfWord(sentence, searchWord){
+            const arr = sentence.split(' ');
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].indexOf(searchWord) === 0) {
+                    return i + 1;
+                }
+            }
+            return -1;
+        }
+
+    })();
+</script>
+<p>1460. 通过翻转子数组使两个数组相等</p>
+<script data-msg="1460. 通过翻转子数组使两个数组相等">
+    (() => {
+        function canBeEqual(target, arr){
+            if (target.length !== arr.length) {
+                return false;
+            }
+            const map = {};
+            for (let value of target) {
+                map[value] = map[value] || 0;
+                map[value]++;
+            }
+            for (let value of arr) {
+                const currentValue = map[value];
+                if (map[value] === undefined || currentValue === 0) {
+                    return false;
+                }
+                map[value]--;
+            }
+            return true;
+        }
+
+    })();
+</script>
+<p>1464. 数组中两元素的最大乘积</p>
+<script data-msg="1464. 数组中两元素的最大乘积">
+    (() => {
+        function maxProduct(nums){
+            let max = 0;
+            let second = 0;
+            for (let value of nums) {
+                if (value >= max) {
+                    second = max;
+                    max = value;
+                } else if (value >= second) {
+                    second = value;
+                }
+            }
+            return (second - 1) * (max - 1);
+        }
+
+    })();
+</script>
+<p>1470. 重新排列数组</p>
+<script data-msg="1470. 重新排列数组">
+    (() => {
+        function shuffle(nums, n){
+            const arr = [];
+            const len = nums.length / 2;
+            for (let i = 0; i < len; i++) {
+                arr.push(nums[i]);
+                arr.push(nums[i + len]);
+            }
+            return arr;
+        }
+
+    })();
+</script>
+<p>1475. 商品折扣后的最终价格</p>
+<script data-msg="1475. 商品折扣后的最终价格">
+    (() => {
+        function finalPrices(prices){
+            const arr = [];
+            let len = prices.length - 1;
+            for (let i = 0; i < len; i++) {
+                const slice = prices.slice(i + 1);
+                let index = 0;
+                const current = prices[i];
+                let isPush = false;
+                while (index < slice.length) {
+                    let min = slice[index];
+                    if (min <= current) {
+                        isPush = true;
+                        arr.push(current - min);
+                        break;
+                    }
+                    index++;
+                }
+                if (isPush) {
+                    continue;
+                }
+                arr.push(current);
+            }
+            arr.push(prices[len]);
+            return arr;
+        }
+
+    })();
+</script>
+<p>1480. 一维数组的动态和</p>
+<script data-msg="1480. 一维数组的动态和">
+    (() => {
+        function runningSum(nums){
+            let prev = 0;
+            const arr = [];
+            for (let value of nums) {
+                prev += value;
+                arr.push(prev);
+            }
+            return arr;
+        }
+    })();
+</script>
+<p>1486. 数组异或操作</p>
+<script data-msg="1486. 数组异或操作">
+    (() => {
+        function xorOperation(n, start){
+            let res = 0;
+            while (n--) {
+                res ^= n * 2 + start;
+            }
+            return res;
+        }
+
+    })();
+</script>
+<p>1491. 去掉最低工资和最高工资后的工资平均值</p>
+<script data-msg="1491. 去掉最低工资和最高工资后的工资平均值">
+    (() => {
+        function average(salary){
+            const len = salary.length - 2;
+            let sum = 0;
+            let max = salary[0];
+            let min = salary[0];
+            for (let value of salary) {
+                sum += value;
+                if (value > max) {
+                    max = value;
+                }
+                if (value < min) {
+                    min = value;
+                }
+            }
+            sum -= (max + min);
+            return sum / len;
+        }
+
+    })();
+</script>
+<p>1496. 判断路径是否相交</p>
+<script data-msg="1496. 判断路径是否相交">
+    (() => {
+        function isPathCrossing(path){
+
+        }
+        
+    })();
 </script>
 </body>
 </html>
