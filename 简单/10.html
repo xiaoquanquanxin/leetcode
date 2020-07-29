@@ -826,6 +826,48 @@
         }
     })();
 </script>
+<p>剑指 Offer 27. 二叉树的镜像</p>
+<script data-msg="剑指 Offer 27. 二叉树的镜像">
+    (() => {
+        function mirrorTree(root){
+            if (!root) {
+                return root;
+            }
+            let left = mirrorTree(root.left);
+            root.left = mirrorTree(root.right);
+            root.right = left;
+            return root;
+        }
+    })();
+</script>
+<p class="orange">剑指 Offer 28. 对称的二叉树</p>
+<script data-msg="剑指 Offer 28. 对称的二叉树">
+    (() => {
+        function isSymmetric(root, left, right){
+            if (root === null) {
+                return true;
+            }
+            if (left === undefined) {
+                left = root.left;
+            }
+            if (right === undefined) {
+                right = root.right;
+            }
+            //  值一样返回true
+            if (left === null && right === null) {
+                return true;
+            }
+            //  值只有一个null，返回false
+            if (left === null || right === null) {
+                return false;
+            }
+            if ((left && left.val) !== (right && right.val)) {
+                return false;
+            }
+            return isSymmetric(root, left.right, right.left) && isSymmetric(root, left.left, right.right);
+        }
+    })();
+</script>
 <p></p>
 </body>
 </html>
