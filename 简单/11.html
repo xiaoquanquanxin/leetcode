@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>剑指 Offer 28-面试题 10.01</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+<p class="orange">剑指 Offer 28. 对称的二叉树</p>
+<script data-msg="剑指 Offer 28. 对称的二叉树">
+    (() => {
+        function isSymmetric(root, left, right){
+            if (root === null) {
+                return true;
+            }
+            if (left === undefined) {
+                left = root.left;
+            }
+            if (right === undefined) {
+                right = root.right;
+            }
+            //  值一样返回true
+            if (left === null && right === null) {
+                return true;
+            }
+            //  值只有一个null，返回false
+            if (left === null || right === null) {
+                return false;
+            }
+            if ((left && left.val) !== (right && right.val)) {
+                return false;
+            }
+            return isSymmetric(root, left.right, right.left) && isSymmetric(root, left.left, right.right);
+        }
+    })();
+</script>
+<p>剑指 Offer 29. 顺时针打印矩阵</p>
+<script data-msg="剑指 Offer 29. 顺时针打印矩阵">
+    (() => {
+        function spiralOrder(matrix){
+            if (!matrix.length) {
+                return matrix;
+            }
+            //  右，下，左，上
+            const turnList = [1, 2, -1, -2];
+            const rowLen = matrix.length;
+            const colLen = matrix[0].length;
+            const list = [];
+            while (1) {
+                for (let i = 0; i < turnList.length; i++) {
+                    if (list.length === rowLen * colLen) {
+                        return list;
+                    }
+                    switch (turnList[i]) {
+                        case 1:
+                            list.push(...matrix.splice(0, 1)[0]);
+                            break;
+                        case 2:
+                            for (let i = 0; i < matrix.length; i++) {
+                                list.push(matrix[i].splice(-1, 1)[0]);
+                            }
+                            break;
+                        case -1:
+                            list.push(...matrix.splice(-1, 1)[0].reverse());
+                            break;
+                        case -2:
+                            for (let i = matrix.length - 1; i >= 0; i--) {
+                                list.push(matrix[i].splice(0, 1)[0]);
+                            }
+                            break;
+                    }
+                }
+            }
+            return list;
+        }
+
+        const res = spiralOrder([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+    })();
+</script>
+<p class="red">剑指 Offer 30. 包含min函数的栈</p>
+<script data-msg="剑指 Offer 30. 包含min函数的栈">
+    (() => {
+        function MinStack(){
+            this.list = [];
+            this.sortList = [];
+        }
+
+        MinStack.prototype.push = function (x){
+            this.list.push(x);
+            if (this.sortList[this.sortList.length - 1] >= x || this.sortList.length === 0) {
+                this.sortList.push(x);
+            }
+        };
+        MinStack.prototype.pop = function (){
+            const item = this.list.pop();
+            if (this.sortList[this.sortList.length - 1] === item) {
+                this.sortList.pop();
+            }
+            return item;
+        };
+        MinStack.prototype.min = function (){
+            return this.sortList[this.sortList.length - 1];
+        };
+        MinStack.prototype.top = function (){
+            return this.list[this.list.length - 1];
+        };
+        const minStack = new MinStack();
+        minStack.push(-2);
+        minStack.push(0);
+        minStack.push(-3);
+        minStack.min();
+        minStack.pop();
+        minStack.top();
+        minStack.min();
+    })();
+</script>
+<p>剑指 Offer 32 - II. 从上到下打印二叉树 II</p>
+<script data-msg="剑指 Offer 32 - II. 从上到下打印二叉树 II">
+    (() => {
+        function levelOrder(root){
+            const arr = [];
+            if (!root) {
+                return arr;
+            }
+            print(arr, root, 0);
+            return arr;
+        }
+
+        function print(arr, node, nodeTier){
+            if (node === null) {
+                return;
+            }
+            arr[nodeTier] = arr[nodeTier] || [];
+            arr[nodeTier].push(node.val);
+            print(arr, node.left, nodeTier + 1);
+            print(arr, node.right, nodeTier + 1);
+        }
+    })();
+</script>
+</body>
+</html>
+<script>
+    (() => {
+        return;
+        const jichugongjili = 4042 + 300 + 5300;
+        console.log('基础攻击力', jichugongjili);
+        const changzhuyisu = (19.8 * 2 + 14.9 + 67.5) / 100;
+        console.log('常驻移速', changzhuyisu);
+        const weidagongjili = 1.34;
+        const kauichegongjili = (jichugongjili * (1 + changzhuyisu * 1.23) * weidagongjili).toFixed(2);
+        console.log('快车攻击力', kauichegongjili);
+        const yumiyijineng = 1.45;
+        const yumierjinenggongjili = Math.min((kauichegongjili * (1 + changzhuyisu) * yumiyijineng), 80000);
+        console.log('玉米二技能攻击力', yumierjinenggongjili);
+        const yumierjineng = (yumierjinenggongjili / 100 * 0.046).toFixed(2);
+        console.log('玉米二技能', yumierjineng);
+        //
+        const zongshanghai = (yumierjineng * kauichegongjili * 4.22).toFixed(2);
+        console.log('总伤害', zongshanghai);
+    })();
+</script>
+
+
+
+
+
+
