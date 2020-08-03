@@ -833,6 +833,151 @@
 
     })();
 </script>
+<p>面试题 01.03. URL化</p>
+<script data-msg="面试题 01.03. URL化">
+    (() => {
+        function replaceSpaces(S, length){
+            return encodeURI(S.slice(0, length));
+        }
+
+        return;
+        //  由一些不转，斜杠不转
+        console.log(escape('http://www.w3school.com.cn'));// http%3A//www.w3school.com.cn
+        console.log(escape('http://www.w3school.com.cn/My first/'));//http%3A//www.w3school.com.cn/My%20first/
+        console.log(escape('?!=()#%&')); // %3F%21%3D%28%29%23%25%26
+        console.log('\n');
+        console.log((encodeURI('http://www.w3school.com.cn'))); //http://www.w3school.com.cn
+        console.log((encodeURI('http://www.w3school.com.cn/My first/'))); // http://www.w3school.com.cn/My%20first/
+        console.log((encodeURI(',/?:@&=+$#'))); // ,/?:@&=+$#
+        console.log('\n');
+        console.log((encodeURIComponent('http://www.w3school.com.cn'))); // http%3A%2F%2Fwww.w3school.com.cn
+        console.log((encodeURIComponent('http://www.w3school.com.cn/p 1/id?=giao'))); // http%3A%2F%2Fwww.w3school.com.cn%2Fp%201%2Fid%3F%3Dgiao
+        console.log((encodeURIComponent(',/?:@&=+$#')));//%2C%2F%3F%3A%40%26%3D%2B%24%23
+
+    })();
+</script>
+<p>面试题 01.04. 回文排列</p>
+<script data-msg="面试题 01.04. 回文排列">
+    (() => {
+        //  第一层，使用map
+        function canPermutePalindrome(s){
+            const map = {};
+            let count = 0;
+            for (let value of s) {
+                if (map[value]) {
+                    delete map[value];
+                    count--;
+                } else {
+                    map[value] = true;
+                    count++;
+                }
+            }
+            return count < 2;
+        }
+
+        //  第二层，使用位运算   ⚠️这个仅用于字母
+        function canPermutePalindrome(s){
+            let mark = 0;
+            for (let value of s) {
+                const index = 1 << value.charCodeAt(0);
+                //  重复了
+                if ((mark&index) !== 0) {
+                    mark = (mark^index);
+                } else {
+                    mark = (mark|index);
+                }
+            }
+            //  完全对称
+            if (mark === 0) {
+                return true;
+            }
+            while (mark > 1) {
+                mark /= 2;
+                if (Math.trunc(mark) !== mark) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        const res = canPermutePalindrome('AaBb//a');
+//        console.log(res);
+    })();
+</script>
+<p>面试题 01.06. 字符串压缩</p>
+<script data-msg="面试题 01.06. 字符串压缩">
+    (() => {
+        function compressString(s){
+            let res = '';
+            let prev = '';
+            let count = '';
+            for (let value of s) {
+                if (value === prev) {
+                    count++;
+                } else {
+                    prev = value;
+                    res += count + value;
+                    count = 1;
+                }
+            }
+            res += count;
+            return res.length >= s.length ? s : res;
+        }
+    })();
+</script>
+<p>面试题 01.09. 字符串轮转</p>
+<script data-msg="面试题 01.09. 字符串轮转">
+    (() => {
+        function isFlipedString(s1, s2){
+            if (s1.length !== s2.length) {
+                return false;
+            }
+            return (s1 + s1).includes(s2);
+        }
+    })();
+</script>
+<p class="red">面试题 02.01. 移除重复节点</p>
+<script data-msg="面试题 02.01. 移除重复节点">
+    (() => {
+        function removeDuplicateNodes(head){
+
+        }
+    })();
+</script>
+<p>面试题 02.02. 返回倒数第 k 个节点</p>
+<script data-msg="面试题 02.02. 返回倒数第 k 个节点">
+    (() => {
+        function kthToLast(head, k){
+            let node = head;
+            let slow = head;
+            while (node) {
+                k--;
+                if (k <= 0) {
+                    slow = slow.next;
+                }
+                node = node.next;
+            }
+            return slow.val;
+        }
+    })();
+</script>
+<p>面试题 02.03. 删除中间节点</p>
+<script data-msg="面试题 02.03. 删除中间节点">
+    (() => {
+        function deleteNode(node){
+            let next = node.next;
+            node.next = next.next;
+            node.val = next.val;
+        }
+
+    })();
+</script>
+<p>面试题 02.06. 回文链表</p>
+<script data-msg="面试题 02.06. 回文链表">
+    (() => {
+
+    })();
+</script>
 </body>
 </html>
 <script>
