@@ -683,29 +683,25 @@
         isStraight([0, 0, 2, 2, 5]);
     })();
 </script>
-<p>剑指 Offer 62. 圆圈中最后剩下的数字</p>
+<p class="red">剑指 Offer 62. 圆圈中最后剩下的数字</p>
 <script data-msg="剑指 Offer 62. 圆圈中最后剩下的数字">
     (() => {
+        return;
+
+        //  我日
         function lastRemaining(n, m){
-            const _n = n;
-            n = [];
-            for (let i = 0; i < _n; i++) {
-                n.push(i);
+            let x = 0;
+            let i = 1;
+            while (i <= n) {
+                x = (x + m) % i;
+                i++;
             }
-            //  删除第index个数
-            let index = m - 1;
-            while (n.length > 1) {
-                index = index % n.length;
-                const value = n.splice(index, 1);
-                console.log(value);
-                index += m - 1;
-            }
-            return n[0];
+            return x;
         }
 
 //        debugger
-        lastRemaining(3, 3);
-
+        const res = lastRemaining(5, 3);
+        console.log(res);
         //  0、1、2、3、4
         //  1
         //  0、1、2、3     4
@@ -717,7 +713,7 @@
         //  3、2、4、1     0
         //  5
         //  4、0、2、3     1
-        
+
         //  0、1、2、3
         //  1
         //  0、1、2       3
@@ -727,7 +723,7 @@
         //  2、3、0       2
         //  4
         //  3、0、2       1
-        
+
         //  0、1、2
         //  1
         //  0、1         2
@@ -735,7 +731,105 @@
         //  1、0         2
         //  3
         //  2、0         1
-        
+
+    })();
+</script>
+<p class="red">剑指 Offer 65. 不用加减乘除做加法</p>
+<script data-msg="剑指 Offer 65. 不用加减乘除做加法">
+    (() => {
+        //  看解题
+        function add(a, b){
+            while (b !== 0) {
+                const c = (a&b) << 1;  // c = 进位
+                a ^= b; // a = 非进位和
+                b = c; // b = 进位
+            }
+            return a;
+        }
+
+        add(1, 2);
+    })();
+</script>
+<p>剑指 Offer 66. 构建乘积数组</p>
+<script data-msg="剑指 Offer 66. 构建乘积数组">
+    (() => {
+        function constructArr(a){
+            if (a.length === 0) {
+                return a;
+            }
+            const b = [];
+
+            for (let i = 0; i < a.length; i++) {
+                let item = a[i - 1];
+                item = item === undefined ? 1 : item;
+                b[i] = item * (b[i - 1] === undefined ? 1 : b[i - 1]);
+            }
+            let sum = 1;
+            for (let i = a.length - 1; i >= 0; i--) {
+                let item = a[i + 1];
+                item = item === undefined ? 1 : item;
+                sum *= item;
+                b[i] = sum * b[i];
+            }
+
+            return b;
+        }
+
+        constructArr([1, 2, 3, 4, 5]);
+
+    })();
+</script>
+<p class="red">面试题 01.01. 判定字符是否唯一</p>
+<script data-msg="面试题 01.01. 判定字符是否唯一">
+    (() => {
+        //  ✅✅✅✅
+        //  按位运算存值，原理相当于字符串存值 '00001' -> '00010'
+        //  按位将1左移几位，就变成了 '01几个零'，这样的二进制数
+        //  移动a位和b位，他们是肯定不会重复的，所以如果mark的值为 '0110' 时，说明分别有过2和1，也就是出现了 c和b
+        //  然后按位与，如果新出来一个c，左移动3位后，是 '0100'，与一下 '0110'就不为 0，说明c重复了
+        /**
+         * @param {string} astr
+         * @return {boolean}
+         */
+        function isUnique(astr){
+            //  用位运算保存
+            let mark = 0;
+            for (let value of astr) {
+                const index = value.charCodeAt(0) - 97;
+                //  左移动几位
+                const left = 1 << index;
+                if ((mark&left) !== 0) {
+                    //  重复
+                    return false;
+                }
+                mark = mark|left;
+            }
+            return true;
+        }
+
+        isUnique('bcdb'.toLowerCase());
+    })();
+</script>
+<p>面试题 01.02. 判定是否互为字符重排</p>
+<script data-msg="面试题 01.02. 判定是否互为字符重排">
+    (() => {
+        function CheckPermutation(s1, s2){
+            if (s1.length !== s2.length) {
+                return false;
+            }
+            const map = {};
+            for (let value of s1) {
+                map[value] = map[value] || 0;
+                map[value]++;
+            }
+            for (let value of s2) {
+                if (map[value] === undefined || map[value] === 0) {
+                    return false;
+                }
+                map[value]--;
+            }
+            return true;
+        }
 
     })();
 </script>
