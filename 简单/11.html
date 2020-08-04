@@ -975,8 +975,149 @@
 <p>面试题 02.06. 回文链表</p>
 <script data-msg="面试题 02.06. 回文链表">
     (() => {
+        function isPalindrome(head){
+            const list = [];
+            while (head) {
+                list.push(head.val);
+                head = head.next;
+            }
+            const len = Math.trunc(list.length / 2) + 1;
+            const len1 = list.length - 1;
+            for (let i = 0; i < len; i++) {
+                if (list[len1 - i] !== list[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    })();
+</script>
+<p>面试题 02.07. 链表相交</p>
+<script data-msg="面试题 02.07. 链表相交">
+    (() => {
+        //  两边循环完了以后就会同时变成null
+        function getIntersectionNode(headA, headB){
+            let nodeA = headA;
+            let nodeB = headB;
+            while (nodeA !== nodeB) {
+                if (nodeA === null) {
+                    nodeA = headB;
+                } else {
+                    nodeA = nodeA.next;
+                }
+                if (nodeB === null) {
+                    nodeB = headA;
+                } else {
+                    nodeB = nodeB.next;
+                }
+            }
+            return nodeA;
+        }
+    })();
+</script>
+<p class="orange">面试题 03.01. 三合一</p>
+<script data-msg="面试题 03.01. 三合一">
+    (() => {
+        //  注意题意
+        function TripleInOne(stackSize){
+            this.list = new Array(stackSize * 3);
+            this.stackSize = stackSize;
+        }
+
+        TripleInOne.prototype.push = function (stackNum, value){
+            const firstIndex = stackNum * this.stackSize;
+            const lastIndex = (stackNum + 1) * this.stackSize - 1;
+            //  在这个区间
+            for (let i = firstIndex; i <= lastIndex; i++) {
+                if (this.list[i] === undefined) {
+                    this.list[i] = value;
+                    break;
+                }
+            }
+        };
+
+        //  栈底
+        TripleInOne.prototype.peek = function (stackNum){
+            const firstIndex = stackNum * this.stackSize;
+            const lastIndex = (stackNum + 1) * this.stackSize - 1;
+            for (let i = lastIndex; i >= firstIndex; i--) {
+                const item = this.list[i];
+                if (item !== undefined) {
+                    return item;
+                }
+            }
+            //  没有
+            return -1;
+        };
+
+        TripleInOne.prototype.pop = function (stackNum){
+            const firstIndex = stackNum * this.stackSize;
+            const lastIndex = (stackNum + 1) * this.stackSize - 1;
+            for (let i = lastIndex; i >= firstIndex; i--) {
+                const item = this.list[i];
+                if (item !== undefined) {
+                    this.list[i] = undefined;
+                    return item;
+                }
+            }
+            //  没有
+            return -1;
+        };
+
+        TripleInOne.prototype.isEmpty = function (stackNum){
+            const firstIndex = stackNum * this.stackSize;
+            const lastIndex = (stackNum + 1) * this.stackSize - 1;
+            for (let i = firstIndex; i < lastIndex; i++) {
+                if (this.list[i] !== undefined) {
+                    return false;
+                }
+            }
+            return true;
+        };
+    })();
+</script>
+<p>面试题 03.02. 栈的最小值</p>
+<script data-msg="面试题 03.02. 栈的最小值">
+    (() => {
+        function MinStack(){
+            this.list = [];
+            //  非递减数组
+            this.minList = [];
+        }
+
+        MinStack.prototype.push = function (x){
+            this.list.push(x);
+            if (this.minList[0] >= x || this.minList.length === 0) {
+                this.minList.unshift(x);
+            }
+        };
+
+        MinStack.prototype.pop = function (){
+            if (this.list.length === -1) {
+                return -1;
+            }
+            const pop = this.list.pop();
+            if (this.minList[0] === pop) {
+                this.minList.shift();
+            }
+            return pop;
+        };
+
+        MinStack.prototype.top = function (){
+            return this.list[this.list.length - 1];
+        };
+
+        MinStack.prototype.getMin = function (){
+            return this.minList[0];
+        };
 
     })();
+</script>
+<p>面试题 03.04. 化栈为队</p>
+<script data-msg="面试题 03.04. 化栈为队">
+    (()=>{
+    
+    })()
 </script>
 </body>
 </html>
