@@ -1113,12 +1113,189 @@
 
     })();
 </script>
-<p>面试题 03.04. 化栈为队</p>
+<p class="red">面试题 03.04. 化栈为队</p>
 <script data-msg="面试题 03.04. 化栈为队">
-    (()=>{
-    
-    })()
+    //  没理解题意
+    (() => {
+        function MyQueue(){
+            this.list = [];
+        }
+
+        MyQueue.prototype.push = function (x){
+            this.list.push(x);
+        };
+
+        MyQueue.prototype.pop = function (){
+            return this.list.shift();
+        };
+        MyQueue.prototype.peek = function (){
+            return this.list[0];
+        };
+
+        MyQueue.prototype.empty = function (){
+            return this.list.length === 0;
+        };
+    })();
 </script>
+<p>面试题 03.06. 动物收容所</p>
+<script data-msg="面试题 03.06. 动物收容所">
+    (() => {
+        //  不想做
+        function AnimalShelf(){
+            //  最小动物编号
+            this.minDog = Infinity;
+            this.minCat = Infinity;
+            this.catList = [];
+            this.dogList = [];
+        }
+
+        //  [编号，种类：0：猫，1：狗]
+        AnimalShelf.prototype.enqueue = function (animal){
+            if (animal[1]) {
+                if (this.dogList.length === 0) {
+                    this.minDog = animal[0];
+                }
+                //  狗
+                this.dogList.push(animal);
+            } else {
+                if (this.catList.length === 0) {
+                    this.minCat = animal[0];
+                }
+                //  猫
+                this.catList.push(animal);
+            }
+        };
+
+        //  [编号，种类：0：猫，1：狗]
+        AnimalShelf.prototype.dequeueAny = function (){
+            if (this.minCat === Infinity && this.minDog === Infinity) {
+                return [-1, -1];
+            }
+            if (this.minCat < this.minDog) {
+                const cat = this.catList.shift();
+                this.minCat = this.catList[0] ? this.catList[0][0] : Infinity;
+                return cat;
+            }
+            const dog = this.dogList.shift();
+            this.minDog = this.dogList[0] ? this.dogList[0][0] : Infinity;
+            return dog;
+        };
+        AnimalShelf.prototype.dequeueDog = function (){
+            if (this.minDog === Infinity) {
+                return [-1, -1];
+            }
+            const dog = this.dogList.shift();
+            this.minDog = this.dogList[0] ? this.dogList[0][0] : Infinity;
+            return dog;
+        };
+
+        AnimalShelf.prototype.dequeueCat = function (){
+            if (this.minCat === Infinity) {
+                return [-1, -1];
+            }
+            const cat = this.catList.shift();
+            this.minCat = this.catList[0] ? this.catList[0][0] : Infinity;
+            return cat;
+        };
+    })();
+</script>
+<p class="green">面试题 04.02. 最小高度树</p>
+<script data-msg="面试题 04.02. 最小高度树">
+    (() => {
+        return;
+
+        function sortedArrayToBST(nums){
+            if (nums.length === 0) {
+                return null;
+            }
+            //  除以二取整数
+            let middleIndex = nums.length >> 1;
+            let root = new TreeNode(nums[middleIndex]);
+            root.left = sortedArrayToBST(nums.slice(0, middleIndex));
+            root.right = sortedArrayToBST(nums.slice(middleIndex + 1));
+            return root;
+        }
+
+        const res = sortedArrayToBST([-10, -3, 0, 5, 9]);
+        console.log(res);
+    })();
+</script>
+<h3 class="green">面试题 04.04. 检查平衡性</h3>
+<script data-msg="面试题 04.04. 检查平衡性">
+    (() => {
+        function isBalanced(root){
+            if (root === null) {
+                return true;
+            }
+            return getTier(root, 1);
+        }
+
+        function getTier(node, tier){
+            if (node === null) {
+                return tier;
+            }
+            let left = node.left ? getTier(node.left, tier + 1) : tier;
+            if (left === false) {
+                return false;
+            }
+            let right = node.right ? getTier(node.right, tier + 1) : tier;
+            if (right === false) {
+                return false;
+            }
+            if (Math.abs(left - right) > 1) {
+                return false;
+            }
+            return Math.max(left, right);
+        }
+
+        [1, null, 2, null, 3];
+        [1, 2, 2, 3, 3, null, null, 4, 4];
+    })();
+</script>
+<p>面试题 05.01. 插入</p>
+<script data-msg="面试题 05.01. 插入">
+    (() => {
+        //  不想做
+        function insertBits(N, M, i, j){
+            let t = 0;
+            for (let x = i; x <= j; x++) {
+                t = t|(1 << x);
+            }
+            t = ~t;
+            N = N&t;
+            M = M << i;
+            return N|M;
+        }
+    })();
+</script>
+<p>面试题 05.03. 翻转数位</p>
+<script data-msg="面试题 05.03. 翻转数位">
+    (() => {
+        function reverseBits(nums){
+            let str = '';
+            while (nums > 0) {
+                str = nums % 2 + str;
+                nums = nums >> 1;
+            }
+            str = str || '0';
+            const list = str.split('0');
+            let max = 0;
+            for (let i = 0; i < list.length - 1; i++) {
+                const _max = list[i].length + list[i + 1].length;
+                if (max < _max) {
+                    max = _max;
+                }
+            }
+            if (list.length === 1) {
+                return list[0].length + 1;
+            }
+            return max + 1;
+        }
+
+        reverseBits(2147483647);
+    })();
+</script>
+<p></p>
 </body>
 </html>
 <script>
