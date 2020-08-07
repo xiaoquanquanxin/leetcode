@@ -1295,7 +1295,174 @@
         reverseBits(2147483647);
     })();
 </script>
-<p></p>
+<p class="red">面试题 05.06. 整数转换</p>
+<script data-msg="面试题 05.06. 整数转换">
+    (() => {
+        return;
+        //  异或，然后统计1的个数。
+        //  ⚠️这个还要按符号右移？？？
+        function convertInteger(A, B){
+            let count = 0;
+            let value = A^B;
+            while (value) {
+                count += (value&1);
+                value = value >>> 1;
+            }
+            return count;
+        }
+
+        const res = convertInteger(826966453, -729934991);
+        console.log(res);
+    })();
+</script>
+<p class="red">面试题 05.07. 配对交换</p>
+<script data-msg="面试题 05.07. 配对交换">
+    (() => {
+        return;
+
+        //  为什么
+        function exchangeBits(num){
+            let str = num.toString(2);
+            if (str.length % 2) {
+                str = 0 + str;
+            }
+            let res = '';
+            for (let i = str.length - 1; i >= 0; i--) {
+                if (i % 2) {
+                    res = (str[i - 1] || 0) + res;
+                } else {
+                    res = (str[i + 1] || 0) + res;
+                }
+            }
+            return parseInt(res, 2);
+        }
+
+        const res = exchangeBits(520721303);
+        console.log(res);
+
+        //  ❕❕❕❕❕❕❕❕❕❕❕
+        //  这个，0xaaaaaaaa === 0b101010101010101010 , 32位
+        //  它的每一个偶数位都是1，所以按位与一下 num，就会得到 num的所有偶数的值
+        //  反之 ,0x55555555
+        //  可以得到奇数位的值，那么，奇数位与偶数位互换一下
+        //  最后按位或
+        function exchangeBits(num){
+            let odd = 0x55555555&num;
+            let even = 0xaaaaaaaa&num;
+            return (odd << 1)|(even >> 1);
+        }
+    })();
+</script>
+<p class="red">面试题 08.01. 三步问题</p>
+<script data-msg="面试题 08.01. 三步问题">
+    (() => {
+        return;
+
+        //  递归爆栈，需要尾递归
+        function waysToStep(n){
+            if (n < 3) {
+                return n;
+            }
+            let one = 1;
+            let two = 2;
+            let three = 4;
+            n -= 3;
+            while (n--) {
+                const _three = three;
+                three = (one + two + three) % 1000000007;
+                one = two;
+                two = _three;
+            }
+            return three;
+        }
+
+        function waysToStep(n){
+            if (n < 3) {
+                return n;
+            }
+            n -= 3;
+            return getValue(n);
+        }
+
+        function getValue(n, a, b, total){
+            a = a || 1;
+            b = b || 2;
+            total = total || 4;
+            total = total % 1000000007;
+            if (!n) {
+                return total;
+            }
+            return getValue(n - 1, b, total, total + a + b);
+        }
+
+        const value = getValue(900750);
+        console.log(value);
+
+        for (let i = 1; i < 10; i++) {
+            console.log(i, waysToStep(i));
+        }
+    })();
+</script>
+<p>面试题 08.03. 魔术索引</p>
+<script data-msg="面试题 08.03. 魔术索引">
+    (() => {
+        function findMagicIndex(list){
+            if (list[0] === 0) {
+                return 0;
+            }
+            for (let i = 0; i < list.length;) {
+                const current = list[i];
+                if (i === current) {
+                    return i;
+                }
+                i = i > current ? i + 1 : current;
+            }
+            return -1;
+        }
+    })();
+</script>
+<p class="red">面试题 08.06. 汉诺塔问题</p>
+<script data-msg="面试题 08.06. 汉诺塔问题">
+    (() => {
+        //  递归分治
+        function hanota(a, b, c){
+            const len = a.length;
+            move(a, b, c, len);
+        }
+
+        function move(a, b, c, len){
+            if (len === 1) {
+                c.push(a.pop());
+                return;
+            }
+            move(a, c, b, len - 1);
+            c.push(a.pop());
+            move(b, a, c, len - 1);
+        }
+
+        hanota([3, 2, 1], [], []);
+        //  a               b           c
+
+        //  [4, 3, 2, 1]    []          []
+        //  [4,3,2]         [1]         []
+        //  [4,3]           [1]         [2]
+        //  [4,3]           []          [2,1]
+
+        //  [4]             [3]         [2,1]
+        //  [4,1]           [3]         [2]
+        //  [4,1]           [3,2]       []
+        //  [4]             [3,2,1]     []
+        //  [4]             [3,2,1]     []
+        //  []              [3,2,1]     [4]
+        //  []              []          [4,3,2,1]
+
+        //  ❕❕❕❕❕❕❕❕❕❕❕❕
+        //  1.将a上面的前n-1个移动到b
+        //  2.将a上到唯一一个移动到c
+        //  3.将b上到n-1个移动到c
+        
+    })();
+</script>
 </body>
 </html>
 <script>
@@ -1318,6 +1485,12 @@
         console.log('总伤害', zongshanghai);
     })();
 </script>
+
+
+
+
+
+
 
 
 
