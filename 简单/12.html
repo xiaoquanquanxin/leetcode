@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>面试题 08.10-面试题 17.16</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+<p>面试题 08.10. 颜色填充</p>
+<script data-msg="面试题 08.10. 颜色填充">
+    (() => {
+        function floodFill(image, sr, sc, newColor){
+            const prevColor = image[sr][sc];
+            if (prevColor === newColor) {
+                return image;
+            }
+            image[sr][sc] = newColor;
+            //  上
+            const up = sr - 1;
+            if (image[up] && image[up][sc] === prevColor) {
+                floodFill(image, up, sc, newColor);
+            }
+            //  下
+            const down = sr + 1;
+            if (image[down] && image[down][sc] === prevColor) {
+                floodFill(image, down, sc, newColor);
+            }
+            //  左
+            const left = sc - 1;
+            if (image[sr] && image[sr][left] === prevColor) {
+                floodFill(image, sr, left, newColor);
+            }
+            //  右
+            const right = sc + 1;
+            if (image[sr] && image[sr][right] === prevColor) {
+                floodFill(image, sr, right, newColor);
+            }
+            return image;
+        }
+
+        floodFill([[0, 0, 0], [0, 1, 1]], 1, 1, 1);
+
+    })();
+</script>
+<p>面试题 10.01. 合并排序的数组</p>
+<script data-msg="面试题 10.01. 合并排序的数组">
+    (() => {
+        function merge(A, m, B, n){
+            A.length = m + n;
+            let a = m - 1;
+            let b = n - 1;
+            for (let i = m + n - 1; i >= 0; i--) {
+                if ((A[a] === undefined ? -Infinity : A[a]) >= (B[b] === undefined ? -Infinity : B[b])) {
+                    A[i] = A[a];
+                    a--;
+                } else {
+                    A[i] = B[b];
+                    b--;
+                }
+            }
+            return A;
+        }
+
+        merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3);
+    })();
+</script>
+<p class="orange">面试题 10.05. 稀疏数组搜索</p>
+<script data-msg="面试题 10.05. 稀疏数组搜索">
+    (() => {
+        //  二分，延伸边界
+        function findString(words, s){
+            if (s === '') {
+                return 0;
+            }
+            let left = 0;
+            let right = words.length - 1;
+            let middle;
+            while (left < right) {
+                middle = (left + right) >> 1;
+                const item = words[middle];
+                if (item === s) {
+                    return middle;
+                }
+                if (item === '') {
+                    let add = middle + 1;
+                    let subtract = middle - 1;
+                    while (add <= right || subtract >= left) {
+                        if (words[add] === s) {
+                            return add;
+                        }
+                        if (words[subtract] === s) {
+                            return subtract;
+                        }
+                        if (words[add] === '') {
+                            add++;
+                        } else if (words[add] < s) {
+                            left = add + 1;
+                            break;
+                        } else {
+                            right = add - 1;
+                            break;
+                        }
+                        if (words[subtract] === '') {
+                            subtract--;
+                        } else if (words[subtract] > s) {
+                            right = subtract - 1;
+                            break;
+                        } else {
+                            left = subtract + 1;
+                            break;
+                        }
+                    }
+                    if (add > right && subtract < left) {
+                        return -1;
+                    }
+                } else if (item > s) {
+                    right = middle - 1;
+                } else if (item < s) {
+                    left = middle + 1;
+                }
+            }
+            if (words[left] === s) {
+                return left;
+            }
+            return -1;
+        }
+
+        findString(['', '', '', '', '', ' dQWlBwMkQGCAH', '', '', '', '', '', '', '', '', ' kbmYemYUbb', '', '', '', '', '', 'AhdDHirVKcLkr ', '', '', '', '', '', '', '', '', '', '', '', 'BNAbUAatDzPXTHQfEhiH', '', '', '', '', '', 'BRrrNNUbmm', '', '', 'BrluxJYeZ', '', '', '', '', '', '', '', '', '', '', 'C', '', '', '', 'COZgRwNRaTVH', '', '', '', '', '', '', '', '', '', 'COy', '', '', '', '', '', 'CZiiiXfgR', '', '', '', '', '', '', '', '', 'CvsytGxtr', '', '', '', '', 'DYgNOJzvt dKo', '', '', '', '', '', '', '', '', 'ETxOvZADWeGZymn', '', '', '', '', 'Enw', '', '', '', '', 'ErObvXdjyJ', '', '', '', '', '', '', '', 'Fxt', '', '', '', '', '', 'Hcg', '', 'IFCmcsMQZVDw', '', '', '', '', '', 'IxwAsjDo', '', '', '', '', 'JJRmOfMVv', '', '', '', '', '', '', '', '', '', 'KbmELArhbtQloxzJkOZB', '', '', 'KmrXslnWHv bviiXljAK', '', '', '', '', '', 'KoQgClvxqrOEIM nCY', '', '', '', '', '', 'LBZAnpDJskac', '', 'LKSy', '', '', '', '', '', 'LMCUFc ynZCbTqJRDOIH', '', '', '', '', '', '', '', '', '', 'LZui eEOVxOo', '', '', '', '', '', '', 'LmeGZUSZgqJ', '', '', '', 'MMsARKwsJ', '', '', 'My', '', '', '', 'NGcuzKOVRNyqDFuE', '', '', 'NHEReECTTxUCeElZquZe', '', '', '', '', 'OKoDrnWrGZyTYUDS', '', '', '', '', '', '', '', '', '', 'OitAuWpxzogGOVGbVqRc', '', '', '', '', '', '', '', '', 'OvSVSZYgfaTD', '', '', 'PW', '', '', '', '', '', '', '', '', '', 'Pf', '', 'PmqWrQsrrFVpQe', '', '', '', '', '', '', '', '', '', 'QSZxNOguO', '', '', '', '', 'QxhpjdwPNUOTj', '', '', '', '', '', '', '', '', '', 'R', '', '', '', '', '', 'RZZnlbAHKZJH', '', '', '', '', '', '', 'RcrNcLvsvCdYCe', '', '', '', '', '', 'RunaVcyf', '', '', 'SkCZwclZ', 'TNawyWMprE', '', '', '', '', '', '', '', '', 'TUKi', 'TeBcKqVdjVIJtzRy', '', '', 'TmGbS GYWH', '', '', '', '', '', 'UgjPSTLdQAesaBYVV', '', '', 'UnpPgKLLgnHsDRw', 'VDHEYbbmcSibGkoOY', '', '', 'VFhbWJAydDCFyZvbFA', '', '', '', '', '', '', '', '', '', '', '', 'VWQZxHx YvKZgxkScVR', '', '', '', '', '', 'WJqaQdZZXBrXXtIWGq', '', '', 'WiAdRTHgdJNLKZPrV', '', '', '', '', '', '', '', '', 'X', '', '', '', '', '', '', 'XgbKyxpd', '', '', '', 'XjYPV', '', '', '', '', '', '', '', 'YNY UFJJNRMHtA', '', '', '', '', '', '', '', 'YeNY', '', '', '', '', '', '', '', '', '', 'ZKcuWQvdKD', '', '', '', 'ZjjfTUB', '', '', '', '', '', '', 'ZxhS', '', '', '', '', '', '', 'aNRzbCptSLqKcwHn', '', '', '', '', '', '', 'aWTfJvpFLsNzL', '', '', '', '', '', '', '', '', '', 'aquRNbNXxsRQwBHVeIWa', '', '', '', '', '', 'bsy', '', '', '', '', '', '', 'c cxJUciWsLmXZSCIG', '', '', '', '', '', '', 'dHGYGGa', '', '', 'eBnLl', '', 'ffesVvulHsm', '', '', '', '', '', '', '', '', '', '', '', 'ggXhLRpAHZYPh', '', '', '', '', '', '', '', '', '', '', '', 'gksuHImKFIzbHmQBzksg', 'grWcl', '', '', '', '', '', '', 'hLwNisMg', '', '', '', '', '', '', '', '', '', '', 'htZGqEaqFSsHlDQX', '', '', '', '', '', '', '', '', '', 'jGppHHwT', 'jd', '', '', '', '', '', '', '', 'kWof', '', '', '', '', '', '', '', 'kvPEgk', 'lDBdeQZRgQNlDIP', '', '', '', '', '', '', '', '', '', 'lIceBio', '', '', '', '', '', '', '', '', '', '', '', 'mIIIss', '', '', '', '', '', '', '', '', '', 'mJKai', '', '', '', '', 'muIekSC', '', 'nMJipECkkgnEcMmyfob', '', '', '', '', '', '', '', 'nXivxaBbI', 'q', '', '', '', '', '', '', '', '', '', 'qAmqnvNBHnB', '', '', '', '', '', '', '', '', '', 'qPOf tD', '', '', '', '', '', '', '', '', '', 'qilsrkiifEeOj', '', '', '', '', '', '', '', '', '', 'rPfjvzoHWzecujWUoRX', '', '', '', '', 'rYf', '', '', '', '', '', '', '', '', '', '', '', 'sGUgT PfifYJYdkd', '', '', '', '', '', '', '', '', '', 'sf LOmMcRojVEc', '', 'tvJQ', '', '', '', '', 'uabKCYiiKmmpUns', '', '', '', '', '', '', '', '', '', '', '', 'udz', '', 'uqSPk OkChjuD', '', '', '', '', '', '', 'y', '', '', '', '', '', 'yHQWPlWSNwtb', '', '', '', '', '', '', '', '', '', '', 'yWfXCUsa', '', '', '', '', '', '', 'zEZXmgrvQoOTwOKoEIEd', '', '', 'zZEMDDvzsOgTmzc', '', '', '', '', '', '', '', '', '', '', '', 'zk', '', '', '', '', '', '', '', '', 'znWcoGeFJicW nPjHUGm'], 'kKfytHTqoIrKNCQjzJIF');
+    })();
+</script>
+<p class="red">面试题 16.05. 阶乘尾数</p>
+<script data-msg="面试题 16.05. 阶乘尾数">
+    (() => {
+        return;
+
+        //  ⚠️️️️⚠️️️️⚠️️️️⚠️️️️只要算能一直除以几次5就可以了
+        function trailingZeroes(n){
+            let sum = 0;
+            while (n >= 5) {
+                n = (n / 5)|0;
+                sum += n;
+            }
+            return sum;
+        }
+
+        for (let i = 0; i < 51; i++) {
+            console.log(trailingZeroes(i));
+        }
+
+    })();
+</script>
+<p class="red">面试题 16.07. 最大数值</p>
+<script data-msg="面试题 16.07. 最大数值">
+    (() => {
+        //  Math.max：补全a+b与a-b的差的绝对值的和的一半
+        function maximum(a, b){
+            return (a + b + Math.sqrt(((a - b)) * (a - b))) / 2;
+        }
+
+        //  1,3     1+3=4   4 + ｜1-3｜   6   6/2 = 3
+        //  ⚠️ 两倍的max = max + min + (max-min)
+
+    })();
+</script>
+<p>面试题 16.11. 跳水板</p>
+<script data-msg="面试题 16.11. 跳水板">
+    (() => {
+        function divingBoard(shorter, longer, k){
+            const list = [];
+            if (!k) {
+                return list;
+            }
+            if (shorter === longer) {
+                list.push(longer * k);
+                return list;
+            }
+            for (let i = 0; i <= k; i++) {
+                list.push(longer * i + shorter * (k - i));
+            }
+            return list;
+        }
+
+        divingBoard(2, 1118596, 979);
+    })();
+</script>
+<p>面试题 16.15. 珠玑妙算</p>
+<script data-msg="面试题 16.15. 珠玑妙算">
+    (() => {
+        function masterMind(solution, guess){
+            let map = {};
+            for (let i = 0; i < 4; i++) {
+                const key = solution[i];
+                map[key] = map[key] || 0;
+                map[key]++;
+            }
+            const list = [0, 0];
+            for (let i = 0; i < 4; i++) {
+                const key = guess[i];
+                if (map[key]) {
+                    map[key]--;
+                    list[1]++;
+                }
+                if (solution[i] === key) {
+                    list[1]--;
+                    list[0]++;
+                }
+            }
+            return list;
+        }
+
+        masterMind('BYBR', 'BGBR');
+    })();
+</script>
+<p>面试题 16.17. 连续数列</p>
+<script data-msg="面试题 16.17. 连续数列">
+    (() => {
+        //  ⚠️还要联系
+        return;
+
+        function maxSubArray(nums){
+            if (nums.length === 0) {
+                return 0;
+            }
+            let sum = nums[0];
+            let max = nums[0];
+            for (let i = 1; i < nums.length; i++) {
+                if (sum <= 0) {
+                    sum = Math.max(sum, nums[i]);
+                } else {
+                    sum += nums[i];
+                }
+                max = Math.max(max, sum);
+            }
+            return max;
+        }
+
+        const res = maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]);
+        console.log(res);
+    })();
+</script>
+<p class="red">面试题 17.01. 不用加号的加法</p>
+<script data-msg="面试题 17.01. 不用加号的加法">
+    (() => {
+        return;
+        //  比如 99+1
+        //  1100011 1
+        //  与 1，进一位 2 ，异或 是求除了与为1的部分，所以是异或，98
+        //  与 2，进一位4，异或 96
+        //  与 4，进一位0，异或 100
+        //  0,return 100
+
+        function add(a, b){
+            if (a === 0) {
+                return b;
+            }
+            //  进位的部分       //  正常的和的部分,⚠️得异或
+            return add((a&b) << 1, a^b);
+        }
+
+        debugger
+        add(1, -2);
+        return;
+        for (let i = 0; i < 100; i++) {
+            console.log(add(100 - i, i));
+        }
+    })();
+</script>
+<p class="orange">面试题 17.04. 消失的数字</p>
+<script data-msg="面试题 17.04. 消失的数字">
+    (() => {
+        [6, 4, 2, 3, 5, 7, 0, 1, 9];
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        function missingNumber(nums){
+            let n = nums.length + 1;
+            let sum = (n - 1) * n / 2;
+            for (let value of nums) {
+                sum -= value;
+            }
+            return sum;
+        }
+
+        //  ⚠️按位异或
+        function missingNumber(nums){
+            let result = nums.length;
+            for (let i in nums) {
+                result ^= nums[i];
+                result ^= i;
+            }
+            return result;
+        }
+    })();
+</script>
+<p class="red">面试题 17.10. 主要元素</p>
+<script data-msg="面试题 17.10. 主要元素">
+    (() => {
+        return;
+        //  ⚠️先摩尔投票法，然后对结果进行验证
+        //  ❌，摩尔投票法，没记住！！！！！
+        function majorityElement(nums){
+            let res = null;
+            let count = 0;
+            for (let value of nums) {
+                if (count === 0) {
+                    res = value;
+                    count++;
+                    continue;
+                }
+                if (value === res) {
+                    count++;
+                } else {
+                    count--;
+                }
+            }
+            if (nums.filter(item => item === res).length * 2 > nums.length) {
+                return res;
+            }
+            return -1;
+        }
+
+        const res = majorityElement([1, 6, 2, 1, 4, 2, 1, 4, 1, 1, 1]);
+        console.log(res);
+    })();
+</script>
+<p class="green">面试题 17.12. BiNode</p>
+<script data-msg="面试题 17.12. BiNode">
+    (() => {
+        function convertBiNode(root){
+            if (root === null) {
+                return root;
+            }
+            getValue(root);
+            return root;
+        }
+
+        function getValue(node){
+            if (node === null) {
+                return null;
+            }
+            const left = getValue(node.left);
+            node.left = left;
+            node.val = 1
+            const right = getValue()
+        }
+    })();
+</script>
+<p>面试题 17.16. 按摩师</p>
+<script data-msg="面试题 17.16. 按摩师">
+    (()=>{
+    
+    })()
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

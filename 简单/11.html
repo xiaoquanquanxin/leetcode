@@ -1465,26 +1465,7 @@
 </script>
 </body>
 </html>
-<script>
-    (() => {
-        return;
-        const jichugongjili = 4042 + 300 + 5300;
-        console.log('基础攻击力', jichugongjili);
-        const changzhuyisu = (19.8 * 2 + 14.9 + 67.5) / 100;
-        console.log('常驻移速', changzhuyisu);
-        const weidagongjili = 1.34;
-        const kauichegongjili = (jichugongjili * (1 + changzhuyisu * 1.23) * weidagongjili).toFixed(2);
-        console.log('快车攻击力', kauichegongjili);
-        const yumiyijineng = 1.45;
-        const yumierjinenggongjili = Math.min((kauichegongjili * (1 + changzhuyisu) * yumiyijineng), 80000);
-        console.log('玉米二技能攻击力', yumierjinenggongjili);
-        const yumierjineng = (yumierjinenggongjili / 100 * 0.046).toFixed(2);
-        console.log('玉米二技能', yumierjineng);
-        //
-        const zongshanghai = (yumierjineng * kauichegongjili * 4.22).toFixed(2);
-        console.log('总伤害', zongshanghai);
-    })();
-</script>
+
 
 
 
