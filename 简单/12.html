@@ -351,14 +351,6 @@
 <script data-msg="面试题 17.16. 按摩师">
     (() => {
         function massage(nums){
-            const list = [0, 0];
-            for (let i = 2; i < nums.length + 2; i++) {
-                list[i] = Math.max(nums[i - 2] + list[i - 2], list[i - 1]);
-            }
-            return list[list.length - 1];
-        }
-
-        function massage(nums){
             let a = 0;
             let b = 0;
             for (let i = 0; i < nums.length; i++) {
@@ -370,10 +362,27 @@
         }
 
         function massage(nums){
-        
+            const resultList = [];
+            resultList.push(0);
+            resultList.push(0);
+            for (let i = 0; i < nums.length; i++) {
+                resultList.push(Math.max(resultList[resultList.length - 1], resultList[resultList.length - 2] + nums[i]));
+            }
+            return resultList[resultList.length - 1];
         }
 
-         massage([1, 2, 3, 1]);
+        function massage(nums){
+            let a = 0;
+            let b = 0;
+            for (let i = 0; i < nums.length; i++) {
+                let temp = b;
+                b = Math.max(b, a + nums[i]);
+                a = temp;
+            }
+            return b;
+        }
+
+        massage([2, 1, 4, 5, 3, 1, 1, 3]);
     })();
 </script>
 </body>
