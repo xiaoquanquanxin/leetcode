@@ -342,16 +342,39 @@
             }
             const left = getValue(node.left);
             node.left = left;
-            node.val = 1
-            const right = getValue()
+            node.val = 1;
+            const right = getValue();
         }
     })();
 </script>
-<p>面试题 17.16. 按摩师</p>
+<p class="red">面试题 17.16. 按摩师</p>
 <script data-msg="面试题 17.16. 按摩师">
-    (()=>{
-    
-    })()
+    (() => {
+        function massage(nums){
+            const list = [0, 0];
+            for (let i = 2; i < nums.length + 2; i++) {
+                list[i] = Math.max(nums[i - 2] + list[i - 2], list[i - 1]);
+            }
+            return list[list.length - 1];
+        }
+
+        function massage(nums){
+            let a = 0;
+            let b = 0;
+            for (let i = 0; i < nums.length; i++) {
+                const temp = b;
+                b = Math.max(nums[i] + a, b);
+                a = temp;
+            }
+            return b;
+        }
+
+        function massage(nums){
+        
+        }
+
+         massage([1, 2, 3, 1]);
+    })();
 </script>
 </body>
 </html>
