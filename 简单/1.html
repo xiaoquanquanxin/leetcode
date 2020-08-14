@@ -574,11 +574,153 @@
             }
             return left;
         }
+
         mySqrt(2);
 
     })();
 </script>
 <br>
+<p>70. 爬楼梯</p>
+<p>💡完美转为fib</p>
+<script data-msg="70. 爬楼梯">
+    (() => {
+        function climbStairs(n, prev, total){
+            prev = prev || 1;
+            total = total || 0;
+            if (n === 1) {
+                return prev + total;
+            }
+            return climbStairs(n - 1, total, total + prev);
+        }
+    })();
+</script>
+<br>
+<p>83. 删除排序链表中的重复元素</p>
+<p>⛓️⌚不难️</p>
+<script data-msg="83. 删除排序链表中的重复元素">
+    (() => {
+        function deleteDuplicates(head){
+            let node = head;
+            if (node === null) {
+                return head;
+            }
+            let prev = node.val;
+            while (node.next) {
+                //  不同
+                if (node.next.val !== prev) {
+                    prev = node.next.val;
+                    node = node.next;
+                } else {
+                    node.next = node.next.next;
+                }
+            }
+            return head;
+        }
+    })();
+</script>
+<br>
+<p>88. 合并两个有序数组</p>
+<p>💡双指针，认真，从后往前也行</p>
+<script data-msg="88. 合并两个有序数组">
+    (() => {
+        function merge(nums1, m, nums2, n){
+            let i = 0;
+            let j = 0;
+            while (i < m && j < n) {
+                const a = nums1[i + j];
+                const b = nums2[j];
+                if (a <= b) {
+                    //  数组不懂
+                    i++;
+                } else {
+                    nums1.splice(i + j, 0, b);
+                    nums1.pop();
+                    j++;
+                }
+            }
+            while (j < n) {
+                nums1[j + i] = nums2[j];
+                j++;
+            }
+            return nums1;
+        }
+
+        function merge(nums1, m, nums2, n){
+            nums1.length = m;
+            nums2.length = n;
+            let a = m - 1;
+            while (nums2.length && a >= 0) {
+                const itemA = nums1[a];
+                const itemB = nums2[nums2.length - 1];
+                if (itemB > itemA) {
+                    nums1.splice(a + 1, 0, nums2.pop());
+                } else {
+                    a--;
+                }
+            }
+            while (nums2.length) {
+                nums1.unshift(nums2.pop());
+            }
+            return nums1;
+        }
+
+        merge([4, 0, 0, 0, 0, 0], 1, [1, 2, 3, 5, 6], 5);
+
+    })();
+</script>
+<br>
+<p class="green">100. 相同的树</p>
+<p>🌲递归</p>
+<script data-msg="100. 相同的树">
+    (() => {
+        function isSameTree(p, q){
+            if (p === null || q === null) {
+                return q === p;
+            }
+            if (p.val !== q.val) {
+                return false;
+            }
+            return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+        }
+
+    })();
+</script>
+<br>
+<p class="green">101. 对称二叉树</p>
+<p>🌲left.right === right.left</p>
+<script data-msg="101. 对称二叉树">
+    (() => {
+        function isSymmetric(root){
+            if (root === null) {
+                return true;
+            }
+            return isSame(root.left, root.right);
+        }
+
+        function isSame(left, right){
+            if (left === null && right === null) {
+                return true;
+            }
+            if (left !== null && right === null) {
+                return false;
+            }
+            if (left === null && right !== null) {
+                return false;
+            }
+            if (left.val !== right.val) {
+                return false;
+            }
+            return isSame(left.left, right.right) && isSame(left.right, right.left);
+        }
+    })();
+</script>
+<br>
+<p class="green">104. 二叉树的最大深度</p>
+<script data-msg="104. 二叉树的最大深度">
+    (() => {
+
+    })();
+</script>
 <p class="red">121.买股票的最佳时机</p>
 <script data-msg="121.买股票的最佳时机">
     (() => {
