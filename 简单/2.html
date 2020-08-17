@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="../css/index.css">
 </head>
 <body>
-<p class="red">190.颠倒二进制位</p>
+<p class="danger">190.颠倒二进制位</p>
+<p>⚠️难，看题解</p>
 <script data-msg="190.颠倒二进制位">
     (() => {
         //  需理解题意
@@ -54,9 +55,38 @@
         }
 
         // console.log(getValue3(num))
+
+        //  二刷
+        function reverseBits(n){
+            n = (n >> 16)|(n << 16);
+            n = ((n&0xff00ff00) >> 8)|((n&0x00ff00ff) << 8);
+            n = ((n&0xf0f0f0f0) >> 4)|((n&0x0f0f0f0f) << 4);
+            n = ((n&0xcccccccc) >> 2)|((n&0x33333333) << 2);
+            n = ((n&0xaaaaaaaa) >> 1)|((n&0x55555555) << 1);
+            return n;
+        }
+
+        /**
+         * @param{number} n
+         * */
+        function reverseBits(n){
+            let result = 0;
+            for (let i = 0; i < 32; i++) {
+                // 左移空出一位
+                result <<= 1;
+                // n&1获取n的末位，result的末位换成n的末位
+                result |= n&1;
+                // 右移1位
+                n >>= 1;
+            }
+            return result >>> 0;
+        }
+
+        reverseBits(0b00000010100101000001111010011100);
     })();
 </script>
-<p>191.位1的个数</p>
+<br>
+<p class="sky">191.位1的个数</p>
 <script data-msg="191.位1的个数">
     (() => {
         function getValue1(n = 0){
@@ -74,9 +104,24 @@
             }
             return ans;
         }
+
+        //  二刷
+        function hammingWeight(n){
+            let count = 0;
+            while (n) {
+                //  如果末尾是1
+                count += n % 2;
+                n >>>= 1;
+            }
+            return count;
+        }
+
+        hammingWeight(11111111111111111111111111111101);
     })();
 </script>
-<p>198.打家劫舍</p>
+<br>
+<p class="red">198.打家劫舍</p>
+<p>💡动态规划，总结规律</p>
 <script data-msg="198.打家劫舍">
     (() => {
         const arr = [2, 43, 8, 2, 89, 0, 3, 12, 5, 8, 4, 21];
@@ -128,6 +173,18 @@
         // console.time('b');
         // console.log(getValue3());
         // console.timeEnd('b');
+
+        //  二刷
+        function rob(nums){
+            let prev = 0;
+            let current = 0;
+            for (let i = 0; i < nums.length; i++) {
+                const _current = current;
+                current = Math.max(prev + nums[i], current);
+                prev = _current;
+            }
+            return current;
+        }
     })();
 </script>
 <p>extra.爬楼梯</p>
@@ -212,7 +269,9 @@
         }
     })();
 </script>
+<br>
 <p>202.快乐数</p>
+<p>⚠️得用map存值，因为可能不从头循环。双指针也能做。</p>
 <script data-msg="202.快乐数">
     (() => {
         function getValue(n){
@@ -240,9 +299,52 @@
         for (let i = 0; i <= 100; i++) {
             // getValue(i);
         }
+
+        //  二刷
+        function isHappy(n){
+            const map = { [n]: true };
+            while (n !== 1) {
+                let newN = 0;
+                while (n) {
+                    const value = n % 10;
+                    newN += (value * value);
+                    n = (n / 10)|0;
+                }
+                n = newN;
+                if (map[n]) {
+                    return false;
+                }
+                map[n] = true;
+            }
+            return true;
+        }
+
+        function nextVal(n){
+            let newN = 0;
+            while (n) {
+                const value = n % 10;
+                newN += value * value;
+                n = (n / 10)|0;
+            }
+            return newN;
+        }
+
+        //  快慢指针法
+        function isHappy(n){
+            let slow = n;
+            let fast = nextVal(n);
+            while (slow !== fast) {
+                slow = nextVal(slow);
+                fast = nextVal(nextVal(fast));
+            }
+            return fast === 1;
+        }
+
+        isHappy(2);
     })();
 </script>
-<p>203.删除链表中的节点</p>
+<br>
+<p class="yellow">203.删除链表中的节点</p>
 <script data-msg="203.删除链表中的节点">
     (() => {
         let _arr = [];
@@ -262,6 +364,11 @@
                 }
             }
         }
+
+        //  二刷
+        function removeElements(head, val){
+
+        };
     })();
 </script>
 <p>204.计数质数</p>
