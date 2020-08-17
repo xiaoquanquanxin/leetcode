@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>1-183</title>
+    <title>1-189</title>
     <link rel="stylesheet" href="../css/index.css">
 </head>
 <body>
@@ -1469,32 +1469,10 @@
         //  AB -> 28
     })();
 </script>
-<p>171.求众数</p>
-<script data-msg="171.求众数">
-    (() => {
-        const arr = [12, 3, 4, 5, 23, 123545, 231, 51, 2343, 5, 87, 23, 5, 6, 7, 8, 7, 6, 4, 8, 3, 3983, 31, 756, 13, 8, 42, 7, 3, 2];
-
-        function getValue(arr){
-            const hash = {};
-            let max = -Infinity;
-            let maxValue = 0;
-            arr.forEach(function (item, index){
-                hash[item] = hash[item] || 0;
-                hash[item]++;
-                if (max < hash[item]) {
-                    max = hash[item];
-                    maxValue = item;
-                }
-            });
-            return maxValue;
-        }
-
-        const res = getValue(arr);
-        // console.log(res);
-    })();
-</script>
-<p class="red">172.阶乘后的零</p>
-<script data-msg="172.阶乘后的零">
+<br>
+<p class="red">172. 阶乘后的零</p>
+<p>⚠️与5的倍数有关，难</p>
+<script data-msg="172. 阶乘后的零">
     (() => {
         function getValue(n, prev){
             prev = prev || BigInt(1);
@@ -1532,10 +1510,26 @@
             return ans;
         }
 
-        // console.log(tra(15));
+        //  二刷
+        function trailingZeroes(n){
+            let count = 0;
+            while (n >= 5) {
+                let sum = (n / 5)|0;
+                count += sum;
+                n = sum;
+            }
+            return count;
+        }
+
+        return;
+        for (let i = 0; i < 1000; i += 1) {
+            console.log(trailingZeroes(i), i);
+        }
     })();
 </script>
+<br>
 <p>189.旋转数组</p>
+<p>-</p>
 <script data-msg="189.旋转数组">
     (() => {
         let arr = ['1', '2', '3', '4', '5', '6', '7'];
@@ -1572,239 +1566,18 @@
 
         getValue2(3);
         // console.log(arr);
-    })();
-</script>
-<p class="red">190.颠倒二进制位</p>
-<script data-msg="190.颠倒二进制位">
-    (() => {
-        //  需理解题意
-        const num = 43261596;
 
-        function getValue1(n = 0){
-            return parseInt(n.toString(2).split('').reverse().join(''), 2);
-        }
-
-        function getValue2(n){
-            let str = [];
-            //  先转二进制
-            while (n) {
-                const yu = n % 2;
-                str.unshift(yu);
-                n = ~~(n / 2);
+        //  二刷
+        function rotate(nums, k){
+            k = k % nums.length;
+            while (k) {
+                nums.unshift(nums.pop());
+                k--;
             }
-            return parseInt(str.reverse().join(''), 2);
+            return nums
         }
 
-        // console.log(getValue1(num));
-        // console.log(getValue2(num));
-
-        //  缓存了数据
-        const sum = [];
-        sum[0] = 1;
-        for (let i = 1; i <= 32; i++) {
-            sum[i] = 2 * sum[i - 1];
-        }
-
-        // console.log(sum);
-
-        function getValue3(n = 0){
-            const temp = ('00000000000000000000000000000000' + n.toString(2)).slice(-32);
-            let ans = 0;
-            for (let i = 0, len = temp.length; i < len; i++) {
-                if (temp[i] === '1') {
-                    ans += sum[i];
-                }
-            }
-            return ans;
-        }
-
-        // console.log(getValue3(num))
-    })();
-</script>
-<p>191.位1的个数</p>
-<script data-msg="191.位1的个数">
-    (() => {
-        function getValue1(n = 0){
-            return n.toString(2).match(/1/ig).length;
-        }
-
-        // console.log(getValue1(65535));
-        function getValue2(n){
-            let ans = 0;
-            while (n) {
-                const yu = n % 2;
-                ans += yu;
-                n -= yu;
-                n /= 2;
-            }
-            return ans;
-        }
-    })();
-</script>
-<p>198.打家劫舍</p>
-<script data-msg="198.打家劫舍">
-    (() => {
-        const arr = [2, 43, 8, 2, 89, 0, 3, 12, 5, 8, 4, 21];
-
-        function getValue1(){
-            const data = [];
-            data[0] = [];
-            data[1] = [];
-            data[0][0] = arr[0];
-            data[1][0] = arr[1];
-            console.log(data);
-            for (let i = 1, len = arr.length; i < len; i++) {
-
-            }
-        }
-
-        function getValue2(nums){
-            const len = nums.length;
-            if (!len) {
-                return 0;
-            }
-            const dp = [];
-            dp[0] = [];
-            dp[0][0] = 0;
-            dp[0][1] = nums[0];
-            for (let i = 1; i < len; i++) {
-                dp[i] = [];
-                dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1]);
-                dp[i][1] = dp[i - 1][0] + nums[i];
-                // console.log(JSON.parse(JSON.stringify(dp)));
-            }
-            return Math.max(dp[len - 1][0], dp[len - 1][1]);
-        }
-
-        function getValue3(n, total){
-            n = n || 0;
-            total = total || 0;
-            if (n >= arr.length) {
-                return total;
-            }
-            total += arr[n];
-            // console.log(total);
-            return Math.max(getValue3(n + 2, total), getValue3(n + 3, total));
-        }
-
-        // console.time('a');
-        // console.log(getValue2(arr));
-        // console.timeEnd('a');
-        // console.time('b');
-        // console.log(getValue3());
-        // console.timeEnd('b');
-    })();
-</script>
-<p>extra.爬楼梯</p>
-<script data-msg="extra.爬楼梯">
-    //  假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
-    //  每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
-    //  1.1 -> 1
-    //  2.2 -> 11 2
-    //  3.3 -> 111 12 21
-    //  4.5 -> 1111 112 121 211 22
-    //  5.8 -> 11111 1112 1121 1211 2111 122 212 221
-
-    //  如果看到这儿，应该符合 层数[n-1]*2-1
-
-    //  6.13 -> 111111 11112 11121 11211 12111 21111 1122 1212 1221 2112 2121 2211 222
-
-    //  是斐波那契，但是为什么是？
-    //  因为爬楼梯到第n层，最后一步可能是1层，也可能是两层，有且只有这两种情况。所以是n-1层步数和n-2层步数的和。
-    //  问的是多少方法，所以n-1层的步数不需要最后+1，n-2也不需要+2。
-    (() => {
-        function getValue(n){
-            if (n <= 0) {
-                return 0;
-            }
-            if (n === 1) {
-                return 1;
-            }
-            if (n === 2) {
-                return 2;
-            }
-            return getValue(n - 1) + getValue(n - 2);
-        }
-
-        for (let i = 0; i < 10; i++) {
-            // console.log(i, getValue(i));
-        }
-    })();
-</script>
-<p>extra.斐波那契</p>
-<script data-msg="extra.斐波那契">
-    (() => {
-        //  1.1
-        //  2.2
-        //  3.3
-        //  4.5
-        //  5.8
-        //  6.13
-        function f(n){
-            let a = 0;
-            let b = 1;
-            if (n <= 1) {
-                return 1;
-            }
-            while (--n) {
-                let c = a;
-                a = b;
-                b += c;
-            }
-            return a + b;
-        }
-
-        for (let i = 0; i < 10; i++) {
-            // console.log(f(i));
-        }
-
-        /**
-         * @param:n,次数
-         * @param:_total,前一次的
-         * @param:total，当前总数
-         * */
-        function f1(n, _total, total){
-            _total = _total || 1;
-            total = total || 1;
-            if (n <= 1) {
-                return total;
-            }
-            return f1(n - 1, total, _total + total);
-        }
-
-        for (let i = 0; i < 10; i++) {
-            // console.log(f1(i));
-        }
-    })();
-</script>
-<p>202.快乐数</p>
-<script data-msg="202.快乐数">
-    (() => {
-        function getValue(n){
-            let arr = [];
-            let _n = n;
-            do {
-                let m = 0;
-                n = n.toString();
-                for (let i = n.length - 1; i >= 0; i--) {
-                    m += Math.pow(+n[i], 2);
-                }
-                n = m;
-                if (arr.indexOf(m) !== -1) {
-                    return false;
-                }
-                if (m === 1) {
-                    console.log(_n);
-                    return true;
-                }
-                arr.push(m);
-            } while (1);
-        }
-
-        //  1, 7, 10, 13, 19, 23, 28, 31, 32, 44, 49, 68, 70, 79, 82, 86, 91, 94, 97, 100。
-        for (let i = 0; i <= 100; i++) {
-            // getValue(i);
-        }
+        rotate([1, 2, 3, 4, 5, 6, 7], 3);
     })();
 </script>
 </body>

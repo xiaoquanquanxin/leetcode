@@ -6,6 +6,11 @@
     color: orange;
 }
 
+.yellow {
+    text-shadow: 1px 1px 1px black, 1px -1px 1px black, -1px 1px 1px black, -1px -1px 1px black;
+    color: yellow;
+}
+
 .green {
     color: green;
 }
