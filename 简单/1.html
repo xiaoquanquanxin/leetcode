@@ -716,16 +716,246 @@
 </script>
 <br>
 <p class="green">104. 二叉树的最大深度</p>
+<p>🌲耐心细心</p>
 <script data-msg="104. 二叉树的最大深度">
     (() => {
-        function maxDepth(root){
-        
+        function maxDepth(root, dep){
+            dep = dep || 0;
+            if (root === null) {
+                return dep;
+            }
+            const left = maxDepth(root.left, dep + 1);
+            const right = maxDepth(root.right, dep + 1);
+            return Math.max(right, left);
         }
     })();
 </script>
+<br>
+<p class="green">107. 二叉树的层次遍历 II</p>
+<p>🌲需要层序遍历</p>
+<script data-msg="107. 二叉树的层次遍历 II">
+    (() => {
+        //  深度优先遍历，已经比较熟悉的
+        function levelOrderBottom(root){
+            const arr = [];
+            if (root === null) {
+                return arr;
+            }
+            arr.unshift([root.val]);
+            getTier(root.left, arr, 1);
+            getTier(root.right, arr, 1);
+            return arr.reverse();
+        }
+
+        function getTier(node, arr, dep){
+            if (node === null) {
+                return arr;
+            }
+            arr[dep] = arr[dep] || [];
+            arr[dep].push(node.val);
+            getTier(node.left, arr, dep + 1);
+            getTier(node.right, arr, dep + 1);
+        }
+    })();
+    (() => {
+        //  🏁🏁🏁🏁广度优先遍历
+        function levelOrderBottom(root){
+            const arr = [];
+            if (root === null) {
+                return arr;
+            }
+            //  节点
+            let currentTier = [root];
+            //  只要这一层有东西，就遍历
+            while (currentTier.length) {
+                const list = [];
+                const _arr = [];
+                for (let value of currentTier) {
+                    if (value.left) {
+                        list.push(value.left);
+                    }
+                    if (value.right) {
+                        list.push(value.right);
+                    }
+                    _arr.push(value.val);
+                }
+                //  复制这一层的子节点
+                currentTier = list;
+                //  unshift这一层节点的值
+                arr.unshift(_arr);
+            }
+            return arr;
+        }
+    })();
+</script>
+<br>
+<p class="green">108. 将有序数组转换为二叉搜索树</p>
+<p class="red">🌲需要看题解</p>
+<script data-msg="108. 将有序数组转换为二叉搜索树">
+    (() => {
+        /**
+         * Definition for a binary tree node.
+         * function TreeNode(val) {
+         *     this.val = val;
+         *     this.left = this.right = null;
+         * }
+         */
+        /**
+         * @param {number[]} nums
+         * @return {object} TreeNode
+         */
+        function sortedArrayToBST(nums){
+            if (nums.length === 0) {
+                return null;
+            }
+
+        }
+
+    })();
+</script>
+<br>
+<p>110. 平衡二叉树</p>
+<p>🌲耐心细心，深度优先遍历</p>
+<script data-msg="110. 平衡二叉树">
+    (() => {
+        function isBalanced(root, dep){
+            dep = dep || 0;
+            if (root === null) {
+                return dep || true;
+            }
+            const left = isBalanced(root.left, dep + 1);
+            if (!left) {
+                return false;
+            }
+            const right = isBalanced(root.right, dep + 1);
+            if (!right) {
+                return false;
+            }
+            if (Math.abs(left - right) > 1) {
+                return false;
+            }
+            return Math.max(left, right);
+        }
+    })();
+</script>
+<br>
+<p class="green">111. 二叉树的最小深度</p>
+<p>🌲⚠️需要再研究题干，有发布评论</p>
+<script data-msg="111. 二叉树的最小深度">
+    (() => {
+        function minDepth(root, dep){
+            dep = dep || 0;
+            if (root === null) {
+                return dep;
+            }
+            dep++;
+            if (root.left === null && root.right === null) {
+                return dep;
+            }
+            let min = Infinity;
+            if (root.left) {
+                min = Math.min(minDepth(root.left, dep), min);
+            }
+            if (root.right) {
+                min = Math.min(minDepth(root.right, dep), min);
+            }
+            return min;
+        }
+
+        //          3
+        //      9        20
+        //  null,null   15,7
+    })();
+</script>
+<br>
+<p class="green">112. 路径总和</p>
+<p>🌲耐心认真</p>
+<script data-msg="112. 路径总和">
+    (() => {
+        function hasPathSum(root, sum){
+            if (root === null) {
+                return false;
+            }
+            const val = getValue(root, sum);
+            return val === true;
+        }
+
+        function getValue(node, sum){
+            sum -= node.val;
+            if (node.left === null && node.right === null) {
+                if (sum === 0) {
+                    return true;
+                }
+            }
+            let isLeft = false;
+            if (node.left) {
+                isLeft = getValue(node.left, sum);
+            }
+            let isRight = false;
+            if (node.right) {
+                isRight = getValue(node.right, sum);
+            }
+            return isLeft || isRight;
+        }
+
+    })();
+</script>
+<br>
+<p>118. 杨辉三角</p>
+<p>-</p>
+<script data-msg="118. 杨辉三角">
+    (() => {
+        function generate(numRows){
+            const arr = [];
+            if (numRows === 0) {
+                return arr;
+            }
+            arr.push([1]);
+            if (numRows === 1) {
+                return arr;
+            }
+            for (let i = 1; i < numRows; i++) {
+                const list = [];
+                const prevList = arr[i - 1];
+                const len = prevList.length + 1;
+                for (let j = 0; j < len; j++) {
+                    const prevItem = prevList[j - 1] || 0;
+                    const currentItem = prevList[j] || 0;
+                    list.push(prevItem + currentItem);
+                }
+                arr[i] = list;
+            }
+            return arr;
+        }
+    })();
+</script>
+<br>
+<p>119. 杨辉三角 II</p>
+<p>-</p>
+<script data-msg="da119. 杨辉三角 II">
+    (() => {
+        function getRow(rowIndex){
+            let arr = [1];
+            while (rowIndex--) {
+                const list = [];
+                const len = arr.length + 1;
+                for (let i = 0; i < len; i++) {
+                    const prev = arr[i - 1] || 0;
+                    const current = arr[i] || 0;
+                    list.push(prev + current);
+                }
+                arr = list;
+            }
+            return arr;
+        }
+    })();
+</script>
+<br>
 <p class="red">121.买股票的最佳时机</p>
+<p>这题做了很多次了</p>
 <script data-msg="121.买股票的最佳时机">
     (() => {
+        //  这是以前的
         function getValue(arr){
             //  如果一共就一天，没得买
             if (arr.length < 2) {
@@ -750,13 +980,31 @@
             return { _minIndex, _diff };
         }
 
-        const arr = [2, 0, 2, -33, 33, 3, 9, 43, -214, -222];
-        // console.log(getValue(arr));
+        //  这是二刷
+        function maxProfit(prices){
+            let min = prices[0];
+            let max = 0;
+            for (let i = 1; i < prices.length; i++) {
+                //  如果今天比历史上的更低
+                if (prices[i] < min) {
+                    //  换更低的今天
+                    min = prices[i];
+                    //  不可能在今天卖出
+                    continue;
+                }
+                //  最大差距 = 今天-历史最小 或 历史最大 中 最大的
+                max = Math.max(prices[i] - min, max);
+            }
+            return max;
+        }
     })();
 </script>
-<p>122.买股票2</p>
-<script data-msg="122.买股票2">
+<br>
+<p>122. 买卖股票的最佳时机 II</p>
+<p>同上</p>
+<script data-msg="122. 买卖股票的最佳时机 II">
     (() => {
+        //  这是历史
         const arr = [2, 32, 60, -1, 43, 43, 32, -333, 3];
 
         function getValue(arr){
@@ -779,12 +1027,31 @@
             };
         }
 
-        // console.log(getValue(arr));
+        //  这是二刷
+        function maxProfit(prices){
+            let sum = 0;
+            let prev = prices[0];
+            for (let i = 1, len = prices.length; i < len; i++) {
+                const current = prices[i];
+                if (current < prev) {
+                    prev = current;
+                    continue;
+                }
+                sum += (current - prev);
+                prev = current;
+            }
+
+            return sum;
+        }
+
     })();
 </script>
+<br>
 <p>125.验证回文串</p>
+<p>💡双指针，认真</p>
 <script data-msg="125.验证回文串">
     (() => {
+        //  这是历史
         let str = '1112345432111';
 
         function getValue(str){
@@ -797,10 +1064,62 @@
             return true;
         }
 
-        // console.log(getValue(str));
+        //  这是二刷
+        function isPalindrome(str){
+            let left = 0;
+            let right = str.length - 1;
+            let _isPalindrome = true;
+            while (left < right) {
+                const _left = str.charCodeAt(left);
+                //  如果left 不符合
+                if (!isSafe(_left)) {
+                    left++;
+                    continue;
+                }
+                const _right = str.charCodeAt(right);
+                //  如果left 不符合
+                if (!isSafe(_right)) {
+                    right--;
+                    continue;
+                }
+                if (!isSame(_left, _right)) {
+                    return false;
+                }
+                left++;
+                right--;
+            }
+            return _isPalindrome;
+        }
+
+        function isSafe(n){
+            //  数字，字母
+            return (n >= 48 && n <= 57) || (n >= 65 && n <= 90) || (n >= 97 && n <= 122);
+        }
+
+        function isSame(a, b){
+            if (a === b) {
+                return true;
+            }
+            //  b > a
+            if (a > b) {
+                a = a + b;
+                b = a - b;
+                a = a - b;
+            }
+            //  如果是字母
+            if (b >= 97) {
+                //  字母大小写
+                return (b - a === 32);
+            }
+            //  数字得完全一样
+            return (a === b);
+        }
+
     })();
 </script>
+<br>
 <p class="red">136.只有一次的数字</p>
+<p>⚠️大位运算</p>
 <script data-msg="136.只有一次的数字">
     (function (){
         //  异或计算，一趟搞定。时间复杂度o(n)，答案为３，因为两个相同的数异或为０．
@@ -825,9 +1144,19 @@
         }
         // console.log(_value ^ _value_);
 
+        //  二刷
+        function singleNumber(nums){
+            let res = 0;
+            for (let value of nums) {
+                res ^= value;
+            }
+            return res;
+        }
     })();
 </script>
-<p>141.环形链表</p>
+<br>
+<p class="yellow">141.环形链表</p>
+<p>💡还是看了下题解，标记flag</p>
 <script data-msg="141.环形链表">
     //  判断有没有环形链表
     (() => {
@@ -863,25 +1192,122 @@
         const isCircle = circle(arr[0]);
         // console.log(isCircle);
 
-    })();
-</script>
-<p>160.相交链表</p>
-<script data-msg="160.相交链表">
-    (() => {
-        function setFlag(node){
-            if (!node) {
+        //  二刷
+        function hasCycle(head){
+            if (head === null) {
                 return false;
             }
-            if (node.flag) {
-                return node;
+            let node = head;
+            while (node) {
+                if (node.flag) {
+                    return true;
+                }
+                node.flag = true;
+                node = node.next;
             }
-            node.flag = true;
-            return setFlag(node.next);
+            return false;
         }
+
     })();
 </script>
-<p>167.两数之和2，输入有序数组</p>
-<script data-msg="167.两数之和2，输入有序数组">
+<br>
+<p>155. 最小栈</p>
+<script data-msg="a155. 最小栈">
+    (() => {
+        function MinStack(){
+            this.list = [];
+            this.minList = [];
+        }
+
+        /**
+         * @param {number} x
+         * @return {void}
+         */
+        MinStack.prototype.push = function (x){
+            this.list.push(x);
+            if (this.minList.length === 0) {
+                this.minList.push(x);
+            } else {
+                const prev = this.minList[this.minList.length - 1];
+                if (prev >= x) {
+                    this.minList.push(x);
+                }
+            }
+        };
+
+        /**
+         * @return {void}
+         */
+        MinStack.prototype.pop = function (){
+            if (this.list.length === 0) {
+                return;
+            }
+            const pop = this.list.pop();
+            if (this.minList[this.minList.length - 1] === pop) {
+                this.minList.pop();
+            }
+        };
+
+        /**
+         * @return {number}
+         */
+        MinStack.prototype.top = function (){
+            if (this.list.length === 0) {
+                return -1;
+            }
+            return this.list[this.list.length - 1];
+        };
+
+        /**
+         * @return {number}
+         */
+        MinStack.prototype.getMin = function (){
+            if (this.minList.length === 0) {
+                return -1;
+            }
+            return this.minList[this.minList.length - 1];
+        };
+
+    })();
+</script>
+<br>
+<p class="yellow">160.相交链表</p>
+<p>💡拼接起来，需要认真，AB链表交换的时候，换的是最开始的值</p>
+<script data-msg="160.相交链表">
+    (() => {
+        function getIntersectionNode(headA, headB){
+            if (headA === null || headB === null) {
+                return null;
+            }
+            const prevA = headA;
+            const prevB = headB;
+            while (headB || headA) {
+                if (headA === null) {
+                    headA = prevB;
+                }
+                if (headB === null) {
+                    headB = prevA;
+                }
+                if (headB === headA) {
+                    return headA;
+                }
+                headA = headA.next;
+                headB = headB.next;
+            }
+            return null;
+        }
+
+        //  [4,1,8,4,5]
+        //  [5,6,1,8,4,5]
+
+        //  [4, 1, 8, 4, 5, 5, 6, 1, 8, 4, 5]
+        //  [5, 6, 1, 8, 4, 5, 4, 1, 8, 4, 5];
+    })();
+</script>
+<br>
+<p>167. 两数之和 II - 输入有序数组</p>
+<p>💡双指针</p>
+<script data-msg="167. 两数之和 II - 输入有序数组">
     (() => {
         const arr = [1, 2, 4, 5, 8, 322, 566, 881];
 
@@ -900,10 +1326,29 @@
 
         // const res = getValue(arr, 566 + 2);
         // console.log(res);
+
+        //  二刷
+        function twoSum(numbers, target){
+            let left = 0;
+            let right = numbers.length - 1;
+            while (left < right) {
+                const sum = numbers[left] + numbers[right];
+                if (sum === target) {
+                    return [left + 1, right + 1];
+                } else if (sum > target) {
+                    right--;
+                } else {
+                    left++;
+                }
+            }
+        }
+
     })();
 </script>
-<p class="red">168.excel表列名称</p>
-<script>
+<br>
+<p class="red">168.Excel表列名称</p>
+<p>⚠️难</p>
+<script data-msg="168.Excel表列名称">
     (() => {
         const el = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
@@ -942,6 +1387,86 @@
         }
 
         // console.log(a(343));
+        //  二刷
+        function convertToTitle(n){
+            let res = '';
+            while (n) {
+                let num = n % 26;
+                if (num === 0) {
+                    num = 26;
+                    n -= 26;
+                }
+                const str = String.fromCodePoint(num + 64);
+                res = str + res;
+                n = (n / 26)|0;
+            }
+            return res;
+        }
+
+        convertToTitle(28);
+
+        //  1 -> A
+        //  2 -> B
+        //  3 -> C
+
+        //  26 -> Z
+        //  27 -> AA
+        //  28 -> AB
+    })();
+</script>
+<br>
+<p class="red">169. 多数元素</p>
+<p>⚠️摩尔投票法，总也记不住，是一个一个比较的，不是两个两个比较。是当前和历史比较。</p>
+<script data-msg="169. 多数元素">
+    (() => {
+        //  摩尔投票法
+        function majorityElement(nums){
+            let count = 0;
+            let res = '';
+            for (let value of nums) {
+                if (count === 0) {
+                    res = value;
+                    count = 1;
+                    continue;
+                }
+                if (res === value) {
+                    count++;
+                } else {
+                    count--;
+                }
+            }
+            return res;
+        }
+
+        majorityElement([3, 3, 4]);
+    })();
+</script>
+<br>
+<p class="red">171. Excel表列序号</p>
+<p>⚠️难</p>
+<script class="171. Excel表列序号">
+    (() => {
+        function titleToNumber(n){
+            let num = 0;
+            for (let i = 0; i < n.length; i++) {
+                const unicode = n.codePointAt(i) - 64;
+                num += unicode * Math.pow(26, n.length - i - 1);
+            }
+            return num;
+        }
+
+        titleToNumber('AB');
+
+        //  A -> 1
+        //  B -> 2
+        //  C -> 3
+
+        //  Z -> 26
+
+        //  1 1
+        //  AA -> 27
+        //  1 2
+        //  AB -> 28
     })();
 </script>
 <p>171.求众数</p>
