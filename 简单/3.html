@@ -10,106 +10,71 @@
 </head>
 <body>
 <p>367. 有效的完全平方数</p>
+<p>💡有技巧，数学方法也</p>
 <script data-msg="367. 有效的完全平方数">
     (() => {
-        return;
-
-        //  不要使用任何内置的库函数
-        function isPowerNum(n){
-            console.log(`输入${n}`);
-            //  结果的位数
-            let w = Math.floor((n.toString().length + 1) / 2);
-            console.log(`结果的位数:${w}`);
-            const result = new Array(w).fill(0);
-            while (w--) {
-                //  从1-9去试试
-                for (let i = 1; i < 10; i++) {
-                    result[result.length - 1 - w] = i * Math.pow(10, w);
-                    const resValue = Math.pow(result.reduce(((previousValue, currentValue1) => previousValue + currentValue1)), 2);
-                    //  如果不足
-                    if (resValue < n) {
-                        // 继续
-                        continue;
-                    } else if (resValue === n) {
-                        console.log(`有${result}`);
-                        //  找到了
-                        return true;
-                    } else {
-                        result[result.length - 1 - w] = (i - 1) * Math.pow(10, w);
-                        break;
-                    }
+        //  二刷，二分法
+        function isPerfectSquare(n){
+            let left = 1;
+            let right = n;
+            while (left < right) {
+                const middle = (left + right) >> 1;
+                //  这里有可能溢出
+                const mult = middle * middle;
+                if (mult === n) {
+                    return true;
+                } else if (mult > n) {
+                    right = middle - 1;
+                } else {
+                    left = middle + 1;
                 }
             }
-            console.log(`无${result}`);
-            return false;
+            return (left * left === n);
         }
 
-        isPowerNum(Number.MAX_SAFE_INTEGER);
+        //  奇技淫巧
+        function isPerfectSquare(n){
+            return (n ** 0.5) % 1 === 0;
+        }
+
+        //  数学，1 + 3 + 5 + 7 + 2n-1 的和为完全平方数
+        //  有可能超时
+        function isPerfectSquare(n){
+            let sum = 1;
+            let prev = 1;
+            while (sum < n) {
+                prev += 2;
+                sum += prev;
+            }
+            return (sum === n);
+        }
     })();
 </script>
-<p>371. 两整数之和</p>
+<br>
+<p class="sky">371. 两整数之和</p>
+<p>一看就是位运算</p>
 <script data-msg="371. 两整数之和">
     (() => {
-        return;
-        const res = getSum(12, 21);
-        console.log(res);
-
+        //  二刷
         function getSum(a, b){
-            //  保证a>b
-            if (b > a) {
-                let c = a;
-                a = b;
-                b = c;
+            if (b === 0) {
+                return a;
             }
-            let bs_a = ('0' + a.toString(2)).split('').reverse();
-            let bs_b = b.toString(2).split('').reverse();
-            //  进位符号
-            let isOver = false;
-            const resultArr = [];
-            // console.log(bs_b, bs_a);
-            //  循环大二进制数
-            bs_a.forEach((item, index) => {
-                // debugger
-                let _arr = [];
-                if (item === '1') {
-                    _arr.push(1);
-                }
-                if (bs_b[index] === '1') {
-                    _arr.push(1);
-                }
-                if (isOver) {
-                    _arr.push(1);
-                }
-                switch (_arr.length) {
-                    case 0:
-                        isOver = false;
-                        resultArr.push(0);
-                        break;
-                    case 1:
-                        isOver = false;
-                        resultArr.push(1);
-                        break;
-                    case 2:
-                        isOver = true;
-                        resultArr.push(0);
-                        break;
-                    case 3:
-                        isOver = true;
-                        resultArr.push(1);
-                        break;
-                }
-            });
-            return parseInt(resultArr.reverse().join(''), 2);
+            //  异或，对于错位不想等的 == 1
+            const xor = a^b;
+            //  且，2个1进位
+            const and = (a&b) << 1;
+            return getSum(xor, and);
         }
-
     })();
 </script>
+<br>
 <p>374. 猜数字大小</p>
+<p>一看就是二分</p>
 <script data-msg="374. 猜数字大小">
     (() => {
-        return;
+
         const res = getValue(2132, 1321);
-        console.log(res);
 
         //  二分
         function getValue(n, guessValue){
@@ -130,16 +95,36 @@
                 }
             }
         }
+
+        //  二刷
+        function guessNumber(n){
+            let left = 1;
+            let right = n;
+            while (left < right) {
+                const middle = (left + right) >>> 1;
+                switch (guess(middle)) {
+                    case 0:
+                        return middle;
+                    case 1:
+                        left = middle + 1;
+                        break;
+                    case -1:
+                        right = middle;
+                        break;
+                }
+            }
+            return left;
+        }
     })();
 </script>
+<br>
 <p>383. 赎金信</p>
+<p>认真，和以前的重复了</p>
 <script data-msg="383. 赎金信">
     (() => {
-        return;
         const a = canConstruct('a', 'b');
         const b = canConstruct('aa', 'ab');
         const c = canConstruct('aa', 'aab');
-        console.log(a, b, c);
 
         function canConstruct(a, b){
             const mapA = {};
@@ -156,16 +141,47 @@
             }
             return true;
         }
+
+        //  二刷
+        function canConstruct(ransomNote, magazine){
+            if (ransomNote.length > magazine.length) {
+                return false;
+            }
+            const map = new Map();
+            ransomNote = ransomNote.split('');
+            for (let key of ransomNote) {
+                const value = map.get(key) || 0;
+                map.set(key, value + 1);
+            }
+            magazine = magazine.split('');
+            for (let key of magazine) {
+                const value = map.get(key);
+                if (!value) {
+                    continue;
+                }
+                if (value === 1) {
+                    map.delete(key);
+                } else {
+                    map.set(key, value - 1);
+                }
+                //  兑换完了
+                if (!map.size) {
+                    return true;
+                }
+            }
+            return !map.size;
+        }
+
+        canConstruct('aa', 'aab');
     })();
 </script>
+<br>
 <p>387. 字符串中的第一个唯一字符</p>
+<p>⚠️审题，返回index</p>
 <script data-msg="387. 字符串中的第一个唯一字符">
     (() => {
-        return;
         const a = firstUniqChar('leetcode');
         const b = firstUniqChar('loveleetcode');
-        console.log(a);
-        console.log(b);
 
         function firstUniqChar(str){
             const map = {};
@@ -180,20 +196,40 @@
             return str.indexOf(str.trim()[0]);
         }
 
-        //  或者
-        //  indexOf === lastIndexOf
+        //  二刷
+        function firstUniqChar(str){
+            const map = new Map();
+            const indexList = {};
+            for (let i = 0, len = str.length; i < len; i++) {
+                const key = str.charAt(i);
+                const count = map.get(key) || 0;
+                map.set(key, count + 1);
+                if (indexList[key] === undefined) {
+                    indexList[key] = i;
+                }
+            }
+            for (let key of map) {
+                if (key[1] === 1) {
+                    return indexList[key[0]];
+                }
+            }
+            return -1;
+        }
+
+        firstUniqChar('leetcode');
 
     })();
 </script>
-<p>389. 找不同</p>
+<br>
+<p class="sky">389. 找不同</p>
+<p>⚠️位运算，异或两次为0</p>
 <script data-msg="389. 找不同">
     (() => {
-        return;
         const a = 'abd';
         const b = 'abcd';
 
         const res = findTheDifference(a, b);
-        console.log(res);
+//        console.log(res);
 
         // function findTheDifference(s, t){
         //     for (let i = 0; i < s.length; i++) {
@@ -214,12 +250,23 @@
             }
             return String.fromCharCode(res);
         }
+
+        //  二刷
+        function findTheDifference(s, t){
+            const str = s + t;
+            let xor = 0;
+            for (let i = 0, len = str.length; i < len; i++) {
+                xor ^= str.charCodeAt(i);
+            }
+            return String.fromCodePoint(xor);
+        }
     })();
 </script>
+<br>
 <p>392. 判断子序列</p>
+<p>while循环，双指针，贪心</p>
 <script data-msg="392. 判断子序列">
     (() => {
-        return;
         //  就你叫贪心算法啊？双指针法由于要遍历过多的t，不好
         //  t长，s短
         function isSubsequence(t, s){
@@ -237,13 +284,43 @@
         const t = 'feawfgnajwiohgobgouhovnbfrjfiebhjanbjfnnjfanruiqouhjnmfjighobnfnrmbnefnjmbaefnmnjafjbnfrbhfnjfjbhnjbfhjhfkdjbfhjhjbhfeawfgnajwiohgobgouhovnbfrjfiebhjanbjfnnjfanruiqouhjnmfjighobnfnrmbnefnjmbaefnmnjafjbnfrbhfnjfjbhnjbfhjhfkdjbfhjhjbhfeawfgnajwiohgobgouhovnbfrjfiebhjanbjfnnjfanruiqouhjnmfjighobnfnrmbnefnjmbaefnmnjafjbnfrbhfnjfjbhnjbfhjhfkdjbfhjhjbh';
         const s = 'fbeufbeufbeu';
         const result = isSubsequence(t, s);
-        console.log(result);
+
+//        console.log(result);
+
+        //  二刷
+        function isSubsequence(s, t){
+            if (t.length < s.length) {
+                return false;
+            }
+            if (t === s) {
+                return true;
+            }
+            let i = 0;
+            let j = 0;
+            let sLen = s.length;
+            let tLen = t.length;
+            while (i < sLen) {
+                if (j === tLen) {
+                    return false;
+                }
+                if (s.charAt(i) === t.charAt(j)) {
+                    j++;
+                    i++;
+                } else {
+                    j++;
+                }
+            }
+            return true;
+        }
+
+        isSubsequence('abc', 'ahbgdc');
     })();
 </script>
+<br>
 <p class="red">401. 二进制手表</p>
+<p>⚠️难！</p>
 <script data-msg="401. 二进制手表">
     (() => {
-        return;
         var readBinaryWatch = function (num){
             const res = [];
             const hourstrs = [['0'], ['1', '2', '4', '8'], ['3', '5', '6', '9', '10'], ['7', '11']];
@@ -270,14 +347,18 @@
             return res;
         };
         const res = readBinaryWatch(8);
-        console.log(res);
+
+//        console.log(res);
+        function readBinaryWatch(num){
+
+        }
     })();
 </script>
-<p>404. 左叶子之和</p>
+<br>
+<p class="green">404. 左叶子之和</p>
+<p>别和链表混了</p>
 <script data-msg="404. 左叶子之和">
     (() => {
-        return;
-
         function sumOfLeftLeaves(node){
             let sum = 0;
 
@@ -295,70 +376,64 @@
             fn(node);
             return sum;
         }
+
+        //  二刷
+        function sumOfLeftLeaves(node){
+            if (node === null) {
+                return 0;
+            }
+            let value = 0;
+            let left = 0;
+            if (node.left && node.left.left === null && node.left.right === null) {
+                value = node.left.val;
+            } else {
+                left = sumOfLeftLeaves(node.left);
+            }
+            const right = sumOfLeftLeaves(node.right);
+            return left + right + value;
+        }
     })();
 </script>
-<p>405. 数字转换为十六进制数</p>
+<br>
+<p class="red">405. 数字转换为十六进制数</p>
+<p>⚠️不管正负数，计算机总是用二进制存储表示这些数的，把它们看成无符号数，再统一转成16进制就好了</p>
 <script data-msg="405. 数字转换为十六进制数">
     (() => {
-        return;
-
+        //  以前那是什么垃圾代码，要注意的点多
+        //  二刷
         function toHex(n){
-            const arr = ['a', 'b', 'c', 'd', 'e', 'f'];
-            let flag = n > 0;
-            if (flag) {
-                const res = [];
-                while (1) {
-                    res.unshift(n % 16);
-                    if (n < 16) {
-                        break;
-                    }
-                    n = Math.floor(n / 16);
-                }
-                return res.map(item => {
-                    switch (Number(item)) {
-                        case 10:
-                            item = arr[0];
-                            break;
-                        case 11:
-                            item = arr[1];
-                            break;
-                        case 12:
-                            item = arr[2];
-                            break;
-                        case 13:
-                            item = arr[3];
-                            break;
-                        case 14:
-                            item = arr[4];
-                            break;
-                        case 15:
-                            item = arr[5];
-                            break;
-                    }
-                    return item;
-                }).join('');
+            //
+            n >>>= 32;
+            const map = {
+                0: 0,
+                1: 1,
+                2: 2,
+                3: 3,
+                4: 4,
+                5: 5,
+                6: 6,
+                7: 7,
+                8: 8,
+                9: 9,
+                10: 'a',
+                11: 'b',
+                12: 'c',
+                13: 'd',
+                14: 'e',
+                15: 'f'
+            };
+            let str = '';
+            while (n) {
+                const d = n % 16;
+                n = n >>> 4;
+                str = map[d] + str;
             }
-            let str = (-n - 1).toString(2);
-            while (str.length < 32) {
-                str = '0' + str;
-            }
-            let _str = '';
-            for (let i = 0; i < str.length; i++) {
-                if (str[i] === '0') {
-                    _str += '1';
-                    continue;
-                }
-                if (str[i] === '1') {
-                    _str += '0';
-                }
-            }
-            return toHex(parseInt(_str, 2));
+            return str || '0';
         }
-
-        const res = toHex(-1);
-        console.log(res);
+        toHex(0);
     })();
 </script>
+<br>
 <p>409. 最长回文串,给定一个包含大写字母和小写字母的字符串，找到通过这些字母构造成的最长的回文串。</p>
 <script data-msg="409. 最长回文串,给定一个包含大写字母和小写字母的字符串，找到通过这些字母构造成的最长的回文串">
     (() => {
