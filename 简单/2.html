@@ -1689,300 +1689,65 @@
     })();
 </script>
 <br>
-<p>350. 两个数组的交集 II</p>
+<p class="orange">350. 两个数组的交集 II</p>
+<p>⚠️二分，有研究价值，这是以前做hachi后台管理系统的那个算法</p>
 <script data-msg="350. 两个数组的交集 II">
     (() => {
+        //  小优化，用map，并且判断size
         function intersect(nums1, nums2){
-        
-        }
-    })();
-</script>
-<p>367. 有效的完全平方数</p>
-<script data-msg="367. 有效的完全平方数">
-    (() => {
-        return;
-
-        //  不要使用任何内置的库函数
-        function isPowerNum(n){
-            console.log(`输入${n}`);
-            //  结果的位数
-            let w = Math.floor((n.toString().length + 1) / 2);
-            console.log(`结果的位数:${w}`);
-            const result = new Array(w).fill(0);
-            while (w--) {
-                //  从1-9去试试
-                for (let i = 1; i < 10; i++) {
-                    result[result.length - 1 - w] = i * Math.pow(10, w);
-                    const resValue = Math.pow(result.reduce(((previousValue, currentValue1) => previousValue + currentValue1)), 2);
-                    //  如果不足
-                    if (resValue < n) {
-                        // 继续
-                        continue;
-                    } else if (resValue === n) {
-                        console.log(`有${result}`);
-                        //  找到了
-                        return true;
+            if (nums2.length < nums1.length) {
+                const temp = nums2;
+                nums2 = nums1;
+                nums1 = temp;
+            }
+            //  这样的结果，map节省内存
+            const map = new Map();
+            for (let value of nums1) {
+                map.set(value, (map.get(value) || 0) + 1);
+            }
+            const list = [];
+            for (let i = 0, len = nums2.length; i < len; i++) {
+                const key = nums2[i];
+                const value = map.get(key);
+                if (value) {
+                    list.push(key);
+                    if (value === 1) {
+                        map.delete(key);
                     } else {
-                        result[result.length - 1 - w] = (i - 1) * Math.pow(10, w);
-                        break;
+                        map.set(key, value - 1);
                     }
                 }
-            }
-            console.log(`无${result}`);
-            return false;
-        }
-
-        isPowerNum(Number.MAX_SAFE_INTEGER);
-    })();
-</script>
-<p>371. 两整数之和</p>
-<script data-msg="371. 两整数之和">
-    (() => {
-        return;
-        const res = getSum(12, 21);
-        console.log(res);
-
-        function getSum(a, b){
-            //  保证a>b
-            if (b > a) {
-                let c = a;
-                a = b;
-                b = c;
-            }
-            let bs_a = ('0' + a.toString(2)).split('').reverse();
-            let bs_b = b.toString(2).split('').reverse();
-            //  进位符号
-            let isOver = false;
-            const resultArr = [];
-            // console.log(bs_b, bs_a);
-            //  循环大二进制数
-            bs_a.forEach((item, index) => {
-                // debugger
-                let _arr = [];
-                if (item === '1') {
-                    _arr.push(1);
-                }
-                if (bs_b[index] === '1') {
-                    _arr.push(1);
-                }
-                if (isOver) {
-                    _arr.push(1);
-                }
-                switch (_arr.length) {
-                    case 0:
-                        isOver = false;
-                        resultArr.push(0);
-                        break;
-                    case 1:
-                        isOver = false;
-                        resultArr.push(1);
-                        break;
-                    case 2:
-                        isOver = true;
-                        resultArr.push(0);
-                        break;
-                    case 3:
-                        isOver = true;
-                        resultArr.push(1);
-                        break;
-                }
-            });
-            return parseInt(resultArr.reverse().join(''), 2);
-        }
-
-    })();
-</script>
-<p>374. 猜数字大小</p>
-<script data-msg="374. 猜数字大小">
-    (() => {
-        return;
-        const res = getValue(2132, 1321);
-        console.log(res);
-
-        //  二分
-        function getValue(n, guessValue){
-            let min = 1;
-            let max = n;
-            while (true) {
-                let center = Math.floor((min + max) / 2);
-                if (center === guessValue) {
-                    return center;
-                }
-                //  需要减小
-                if (center > guessValue) {
-                    max = center - 1;
-                }
-                //  需要增加
-                if (center < guessValue) {
-                    min = center + 1;
+                if (map.size === 0) {
+                    break;
                 }
             }
-        }
-    })();
-</script>
-<p>383. 赎金信</p>
-<script data-msg="383. 赎金信">
-    (() => {
-        return;
-        const a = canConstruct('a', 'b');
-        const b = canConstruct('aa', 'ab');
-        const c = canConstruct('aa', 'aab');
-        console.log(a, b, c);
-
-        function canConstruct(a, b){
-            const mapA = {};
-            b.split('').forEach(item => {
-                mapA[item] = mapA[item] || 0;
-                mapA[item]++;
-            });
-            let arr = a.split('');
-            for (let i = 0; i < arr.length; i++) {
-                if (mapA[arr[i]] === undefined || mapA[arr[i]] === 0) {
-                    return false;
-                }
-                mapA[arr[i]]--;
-            }
-            return true;
-        }
-    })();
-</script>
-<p>387. 字符串中的第一个唯一字符</p>
-<script data-msg="387. 字符串中的第一个唯一字符">
-    (() => {
-        return;
-        const a = firstUniqChar('leetcode');
-        const b = firstUniqChar('loveleetcode');
-        console.log(a);
-        console.log(b);
-
-        function firstUniqChar(str){
-            const map = {};
-            for (let i = 0; i < str.length; i++) {
-                map[str[i]] = map[str[i]] || 0;
-                map[str[i]]++;
-                if (map[str[i]] > 1) {
-                    const char = str[i];
-                    str = str.replace(new RegExp(char, 'ig'), ' ');
-                }
-            }
-            return str.indexOf(str.trim()[0]);
+            return list;
         }
 
-        //  或者
-        //  indexOf === lastIndexOf
-
-    })();
-</script>
-<p>389. 找不同</p>
-<script data-msg="389. 找不同">
-    (() => {
-        return;
-        const a = 'abd';
-        const b = 'abcd';
-
-        const res = findTheDifference(a, b);
-        console.log(res);
-
-        // function findTheDifference(s, t){
-        //     for (let i = 0; i < s.length; i++) {
-        //         t = t.replace(new RegExp(s[i], 'ig'), '');
-        //     }
-        //     return t;
-        // }
-
-        //  位运算
-        function findTheDifference(s, t){
-            const total = s + t;
+        function intersect(nums1, nums2){
+            //  2 比 1 长
+            nums1.sort((a, b) => a - b);
+            nums2.sort((a, b) => a - b);
             let i = 0;
-            let res = 0;
-            while (i < total.length) {
-                res ^= total.charCodeAt(i);
-                console.log(res);
-                i++;
+            let j = 0;
+            const list = [];
+            while (i < nums1.length && j < nums2.length) {
+                const _i = nums1[i];
+                const _j = nums2[j];
+                if (_i === _j) {
+                    list.push(_j);
+                    j++;
+                    i++;
+                } else if (_i > _j) {
+                    j++;
+                } else {
+                    i++;
+                }
             }
-            return String.fromCharCode(res);
+            return list;
         }
-    })();
-</script>
-<p>392. 判断子序列</p>
-<script data-msg="392. 判断子序列">
-    (() => {
-        return;
-        //  就你叫贪心算法啊？双指针法由于要遍历过多的t，不好
-        //  t长，s短
-        function isSubsequence(t, s){
-            let index = 0;
-            for (let i = 0; i < s.length; i++) {
-                index = t.indexOf(s[i], index);
-                if (index === -1) {
-                    return false;
-                }
-                console.log(index);
-            }
-            return true;
-        }
-
-        const t = 'feawfgnajwiohgobgouhovnbfrjfiebhjanbjfnnjfanruiqouhjnmfjighobnfnrmbnefnjmbaefnmnjafjbnfrbhfnjfjbhnjbfhjhfkdjbfhjhjbhfeawfgnajwiohgobgouhovnbfrjfiebhjanbjfnnjfanruiqouhjnmfjighobnfnrmbnefnjmbaefnmnjafjbnfrbhfnjfjbhnjbfhjhfkdjbfhjhjbhfeawfgnajwiohgobgouhovnbfrjfiebhjanbjfnnjfanruiqouhjnmfjighobnfnrmbnefnjmbaefnmnjafjbnfrbhfnjfjbhnjbfhjhfkdjbfhjhjbh';
-        const s = 'fbeufbeufbeu';
-        const result = isSubsequence(t, s);
-        console.log(result);
-    })();
-</script>
-<p class="red">401. 二进制手表</p>
-<script data-msg="401. 二进制手表">
-    (() => {
-        return;
-        var readBinaryWatch = function (num){
-            const res = [];
-            const hourstrs = [['0'], ['1', '2', '4', '8'], ['3', '5', '6', '9', '10'], ['7', '11']];
-            const minstrs = [
-                ['00'],
-                ['01', '02', '04', '08', '16', '32'],
-                ['03', '05', '06', '09', '10', '12', '17', '18', '20', '24', '33', '34', '36', '40', '48'],
-                ['07', '11', '13', '14', '19', '21', '22', '25', '26', '28', '35', '37', '38', '41', '42', '44', '49', '50', '52', '56'],
-                ['15', '23', '27', '29', '30', '39', '43', '45', '46', '51', '53', '54', '57', '58'],
-                ['31', '47', '55', '59']
-            ];
-            for (let i = 0; i <= Math.min(3, num); i++) {
-                if (num - i > 5) {
-                    continue;
-                }
-                const hstr = hourstrs[i];
-                const mstr = minstrs[num - i];
-                for (let j = 0; j < hstr.length; j++) {
-                    for (let k = 0; k < mstr.length; k++) {
-                        res.push(hstr[j] + ':' + mstr[k]);
-                    }
-                }
-            }
-            return res;
-        };
-        const res = readBinaryWatch(8);
-        console.log(res);
-    })();
-</script>
-<p>404. 左叶子之和</p>
-<script data-msg="404. 左叶子之和">
-    (() => {
-        return;
-
-        function sumOfLeftLeaves(node){
-            let sum = 0;
-
-            function fn(node){
-                if (node === null) {
-                    return 0;
-                }
-                if (node.left && node.left.left === null && node.left.right === null) {
-                    sum += node.left;
-                }
-                fn(node.left);
-                fn(node.right);
-            }
-
-            fn(node);
-            return sum;
-        }
+        
+        intersect([1, 2, 2, 1], [2, 2]);
     })();
 </script>
 </body>
