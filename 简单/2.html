@@ -766,7 +766,7 @@
 <p>略</p>
 <br>
 <p class="yellow">234. 回文链表</p>
-<p>⚠️思路没问题就没那么难</p>
+<p>⚠️思路没问题就没那么难，快慢指针找见中间，然后从中间向2边遍历。</p>
 <script data-msg="234. 回文链表">
     (() => {
         const obj = {
@@ -850,7 +850,7 @@
                 return true;
             }
             //  是偶数
-            let even = false;
+            let right = slow;
             while (fast) {
                 if (slow === null) {
                     slow = head;
@@ -862,17 +862,13 @@
                 fast = fast.next;
                 if (fast) {
                     fast = fast.next;
-                    even = true;
+                    right = slow.next;
                 } else {
-                    even = false;
+                    right = slow;
                 }
             }
             //  现在前半部分都反转了
             let left = slow;
-            let right = slow;
-            if (even) {
-                right = slow.next;
-            }
             while (left && right) {
                 if (left.val !== right.val) {
                     return false;
@@ -884,7 +880,9 @@
         }
     })();
 </script>
-<p class="red">235.二叉搜索树的最近公共祖先</p>
+<br>
+<p class="green">235.二叉搜索树的最近公共祖先</p>
+<p>🌲这是儿叉搜索树，所以简单</p>
 <script data-msg="235.二叉搜索树的最近公共祖先">
     (() => {
         //  二叉搜索树是按大小排序的
@@ -937,15 +935,41 @@
                 return getValue(obj.prev, prev, next);
             }
         }
+
+        //  二刷
+        function lowestCommonAncestor(root, p, q){
+            if (p.val > q.val) {
+                const c = p;
+                p = q;
+                q = c;
+            }
+            const val = root.val;
+            //  p < q
+            if (val > q.val) {
+                //  应该在左面
+                return lowestCommonAncestor(root.left, p, q);
+            } else if (val < p.val) {
+                return lowestCommonAncestor(root.right, p, q);
+            } else {
+                return root;
+            }
+        }
     })();
 </script>
-<p>237.删除链表节点</p>
+<br>
+<p class="yellow">237.删除链表节点</p>
+<p>对理解链表结构有价值</p>
 <script data-msg="237.删除链表节点">
     (() => {
-        //  略
+        function deleteNode(node){
+            node.val = node.next.val;
+            node.next = node.next.next;
+        }
     })();
 </script>
+<br>
 <p>242.有效的字母异位词</p>
+<p>略</p>
 <script data-msg="242.有效的字母异位词">
     (() => {
         //  就是用的字母都一样，排序变了
@@ -958,15 +982,133 @@
 
         const res = getValue('323221,', '221,321');
         // console.log(res);
+
+        //  二刷
+        function isAnagram(s, t){
+            if (s.length !== t.length) {
+                return false;
+            }
+            const map = new Map();
+            for (let i = 0; i < s.length; i++) {
+                const _t = t.charAt(i);
+                const _s = s.charAt(i);
+                if (map.has(_t)) {
+                    map.set(_t, map.get(_t) - 1);
+                } else {
+                    map.set(_t, -1);
+                }
+                if (map.has(_s)) {
+                    map.set(_s, map.get(_s) + 1);
+                } else {
+                    map.set(_s, 1);
+                }
+                if (map.get(_t) === 0) {
+                    map.delete(_t);
+                }
+                if (map.get(_s) === 0) {
+                    map.delete(_s);
+                }
+            }
+            return map.size === 0;
+        }
+
+        function isAnagram(s, t){
+            if (s.length !== t.length) {
+                return false;
+            }
+            const obj = {};
+            for (let i = 0; i < s.length; i++) {
+                const _s = s.charAt(i);
+                const _t = t.charAt(i);
+                const obj_s = obj[_s];
+                if (obj_s) {
+                    if (obj_s === -1) {
+                        delete obj[_s];
+                    } else {
+                        obj[_s]++;
+                    }
+                } else {
+                    obj[_s] = 1;
+                }
+                const obj_t = obj[_t];
+                if (obj_t) {
+                    if (obj_t === 1) {
+                        delete obj[_t];
+                    } else {
+                        obj[_t]--;
+                    }
+                } else {
+                    obj[_t] = -1;
+                }
+            }
+            return JSON.stringify(obj) === '{}';
+        }
+
+        function isAnagram(s, t){
+            if (s.length !== t.length) {
+                return false;
+            }
+            const list = [];
+            for (let i = 0; i < s.length; i++) {
+                const si = s.codePointAt(i) - 64;
+                const ti = t.codePointAt(i) - 64;
+                list[si] = (list[si] || 0) + 1;
+                list[ti] = (list[ti] || 0) - 1;
+            }
+            for (let value of list) {
+                if (value) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        isAnagram('a', 'b');
     })();
 </script>
-<p class="red">257.二叉树的所有路径</p>
+<br>
+<p class="green">257.二叉树的所有路径</p>
+<p>⚠️难，思路：1.先判断root===null。2.如果是叶子几点，再push到list里。3.对于'->'的处理。重点是到叶子节点再push。</p>
 <script data-msg="257.二叉树的所有路径">
     (() => {
-        //  略，有几个叶子节点就有几个路径
+        function binaryTreePaths(root, list, str){
+            list = list || [];
+
+            if (root === null) {
+                return list;
+            }
+
+            if (str === undefined) {
+                str = root.val.toString();
+            } else {
+                str = str + '->' + root.val.toString();
+            }
+
+            //  是叶子节点
+            if (root.left === null && root.right === null) {
+                list.push(str);
+                return list;
+            }
+
+            //  如果有左节点
+            if (root.left) {
+                binaryTreePaths(root.left, list, str);
+            }
+            if (root.right) {
+                binaryTreePaths(root.right, list, str);
+            }
+
+            return list;
+        }
+
+        //              1
+        //      2              3
+        //  null   5
     })();
 </script>
-<p>258.各位相加</p>
+<br>
+<p class="red">258.各位相加</p>
+<p>💡数学问题</p>
 <script data-msg="258.各位相加">
     (() => {
         function getValue1(n){
@@ -990,9 +1132,16 @@
         // const res = getValue1(2273);
         const res = getValue2(2273);
         // console.log(res);
+
+        //  二刷
+        function addDigits(num){
+            return (num - 1) % 9 + 1;
+        }
     })();
 </script>
-<p class="red">263.丑数</p>
+<br>
+<p>263.丑数</p>
+<p>💡认真</p>
 <script data-msg="263.丑数">
     (() => {
         function getValue(n){
@@ -1010,9 +1159,36 @@
         const arr = [2, 3, 5];
         const res = getValue(128);
         // console.log(res);
+
+        //  二刷
+        function isUgly(num){
+            if (num < 1) {
+                return false;
+            }
+            while (num > 1) {
+                if (num % 2 === 0) {
+                    num /= 2;
+                    continue;
+                }
+                if (num % 3 === 0) {
+                    num /= 3;
+                    continue;
+                }
+                if (num % 5 === 0) {
+                    num /= 5;
+                    continue;
+                }
+                return false;
+            }
+            return true;
+        }
+
+        isUgly(14);
     })();
 </script>
-<p>268.缺失数字</p>
+<br>
+<p class="sky">268.缺失数字</p>
+<p>💡可以位运算，对于[0,1,3]，位运算算出来的是0，1，2，这时再异或一次数组的length，就多余了一个2。就是结果。</p>
 <script data-msg="268.缺失数字">
     (() => {
         const arr = [9, 6, 4, 2, 3, 5, 7, 0, 1];
@@ -1031,39 +1207,78 @@
 
         const res = getValue(arr);
         // console.log(res);
+
+        //  二刷
+        function missingNumber(nums){
+            let sum = (0 + nums.length) * (nums.length + 1) / 2;
+            for (let val of nums) {
+                sum -= val;
+            }
+            return sum;
+        }
+
+        //  位运算
+        function missingNumber(nums){
+            let sum = 0;
+            for (let i = 0; i < nums.length; i++) {
+                sum ^= i^nums[i];
+            }
+            return sum^nums.length;
+        }
+
+        missingNumber([0, 1, 3]);
+        //             0  1  2   3
     })();
 </script>
+<br>
 <p>278.第一个错误的版本</p>
+<p>💡一看就是二分，注意判断边界的方式，带符号右移和无符号右移的区别。</p>
 <script data-msg="278.第一个错误的版本">
     (() => {
-        return;
-        //  用了二分法，注意判断 <=
-        const solution = function (isBadVersion){
+        //  二刷
+        /**
+         * Definition for isBadVersion()
+         *
+         * @param {integer} version number
+         * @return {boolean} whether the version is bad
+         * isBadVersion = function(version) {
+         *     ...
+         * };
+         */
+
+        /**
+         * @param {function} isBadVersion()
+         * @return {function}
+         */
+        function solution(isBadVersion){
+            /**
+             * @param {integer} n Total versions
+             * @return {integer} The first bad version
+             */
             return function (n){
-                let start = 1;
-                let end = n;
-                while (start <= end) {
-                    const mid = Math.floor((start + end) / 2);
-                    //  如果是错的，那么错的可能在更前面
-                    if (!isBadVersion(mid)) {
-                        end = mid - 1;
+                let left = 1;
+                let right = n;
+                while (left < right) {
+                    let middle = (left + right) >>> 1;
+                    //  如果当前是一个错误的版本
+                    if (isBadVersion(middle)) {
+                        right = middle;
                     } else {
-                        start = mid + 1;
+                        //  如果当前不是错误版本
+                        left = middle + 1;
                     }
                 }
-                return start;
+                return left;
             };
         };
-        const fn = solution(function (n){
-            return Math.random() > 0.5;
-        });
-        console.log(fn(14));
+        solution((n) => n >= 1702766719)(2126753390);
     })();
 </script>
-<p>283.移动零</p>
-<script>
+<br>
+<p class="orange">283.移动零</p>
+<p>有研究价值</p>
+<script data-msg="283.移动零">
     (() => {
-        return;
         const arr = ['0', '2', '3', '0', '0', '2', '3', '0', '2', '3', '0', '2', '3', '2', '3', '4', '0', '3', '4', '0', '4', '3', '0', '3', '4', '2', '0', '2', '3', '1', '2', '3', '0', '3', '4', '0', '3', '4', '5', '0', '0', '4', '5', '0', '4', '5', '0', '5', '4', '0', '2', '4', '2', '1', '3', '0', '1', '2', '3', '0', '0', '1', '3', '0', '2', '3', '0'];
 
         function moveZero(arr){
@@ -1081,13 +1296,63 @@
             return arr;
         }
 
-        console.log(moveZero(arr));
+        //  二刷
+        function moveZeroes(nums){
+            const len = nums.length;
+            let count = 0;
+            for (let i = 0; i < nums.length;) {
+                //  删除0
+                if (nums[i] === 0) {
+                    count++;
+                    nums.splice(i, 1);
+                } else {
+                    i++;
+                }
+            }
+            while (nums.length < len) {
+                nums.push(0);
+            }
+            return nums;
+        }
+
+        function moveZeroes(nums){
+            //  当前i开始右数第一个不是0的index
+            let j = 0;
+            const len = nums.length;
+            for (let i = 0; i < len && j < len;) {
+                //  如果是0
+                if (nums[i] === 0) {
+                    //  j不可能比i小
+                    j = j <= i ? i + 1 : j;
+                    //  向右移动直到找到第一个零
+                    while (nums[j] === 0) {
+                        j++;
+                    }
+                    //  到头了
+                    if (j === len) {
+                        return nums;
+                    }
+                    //  nums[j]是第一个不是零的数
+                    nums[i] = nums[j];
+                    nums[j] = 0;
+                    j++;
+                    i++;
+                } else {
+                    //  不是零
+                    i++;
+                }
+            }
+            return nums;
+        }
+
+        moveZeroes([12, 3]);
     })();
 </script>
+<br>
 <p>290. 单词规律</p>
+<p>💡双map</p>
 <script data-msg="290. 单词规律">
     (() => {
-        return;
 
         //  pattern = "abba", str = "dog cat cat dog"
         function wordLaw(pattern, str){
@@ -1104,13 +1369,43 @@
         }
 
         const result = wordLaw('abbaccc', 'dog cat cat dog a a a');
-        console.log(result);
+
+        function wordPattern(pattern, str){
+            const list = str.split(' ');
+            if (list.length !== pattern.length) {
+                return false;
+            }
+            const map = {};
+            const reflectMap = {};
+            for (let i = 0; i < pattern.length; i++) {
+                const mapKey = pattern[i];
+                const value = map[mapKey];
+                const reflectKey = list[i];
+                if (!value) {
+                    //  需要新增
+                    map[mapKey] = reflectKey;
+                } else if (value !== reflectKey) {
+                    return false;
+                }
+                //  反射
+                if (!reflectMap[reflectKey]) {
+                    reflectMap[reflectKey] = mapKey;
+                } else if (reflectMap[reflectKey] !== mapKey) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        wordPattern('abba', 'dog dog dog dog');
     })();
 </script>
+<br>
 <p>292. Nim 游戏</p>
+<p>💡分析，巴什博奕，n%(m+1)!=0时，先手总是会赢的</p>
 <script data-msg="292. Nim 游戏">
     (() => {
-        return;
 
         /**
          * @return:boolean
@@ -1119,14 +1414,17 @@
             return n % 4 !== 0;
         }
 
-        const result = canWinNim(3);
-        console.log(result);
+        function canWinNim(n){
+            return n % 4;
+        }
     })();
 </script>
-<p>299. 猜数字游戏</p>
+<br>
+<p class="red">299. 猜数字游戏</p>
+<p>大有价值</p>
 <script data-msg="299. 猜数字游戏">
     (() => {
-        return;
+
         //   secret = "1123", guess = "0111"
         const guessFn = (secret, guess) => {
             //  完全正确
@@ -1155,9 +1453,70 @@
         };
         const result = guessFn('112341', '011000');
         // const result = guessFn('1807', '7810');
-        console.log(result);
+//        console.log(result);
+
+        function getHint(secret, guess){
+            const map = {};
+            let a = 0;
+            let b = 0;
+            for (let i = 0; i < guess.length; i++) {
+                const key = guess[i];
+                map[key] = (map[key] || 0) + 1;
+            }
+            for (let i = 0; i < secret.length;) {
+                const key = secret[i];
+                if (guess[i] === key) {
+                    map[key]--;
+                    a++;
+                    secret = secret.slice(0, i) + secret.slice(i + 1);
+                    guess = guess.slice(0, i) + guess.slice(i + 1);
+                } else {
+                    i++;
+                }
+            }
+            for (let i = 0; i < secret.length; i++) {
+                const key = secret[i];
+                if (map[key]) {
+                    b++;
+                    map[key]--;
+                }
+            }
+
+            return `${a}A${b}B`;
+        }
+
+        function getHint(secret, guess){
+            const map = {};
+            let a = 0;
+            let b = 0;
+            for (let i = 0; i < guess.length; i++) {
+                //  密码
+                const secret1 = secret[i];
+                //  猜的
+                const guess1 = guess[i];
+                if (secret1 === guess1) {
+                    a++;
+                } else {
+                    //  密码里多的，可能被用过了
+                    map[secret1] = map[secret1] || 0;
+                    if (map[secret1] < 0) {
+                        b++;
+                    }
+                    map[secret1]++;
+                    //  猜测使用，(map[secret1]++) 加为正数
+                    map[guess1] = map[guess1] || 0;
+                    if (map[guess1] > 0) {
+                        b++;
+                    }
+                    map[guess1]--;
+                }
+            }
+            return `${a}A${b}B`;
+        }
+        getHint('1807', '7810');
     })();
 </script>
+<br>
 <p>303. 区域和检索 - 数组不可变</p>
 <script data-msg="303. 区域和检索 - 数组不可变">
     (() => {
