@@ -1513,150 +1513,188 @@
             }
             return `${a}A${b}B`;
         }
+
         getHint('1807', '7810');
     })();
 </script>
 <br>
-<p>303. 区域和检索 - 数组不可变</p>
+<p class="red">303. 区域和检索 - 数组不可变</p>
+<p>大有价值，用的缓存</p>
 <script data-msg="303. 区域和检索 - 数组不可变">
     (() => {
-        return;
-        const arr = [-2, 0, 3, -5, 2, -1];
-        const map = {};
-
-        function sumRange(a, b){
-            const key = `${a},${b}`;
-            if (map[key]) {
-                console.log(map, key);
-                return map[key];
+        function NumArray(nums){
+            const sumList = [];
+            for (let i = 0; i < nums.length; i++) {
+                sumList[i] = (sumList[i - 1] || 0) + nums[i];
             }
-            const res = arr.slice(a, b + 1).reduce((prev, item) => {
-                return prev + item;
-            }, 0);
-            map[key] = res;
-            return res;
+            this.sumList = sumList;
         }
 
-        console.log(sumRange(0, 2));
-        console.log(sumRange(0, 2));
-        console.log(sumRange(0, 2));
-        console.log(sumRange(2, 5));
+        NumArray.prototype.sumRange = function (i, j){
+            return this.sumList[j] - (this.sumList[i - 1] || 0);
+        };
     })();
 </script>
-<p>326. 3的幂</p>
+<br>
+<p class="orange">326. 3的幂</p>
+<p>有价值，不递归不循环</p>
 <script data-msg="326. 3的幂">
     (() => {
-        return;
-
-        function getValue(n){
-            while (n >= 3 && (n /= 3) >= 3) {
-
+        //  思路1
+        function isPowerOfThree(n){
+            if (n < 0) {
+                return false;
             }
-            return (n % 3 === 1);
+            //  32位最大的3的幂次
+            const p = Math.pow(3, 19);
+            //  都会比p小3的倍数
+            return p % n === 0;
         }
 
-        for (let i = 0; i < 100; i++) {
-            if (getValue(i)) {
-                console.log(i);
-            }
+        //  思路2
+        function isPowerOfThree(n){
+            //  三进制
+            const str = n.toString(3);
+            //  3的幂次都应该是 100 ， 1000 这种
+            return str.replace(/0/ig, '') === '1';
         }
     })();
 </script>
-<p>342. 4的幂</p>
+<br>
+<p class="sky">342. 4的幂</p>
+<p>对于2，4，8这种，比较特殊因为二进制。需要使用位运算</p>
+<p>⚠️位运算运算符优先级非常低！建议无条件上小括号</p>
 <script data-msg="342. 4的幂">
     (() => {
-        return;
+        //  2.思路如上，但是新能有问题
 
-        function isPowerOfFour(n){
-            while (n >= 4 && (n % 1 === 0)) {
-                n /= 4;
+        //  64 0b1000000 和 32 0b100000 相比，首位在的位置不一样，4进制是奇数位
+        //  二刷
+        function isPowerOfFour(num){
+            //  先用魔术筛一遍首位，排除是2的次幂
+            if (!!(0x55555555&num)) {
+                //  再排除不是5 0b101
+                //  原理： 0b100 与 0b011 互补，异或为1，与为0
+                return (num&(num - 1)) === 0;
             }
-            return (n === 1);
+            return false;
         }
 
-        for (let i = 0; i < Math.pow(2, 22); i++) {
-            if (isPowerOfFour(i)) {
-                console.log(i);
+        isPowerOfFour(-2147483648);
+    })();
+</script>
+<br>
+<p>344. 反转字符串</p>
+<p>-</p>
+<script data-msg="344. 反转字符串">
+    (() => {
+        //  二刷
+        function reverseString(s){
+            let left = 0;
+            let right = s.length - 1;
+            while (left < right) {
+                const _left = s[left];
+                const _right = s[right];
+                s[left] = _right;
+                s[right] = _left;
+                left++;
+                right--;
             }
+            return s;
         }
     })();
 </script>
 <p>345. 反转字符串中的元音字母</p>
+<p>-</p>
 <script data-msg="345. 反转字符串中的元音字母">
     (() => {
-        return;
         const map = {
             a: true,
+            o: true,
             e: true,
             i: true,
-            o: true,
             u: true,
+            A: true,
+            O: true,
+            E: true,
+            I: true,
+            U: true,
         };
 
-        // function getValue(str){
-        //     const _str = str.split('');
-        //     //  str里的元音音素
-        //     const yArr = [];
-        //     _str.forEach((item, index) => {
-        //         if (map[item]) {
-        //             yArr.push(item);
-        //         }
-        //     });
-        //     return _str.map((item, index) => {
-        //         if (map[item]) {
-        //             return yArr.pop();
-        //         }
-        //         return item;
-        //     }).join('');
-        // }
-
-        function getValue(str){
-            let start = 0;
-            let end = 0;
-            startLabel:for (let i = 0; i < str.length - end; i++) {
-                if (!map[str[i]]) {
-                    continue;
+        function reverseVowels(s){
+            const list = s.split('');
+            //  leetcode
+            let left = 0;
+            let right = s.length - 1;
+            while (left < right) {
+                let isReverse = true;
+                const _left = list[left];
+                const _right = list[right];
+                if (map[_left] === undefined) {
+                    left++;
+                    isReverse = false;
                 }
-                start = i;
-                for (let j = str.length - 1 - end; j > i; j--) {
-                    if (!map[str[j]]) {
-                        continue;
-                    }
-                    end = str.length - j;
-                    str = str.slice(0, i) + str[j] + str.slice(i + 1, j) + str[i] + str.slice(j + 1);
-                    continue startLabel;
+                if (map[_right] === undefined) {
+                    right--;
+                    isReverse = false;
                 }
-
+                if (isReverse) {
+                    list[left] = _right;
+                    list[right] = _left;
+                    left++;
+                    right--;
+                }
             }
-            return str;
+            return list.join('');
         }
-
-        console.log(getValue('kobe bryant lebron james micheal jordan'));
-        console.log(getValue('kabo bryant lebrin jemas mocheal jerdon'));
     })();
 </script>
+<br>
 <p>349. 两个数组的交集</p>
+<p>⚠️如果数组元素较多，需要先除重</p>
 <script data-msg="349. 两个数组的交集">
     (() => {
-        return;
-        const nums1 = [1, 2, 2, 1];
-        const nums2 = [2, 2];
-
-        function getValue(n1, n2){
+        function intersection(nums1, nums2){
+            const list = [];
+            if (nums1.length === 0 || nums2.length === 0) {
+                return list;
+            }
             const map = {};
-            n1.forEach(item => {
-                map[item] = true;
-            });
-            const result = n2.filter(item => {
-                if (map[item]) {
-                    delete map[item];
-                    return item;
+            nums1 = [...new Set(nums1)];
+            nums2 = [...new Set(nums2)];
+            for (let value of nums1) {
+                map[value] = true;
+            }
+            for (let value of nums2) {
+                if (map[value]) {
+                    list.push(value);
+                    delete map[value];
                 }
-            });
-            return result;
+            }
+            return list;
         }
 
-        console.log(getValue(nums1, nums2));
+        //  这里只需要一个数组就行了，上面的方法多余了
+        function intersection(nums1, nums2){
+            nums1 = new Set(nums1);
+            nums2 = [...new Set(nums2)];
+            const list = [];
+            for (let value of nums2) {
+                if (nums1.has(value)) {
+                    list.push(value);
+                }
+            }
+            return list;
+        }
+    })();
+</script>
+<br>
+<p>350. 两个数组的交集 II</p>
+<script data-msg="350. 两个数组的交集 II">
+    (() => {
+        function intersect(nums1, nums2){
+        
+        }
     })();
 </script>
 <p>367. 有效的完全平方数</p>
