@@ -1269,7 +1269,7 @@
 </script>
 <br>
 <p class="orange">496. 下一个更大元素 I</p>
-<p>⚠️值得研究，维护单调栈，维护map</p>
+<p>⚠️值得研究，维护单调栈，维护map，没重复肯定map。</p>
 <script data-msg="496. 下一个更大元素 I">
     (() => {
         // return;
@@ -1336,26 +1336,98 @@
                 //  如果右面的更大，说明就是右面的第一个更大的数
                 if (next > current) {
                     map[current] = next;
+                    while (stack[0] < next) {
+                        map[stack[0]] = next;
+                        stack.shift();
+                    }
                 } else {
-                
+                    stack.unshift(current);
                 }
             }
+            return nums1.map(item => map[item] || -1);
         }
     })();
 </script>
 <br>
-<p>500. 键盘行，给定一个单词列表，只返回可以使用在键盘同一行的字母打印出来的单词。键盘如下图所示。</p>
-<script data-msg="500. 键盘行，给定一个单词列表，只返回可以使用在键盘同一行的字母打印出来的单词。键盘如下图所示。">
+<p>500. 键盘行</p>
+<p>-</p>
+<script data-msg="500. 键盘行">
     (() => {
-        //  略
+        const map = {
+            'q': 1,
+            'w': 1,
+            'e': 1,
+            'r': 1,
+            't': 1,
+            'y': 1,
+            'u': 1,
+            'i': 1,
+            'o': 1,
+            'p': 1,
+            'Q': 1,
+            'W': 1,
+            'E': 1,
+            'R': 1,
+            'T': 1,
+            'Y': 1,
+            'U': 1,
+            'I': 1,
+            'O': 1,
+            'P': 1,
+            'a': 2,
+            's': 2,
+            'd': 2,
+            'f': 2,
+            'g': 2,
+            'h': 2,
+            'j': 2,
+            'k': 2,
+            'l': 2,
+            'A': 2,
+            'S': 2,
+            'D': 2,
+            'F': 2,
+            'G': 2,
+            'H': 2,
+            'J': 2,
+            'K': 2,
+            'L': 2,
+            'z': 3,
+            'x': 3,
+            'c': 3,
+            'v': 3,
+            'b': 3,
+            'n': 3,
+            'm': 3,
+            'Z': 3,
+            'X': 3,
+            'C': 3,
+            'V': 3,
+            'B': 3,
+            'N': 3,
+            'M': 3
+        };
+
+        function findWords(words){
+            const list = [];
+            wrap:for (const str of words) {
+                let prev = map[str[0]];
+                for (let i = 1; i < str.length; i++) {
+                    if (map[str[i]] !== prev) {
+                        continue wrap;
+                    }
+                }
+                list.push(str);
+            }
+            return list;
+        }
     })();
 </script>
-<p class="red">501. 二叉搜索树中的众数，给定一个有相同值的二叉搜索树（BST），找出 BST 中的所有众数（出现频率最高的元素）。 假定 BST
-    有如下定义：，结点左子树中所含结点的值小于等于当前结点的值，结点右子树中所含结点的值大于等于当前结点的值，左子树和右子树都是二叉搜索树</p>
-<script data-msg=">501. 二叉搜索树中的众数，给定一个有相同值的二叉搜索树（BST），找出 BST 中的所有众数（出现频率最高的元素）。 假定 BST 有如下定义：，结点左子树中所含结点的值小于等于当前结点的值，结点右子树中所含结点的值大于等于当前结点的值，左子树和右子树都是二叉搜索树">
+<br>
+<p class="red">501. 二叉搜索树中的众数</p>
+<p>🌲⚠️️⚠️️⚠️️</p>
+<script data-msg=">501. 二叉搜索树中的众数">
     (() => {
-        return;
-
         //  中序遍历，然后就是一个有序数组了，不需要额外的空间，中序遍历难，那就快排递归
         function findMode(root){
             console.log(root);
@@ -1399,15 +1471,19 @@
             return quickSort(left).concat(middleArr).concat(quickSort(right));
         }
 
-        const res = findMode([1, null, 2, 2]);
-        console.log(res);
+//        const res = findMode([1, null, 2, 2]);
+
+        //  二刷
+        function findMode(){
+
+        }
     })();
 </script>
-<p>504. 七进制数，给定一个整数，将其转化为7进制，并以字符串形式输出。</p>
-<script data-msg="504. 七进制数，给定一个整数，将其转化为7进制，并以字符串形式输出。">
+<br>
+<p>504. 七进制数</p>
+<p>⚠️要考虑的东西还是蛮多的，负数，零</p>
+<script data-msg="504. 七进制数">
     (() => {
-        return;
-
         function convertToBase7(num){
             const arr = [];
             while (num > 0) {
@@ -1418,16 +1494,37 @@
             return arr.join('');
         }
 
-        const res = convertToBase7(100);
-        console.log(res);
+//        const res = convertToBase7(100);
+//        console.log(res);
+
+        //  二刷
+        function convertToBase7(nums){
+            let str = '';
+            if (nums === 0) {
+                return '0';
+            }
+            const isLessThanZero = nums < 0;
+            if (isLessThanZero) {
+                nums = -nums;
+            }
+            while (nums) {
+                str = nums % 7 + str;
+                nums = (nums / 7)|0;
+            }
+            if (isLessThanZero) {
+                str = '-' + str;
+            }
+            return str;
+        }
+
+        convertToBase7(-8);
     })();
 </script>
-<p>506. 相对名次，给出 N 名运动员的成绩，找出他们的相对名次并授予前三名对应的奖牌。前三名运动员将会被分别授予 “金牌”，“银牌” 和“ 铜牌”（"Gold Medal", "Silver Medal", "Bronze
-    Medal"）。(注：分数越高的选手，排名越靠前。)</p>
-<script data-msg="506. 相对名次，给出 N 名运动员的成绩，找出他们的相对名次并授予前三名对应的奖牌。前三名运动员将会被分别授予 “金牌”，“银牌” 和“ 铜牌”（Gold Medal）。(注：分数越高的选手，排名越靠前。)">
+<br>
+<p>506. 相对名次</p>
+<p>有一种额外方法，空间换取时间</p>
+<script data-msg="506. 相对名次">
     (() => {
-        return;
-
         function findRelativeRanks(list){
             const price = ['Gold Medal', 'Silver Medal', 'Bronze Medal'];
             let len = price.length;
@@ -1440,15 +1537,59 @@
             return price.concat(list);
         }
 
-        const res = findRelativeRanks([5, 4, 3, 2, 1]);
-        console.log(res);
+        //  二刷
+        function findRelativeRanks(list){
+            const price = ['Gold Medal', 'Silver Medal', 'Bronze Medal'];
+            //  源数据
+            const origin = list.map(item => item);
+            list.sort((a, b) => b - a);
+            //  前三，真删了
+            const top3 = list.splice(0, 3);
+            const topMap = {};
+            top3.forEach((item, index) => {
+                topMap[item] = price[index];
+            });
+            const map = {};
+            //  后面的名次了
+            list.forEach((item, index) => {
+                //  前面删了3个
+                map[item] = (index + 4).toString();
+            });
+            return origin.map(item => {
+                return topMap[item] || map[item];
+            });
+
+        }
+
+        //  一种特殊方法
+        function findRelativeRanks(list){
+            const max = Math.max.apply(null, list);
+            //  mapList记录的是，当前这个分数下，list的下标
+            const mapList = new Array(max + 1).fill(-Infinity);
+            for (let i = 0; i < list.length; i++) {
+                mapList[list[i]] = i;
+            }
+
+            const price = ['Gold Medal', 'Silver Medal', 'Bronze Medal'];
+            //  [5, 2, 3] ->  [,,1,2,,0]
+            let next = 4;
+            for (let i = mapList.length - 1; i >= 0; i--) {
+                const item = mapList[i];
+                if (item === -Infinity) {
+                    continue;
+                }
+                list[item] = price.length ? price.shift() : (next++).toString();
+            }
+            return list;
+        }
+
     })();
 </script>
-<p>507. 完美数，对于一个 正整数，如果它和除了它自身以外的所有正因子之和相等，我们称它为“完美数”。给定一个 整数 n， 如果他是完美数，返回 True，否则返回 False</p>
-<script data-msg="507. 完美数，对于一个 正整数，如果它和除了它自身以外的所有正因子之和相等，我们称它为“完美数”。给定一个 整数 n， 如果他是完美数，返回 True，否则返回 False">
+<br>
+<p>507. 完美数</p>
+<p>⚠️这是第一次二刷不如初始的</p>
+<script data-msg="507. 完美数">
     (() => {
-        return;
-
         function checkPerfectNumber(num){
             const sqrt = Math.sqrt(num);
             let i = 1;
@@ -1469,11 +1610,64 @@
             return sum === num;
         }
 
-        const res = checkPerfectNumber(18);
-        console.log(res);
+//        const res = checkPerfectNumber(18);
+//        console.log(res);
+
+        //  二刷
+        function checkPerfectNumber(num){
+            const list = [1];
+            let left = Math.sqrt(num)|0;
+            if (left * left === num) {
+                list.push(left);
+                left--;
+            }
+            let right = left + 1;
+            while (left > 1) {
+                const res = left * right;
+                if (res === num) {
+                    list.push(left);
+                    list.push(right);
+                    left--;
+                    right++;
+                } else {
+                    left--;
+                    right = (num / left)|0;
+                }
+            }
+            return list.reduce((prev, current) => prev + current, 0) === num;
+        }
+
+        //  again
+        function checkPerfectNumber(num){
+            if (num === 0) {
+                return false;
+            }
+            let sqrt = Math.sqrt(num);
+
+            //  while循环多加了一个num，在sqrt===1的时候
+            let sum = -num;
+            if ((sqrt|0) === sqrt) {
+                sum += sqrt;
+                sqrt--;
+            } else {
+                sqrt = sqrt|0;
+            }
+            while (sqrt) {
+                if (num % sqrt === 0) {
+                    sum += sqrt;
+                    sum += num / sqrt;
+                }
+                sqrt--;
+            }
+            return num === sum;
+        }
+
+        checkPerfectNumber(0);
     })();
 </script>
+<br>
 <p>509. 斐波那契数</p>
+<p>经典</p>
 <script data-msg="509. 斐波那契数">
     (() => {
         return;
@@ -1506,60 +1700,84 @@
             return fib(--n, b, a + b);
         }
 
-        for (let i = 1; i < 10; i++) {
+        function fib(n){
+            if (n <= 1) {
+                return n;
+            }
+            return fn(n - 1);
+        }
+
+        function fn(n, a, b){
+            n = n || 0;
+            a = a || 0;
+            b = b || 1;
+            if (n === 0) {
+                return b;
+            }
+            return fn(n - 1, b, a + b);
+        }
+
+        for (let i = 0; i < 10; i++) {
             const res = fib(i);
             console.log(res);
         }
 
     })();
 </script>
-<p>520. 检测大写字母，给定一个单词，你需要判断单词的大写使用是否正确。
-    我们定义，在以下情况时，单词的大写用法是正确的：
-    全部字母都是大写，比如"USA"。
-    单词中所有字母都不是大写，比如"leetcode"。
-    如果单词不只含有一个字母，只有首字母大写， 比如 "Google"。
-    否则，我们定义这个单词没有正确使用大写字母。</p>
-<script data-msg="520. 检测大写字母，给定一个单词，你需要判断单词的大写使用是否正确。我们定义，在以下情况时，单词的大写用法是正确的：   全部字母都是大写，比如'USA'。 单词中所有字母都不是大写，比如'leetcode'。 如果单词不只含有一个字母，只有首字母大写， 比如 'Google'。 否则，我们定义这个单词没有正确使用大写字母。">
+<br>
+<p>520. 检测大写字母</p>
+<p>-</p>
+<script data-msg="520. 检测大写字母">
     (() => {
-        return;
+        //  二刷
+        function detectCapitalUse(word){
+            if (word.toUpperCase() === word) {
+                return true;
+            }
+            if (word.toLowerCase() === word) {
+                return true;
+            }
+            const startUnicode = word.charCodeAt(0);
+            //  首字母必须大写了
+            if (!(startUnicode >= 64 && startUnicode <= 89)) {
+                return false;
+            }
+            for (let i = 1; i < word.length; i++) {
+                const startUnicode = word.charCodeAt(i);
+                //  必须是小写字母
+                if (!(startUnicode >= 97 && startUnicode <= 122)) {
+                    return false;
+                }
+            }
+            return true;
+        }
 
-        // function detectCapitalUse(word){
-        //     let n = word.length;
-        //     let res = 0;
-        //     while (n--) {
-        //         //  是小写
-        //         if (word[n].charCodeAt(0) >= 97) {
-        //
-        //         } else {
-        //             res++;
-        //         }
-        //     }
-        //     if (res === word.length || res === 0) {
-        //         return true;
-        //     }
-        //     if (res === 1 && word[0].charCodeAt(0) < 97) {
-        //         return true;
-        //     }
-        //     return false;
-        // }
-
-        //
-        var detectCapitalUse = function (word){
-            let reg1 = /^[A-Z]*$/;
-            let reg2 = /^[A-Z][a-z]*$/;
-            let reg3 = /^[a-z]*$/;
-            return reg1.test(word) || reg2.test(word) || reg3.test(word);
-        };
-
-        const res = detectCapitalUse('FFF');
-        console.log(res);
+        detectCapitalUse('Leetceo');
     })();
 </script>
-<p>530. 二叉搜索树的最小绝对差，给你一棵所有节点为非负值的二叉搜索树，请你计算树中任意两节点的差的绝对值的最小值。</p>
-<script data-msg="530. 二叉搜索树的最小绝对差，给你一棵所有节点为非负值的二叉搜索树，请你计算树中任意两节点的差的绝对值的最小值。">
+<br>
+<p>521. 最长特殊序列 Ⅰ</p>
+<p>垃圾题目</p>
+<script data-msg="521. 最长特殊序列 Ⅰ">
     (() => {
-        return;
+        function findLUSlength(a, b){
+            if (a === b) {
+                return -1;
+            }
+            if (a.length === b.length) {
+                return a.length;
+            }
+            return Math.max(a.length, b.length);
 
+        }
+    })();
+</script>
+<br>
+<p class="green">530. 二叉搜索树的最小绝对差</p>
+<p>⚠️二叉搜索树，不是后续遍历，应该中序遍历</p>
+<p>⚠️中序遍历</p>
+<script data-msg="530. 二叉搜索树的最小绝对差">
+    (() => {
         function getMinimumDifference(list){
             list = list.sort((a, b) => a - b);
             let min = Infinity;
@@ -1573,66 +1791,145 @@
             return min;
         }
 
-        console.log();
+        //  二刷
+        function getMinimumDifference(root){
+            if (root === null) {
+                return 0;
+            }
+            const list = [];
+            traverse(root, list);
+            let minDiff = Infinity;
+            for (let i = 1; i < list.length; i++) {
+                const prev = list[i - 1];
+                const current = list[i];
+                if (current - prev < minDiff) {
+                    minDiff = current - prev;
+                }
+            }
+            return minDiff;
+        }
 
+        //  push
+        function traverse(node, list){
+            if (node.left) {
+                traverse(node.left, list);
+            }
+            list.push(node.val);
+            if (node.right) {
+                traverse(node.right, list);
+            }
+            return list;
+        }
+
+        //  中序遍历
+        function getMinimumDifference(root){
+            if (root === null) {
+                return 0;
+            }
+            //  前一个
+            let prev = null;
+            let min = Infinity;
+
+            function traverse(root){
+                if (root.left) {
+                    traverse(root.left);
+                }
+                if (prev && prev !== root) {
+                    const dif = prev.val - root.val;
+                    min = Math.min(min, Math.abs(dif));
+                }
+                prev = root;
+                if (root.right) {
+                    traverse(root.right);
+                }
+                return min;
+            }
+
+            return traverse(root);
+        }
+
+        //         236
+        //     104      701
+        //  null 227  null 911
+
+        //         600
+        //    424       612
+        //  null 499  null 689
     })();
 </script>
-<p class="red">532. 数组中的K-diff数对，给定一个整数数组和一个整数 k, 你需要在数组里找到不同的 k-diff 数对。这里将 k-diff 数对定义为一个整数对 (i, j), 其中 i 和 j
-    都是数组中的数字，且两数之差的绝对值是 k.</p>
-<script data-msg="532. 数组中的K-diff数对，给定一个整数数组和一个整数 k, 你需要在数组里找到不同的 k-diff 数对。这里将 k-diff 数对定义为一个整数对 (i, j), 其中 i 和 j 都是数组中的数字，且两数之差的绝对值是 k.">
+<br>
+<p class="red">532. 数组中的K-diff数对</p>
+<p>⚠️非常有价值，用一个map去重的思想。</p>
+<script data-msg="532. 数组中的K-diff数对">
     (() => {
-        return;
-
-        //  自己写的这个还行吧
-        function findPairs(list, k){
+        //  二刷
+        function findPairs(nums, k){
             if (k < 0) {
                 return 0;
             }
-            const map = {};
-            let sum = 0;
-            list.forEach(key => {
-                map[key] = map[key] || 0;
-                if (k !== 0) {
-                    if (map[key - k] || map[key + k]) {
-                        //  保证是第一次，注意这时候我还没有++
-                        if (map[key] === 0) {
-                            sum++;
-                        }
-                    }
-                } else {
-                    if (map[key] === 1) {
-                        sum++;
-                    }
+            const obj = {};
+            const diff = new Set();
+            console.log(nums);
+            //  💡💡💡💡️原理是总是存一个小的
+            for (const value of nums) {
+                if (obj[value - k]) {
+                    //  对于 1 - 3 对，这个 存的是 1
+                    diff.add(value - k);
                 }
-                map[key]++;
-            });
-            return sum;
+                if (obj[value + k]) {
+                    //  对于3 - 5 对，这个存的是 3
+                    diff.add(value);
+                }
+                obj[value] = true;
+                console.log('🍎obj', obj, '🍎value', value, '🍎k', k, '🍎diff', diff);
+            }
+            console.log(diff.size);
+            return diff.size;
         }
 
-        console.log(findPairs([3, 1, 4, 1, 5], 2));
-        console.log(findPairs([1, 2, 3, 4, 5], 1));
-        console.log(findPairs([1, 3, 1, 5, 4], 0));
-        console.log(findPairs([1, 3, 1, 5, 4, 3, 4, 2, 1, 1, 1, 1], 0));
+//        function findPairs(nums, k){
+//            if (k < 0) {
+//                return 0;
+//            }
+//            //  除重用
+//            const asSet = {};
+//            //  计数
+//            let count = 0;
+//            if (k === 0) {
+//                for (const value of nums) {
+//                    if (asSet[value] === false) {
+//                        asSet[value] = true;
+//                        count++;
+//                        continue;
+//                    }
+//                    if (!asSet[value]) {
+//                        asSet[value] = false;
+//                    }
+//                }
+//            } else {
+//                for (const value of nums) {
+//                    if (asSet[value]) {
+//                        continue;
+//                    }
+//                    asSet[value] = true;
+//                    if (asSet[value - k]) {
+//                        count++;
+//                    }
+//                    if (asSet[value + k]) {
+//                        count++;
+//                    }
+//                }
+//            }
+//            return count;
+//        }
 
-        // function fn(arr, n){
-        //     const hash = {};
-        //     let sum = 0;
-        //     arr.forEach(key => {
-        //         hash[key] = hash[key] || 0;
-        //         if (hash[n - key]) {
-        //             if (hash[key] === 1) {
-        //                 sum++;
-        //             }
-        //         }
-        //         hash[key]++;
-        //     });
-        //     // console.log(hash);
-        //     return sum;
-        // }
-
-        // const arr = [1, 2, 3, 3, 3, 4, 2, 5];
-        // const res = fn(arr, 4);
-        // console.log(res);
+//        debugger
+//        findPairs([6, 3, 5, 7, 2, 3, 3, 8, 2, 4], 2);
+//        findPairs([1, 3, 1, 5, 4], 0);
+//        findPairs([1, 1, 1, 1, 1], 0);
+        //  findPairs([1, 2, 3, 4, 5], 1);
+        findPairs([1, 5, 3], 2);
+        //  输入: [3, 1, 4, 1, 5], 2
     })();
 </script>
 <p class="red">538. 把二叉搜索树转换为累加树，给定一个二叉搜索树（Binary Search Tree），把它转换成为累加树（Greater Tree)，使得每个节点的值是原来的节点值加上所有大于它的节点值之和。</p>
