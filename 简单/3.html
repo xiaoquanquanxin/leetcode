@@ -1862,6 +1862,8 @@
 <p>⚠️非常有价值，用一个map去重的思想。</p>
 <script data-msg="532. 数组中的K-diff数对">
     (() => {
+        return;
+
         //  二刷
         function findPairs(nums, k){
             if (k < 0) {
@@ -1932,18 +1934,40 @@
         //  输入: [3, 1, 4, 1, 5], 2
     })();
 </script>
-<p class="red">538. 把二叉搜索树转换为累加树，给定一个二叉搜索树（Binary Search Tree），把它转换成为累加树（Greater Tree)，使得每个节点的值是原来的节点值加上所有大于它的节点值之和。</p>
+<br>
+<p class="green">538. 把二叉搜索树转换为累加树</p>
+<p>⚠️是二叉搜索树，💡一看就是中序遍历，但是是先遍历右子树的中序遍历</p>
 <script data-msg="538. 把二叉搜索树转换为累加树">
     (() => {
+        //  二刷
+        function convertBST(root){
+            let prevSum = 0;
+            if (root === null) {
+                return root;
+            }
+            traverse(root, prevSum);
+            return root;
+        }
+
+        function traverse(node, prevSum){
+            if (node.right) {
+                prevSum = traverse(node.right, prevSum);
+            }
+            node.val += prevSum;
+            prevSum = node.val;
+            if (node.left) {
+                prevSum = traverse(node.left, prevSum);
+            }
+            return prevSum;
+        }
 
     })();
 </script>
-<p>541. 反转字符串 II，给定一个字符串 s 和一个整数 k，你需要对从字符串开头算起的每隔 2k 个字符的前 k 个字符进行反转。 如果剩余字符少于 k 个，则将剩余字符全部反转。 如果剩余字符小于 2k 但大于或等于 k
-    个，则反转前 k 个字符，其余字符保持原样。</p>
+<br>
+<p>541. 反转字符串 II</p>
+<p></p>
 <script data-msg="541. 反转字符串 II">
     (() => {
-        return;
-
         function reverseStr(s, k){
             let str = '';
             for (let i = 0; i < s.length; i += k) {
@@ -1956,11 +1980,23 @@
             return str;
         }
 
-        const str = reverseStr('abcdefg', 2);
-        console.log(str);
+//        const str = reverseStr('abcdefg', 2);
+//        console.log(str);
 
+        //  二刷
+        function reverseStr(s, k){
+            let str = '';
+            for (let i = 0; i < s.length; i += 2 * k) {
+                str += s.substr(i, k).split('').reverse().join('');
+                str += s.substr(i + k, k);
+            }
+            return str;
+        }
+        
+        reverseStr('abcdefg', 2);
     })();
 </script>
+<br>
 <p class="red">543. 二叉树的直径，给定一棵二叉树，你需要计算它的直径长度。一棵二叉树的直径长度是任意两个结点路径长度中的最大值。这条路径可能穿过也可能不穿过根结点。</p>
 <script data-msg="543. 二叉树的直径">
     (() => {
