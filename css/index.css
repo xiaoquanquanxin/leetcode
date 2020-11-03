@@ -1,16 +1,36 @@
+/*解不出 */
+.danger {
+    color: brown;
+    font-weight: 600;
+}
+
+/*难题*/
 .red {
     color: red;
 }
 
+/*有更好的解法，一般要看题解*/
 .orange {
     color: orange;
 }
 
+/*链表*/
 .yellow {
     text-shadow: 1px 1px 1px black, 1px -1px 1px black, -1px 1px 1px black, -1px -1px 1px black;
     color: yellow;
 }
 
+/*位运算*/
+.sky {
+    color: skyblue;
+}
+
+/*树*/
 .green {
     color: green;
+}
+
+
+p {
+    margin-top: 0;
 }
