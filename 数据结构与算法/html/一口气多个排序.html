@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>一口气多个排序</title>
+</head>
+<body>
+<script data-msg="基础" src="../js/basic.js"></script>
+<script data-msg="测试">
+    const th = 1000;
+    const w = 10000;
+    const sw = 100000;
+    const bw = 1000000;
+    const qw = 10000000;
+    console.time('系统内置1bw');
+
+    //        const arr = getArr(bw);
+    //        arr.sort((a, b) => a - b);
+    //        arr.sort();
+    console.timeEnd('系统内置1bw');
+</script>
+<script data-msg="冒泡排序">
+    (() => {
+        const sort = () => {};
+        const arr = getArr(w);
+        console.time('冒泡排序');
+        sort(arr);
+        console.timeEnd('冒泡排序1w');
+        checkIsSort(arr, '冒泡排序1w');
+    })();
+</script>
+<script data-msg="选择排序">
+    (() => {
+        const sort = () => {};
+        const arr = getArr(w);
+        console.time('选择排序1w');
+        sort(arr);
+        console.timeEnd('选择排序1w');
+        checkIsSort(arr, '选择排序');
+    })();
+</script>
+<script data-msg="插入排序">
+    (() => {
+        //  少女强迫症，先排前n个，直到排完
+        const sort = () => {};
+        const arr = getArr(w);
+        console.time('插入排序1w');
+        sort(arr);
+        console.timeEnd('插入排序1w');
+        checkIsSort(arr, '插入排序');
+    })();
+</script>
+<script data-msg="归并排序">
+    (() => {
+        return;
+        const merge = (leftArr, rightArr) => {
+            let leftIndex = 0;
+            let rightIndex = 0;
+            const arr = [];
+            while (leftIndex < leftArr.length || rightIndex < rightArr.length) {
+                const leftValue = leftArr[leftIndex];
+                const rightValue = rightArr[rightIndex];
+                if (leftValue === undefined) {
+                    arr.push(rightValue);
+                    rightIndex++;
+                    continue;
+                }
+                if (rightValue === undefined) {
+                    arr.push(leftValue);
+                    leftIndex++;
+                    continue;
+                }
+                if (leftValue > rightValue) {
+                    arr.push(rightValue);
+                    rightIndex++;
+                    continue;
+                }
+                if (leftValue < rightValue) {
+                    arr.push(leftValue);
+                    leftIndex++;
+                    continue;
+                }
+                //  相等
+                arr.push(leftValue);
+                arr.push(rightValue);
+                leftIndex++;
+                rightIndex++;
+            }
+            return arr;
+        };
+        const sort = (arr) => {
+            if (arr.length < 2) {
+                return arr;
+            }
+            const middleIndex = (arr.length) >> 1;
+            const list1 = sort(arr.slice(0, middleIndex));
+            const list2 = sort(arr.slice(middleIndex));
+            return merge(list1, list2);
+        };
+        const arr = getArr(bw);
+        console.time('归并排序1bw');
+        const _arr = sort(arr, 0, arr.length - 1);
+        console.timeEnd('归并排序1bw');
+        checkIsSort(_arr, '归并排序1bw');
+    })();
+</script>
+<script data-msg="快速排序">
+    (() => {
+        const sort = () => {};
+        //  ⚠️ 注意参数
+
+        const arr = getArr(bw);
+        console.time('快速排序1bw');
+        sort(arr, 0, arr.length - 1);
+        console.timeEnd('快速排序1bw');
+        checkIsSort(arr, '快速排序');
+    })();
+</script>
+<script data-msg="堆排序">
+    (() => {
+        //  获取左子节点
+        const getLeftNodeIndex = (index) => (index << 1) + 1;
+        //  堆化，对于 arr，以 index 为头，length是数据长度
+        const heapify = (arr, index, length) => {};
+        //  堆排序
+        const sort = () => {};
+        const arr = getArr(bw);
+        console.time('堆排序1bw');
+        sort(arr);
+        console.timeEnd('堆排序1bw');
+        checkIsSort(arr, '堆排序');
+    })();
+</script>
+<script data-msg="桶排序">
+    (() => {
+        //  上面所有排序都是有一个比较的过程，桶排序不比较数值大小，只分类
+        //  先按个位数分类；再按十位数分类；再按百位数分类。。。
+
+        //  基于二进制的桶排序
+        const sort = () => {};
+        const arr = getArr(bw);
+        console.time('桶排序1bw');
+        sort(arr);
+        console.timeEnd('桶排序1bw');
+        checkIsSort(arr, '桶排序');
+
+    })();
+</script>
+</body>
+</html>

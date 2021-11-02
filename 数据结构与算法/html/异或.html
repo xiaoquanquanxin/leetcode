@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>异或</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+<h1>异或</h1>
+<p>异或是无进位相加：异或的结果和某一位上1的个数是否为奇数个有关</p>
+<hr>
+<div class="eg">
+    <p>题目</p>
+    <ol>
+        <li>模拟加法</li>
+        <li>数组中唯一一个出现了奇数次数的数</li>
+        <li>
+            <p>数组中唯二的二个出现了奇数次数的数</p>
+            <div class="idea">
+                <p>思路</p>
+                <p>假设，a和b是要求的数。</p>
+                <p>和唯一数类似，但是异或一遍以后，只能异或出来一个结果，a^b。那么根据异或是某一位上1出现的次数，这个值就是一个 <span class="vi">按位差</span>，比如说第8位上a=0，b=1，第6位上相反
+                </p>
+                <p class="im">这个 <span class="vi">按位差</span> 需要取 <span class="vi">某一位</span>，因为假设 <span class="vi">按位差</span>
+                    的结果是111，那么不确定111是否均来自a或b，也许是a和b共同提供了3位1。</p>
+                <p>为了方便， <span class="im">取右数不是零的第一位</span> xor & (~xor + 1)</p>
+                <p>在整个数组中，可以根据这个 <span class="vi">按位差</span>，分成2部分：1.第8位上有1的数；2.第8位上没有1的数。a和b会被分开。</p>
+                <p>因为相同的数完全忽略掉了，所以进行第二次异或运算，只对第八位上是1的数进行异或运算，这就会得到a或b，那么另一个数也就出来了</p>
+            </div>
+        </li>
+    </ol>
+</div>
+<script data-msg="模拟加法">
+    const add = (a, b) => {
+        if (a === 0 || b === 0) {
+            return a|b;
+        }
+        while (a&b) {
+            const xor = a^b;
+            const and = a&b;
+            a = and << 1;
+            b = xor;
+        }
+        return a|b;
+    };
+    //  console.log(add(3232 + -1212));
+</script>
+<script data-msg="数组中唯一一个出现了奇数次数的数">
+    (() => {
+        const arr = [1, 2, 3, 4, 5, 7, 5, 4, 3, 2, 1];
+        const xor = arr.reduce((prev, current) => {
+            return prev^current;
+        }, 0);
+        //  console.log(xor);
+    })();
+</script>
+<script data-msg="数组中唯二的二个出现了奇数次数的数">
+    (() => {
+        const arr = [1, 2, 3, 4, 5, 14, 17, 5, 4, 3, 2, 1];
+        let xor1 = arr.reduce((prev, current) => prev^current, 0);
+        //  ⚠️ 右数不是零的第一位
+        xor1 = xor1&(~xor1 + 1);
+        let xor2 = 0;
+        arr.forEach(item => {
+            if ((item|xor1) === item) {
+                xor2 ^= item;
+            }
+        });
+        console.log(xor2, xor2^xor1);
+
+        //  思路
+        //  假设，a和b是要求的数。
+        //  和唯一数类似，但是异或一遍以后，只能异或出来一个结果，a^b。那么根据异或是某一位上1出现的次数，这个值就是一个按位差，比如说第8位上a=0，b=1
+        //  在整个数组中，可以根据这个a^b，分成2部分：1.第8位上有1的数；2.第8位上没有1的数。a和b会被分开。
+        //  因为相同的数完全忽略掉了，所以进行第二次异或运算，只对第八位上是1的数进行异或运算，这就会得到a或b，那么另一个数也就出来了
+    })();
+</script>
+</body>
+</html>

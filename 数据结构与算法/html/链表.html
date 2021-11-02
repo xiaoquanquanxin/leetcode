@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>链表</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <script src="../js/basic.js"></script>
+</head>
+<body>
+<h1>链表</h1>
+<p>是map set这些数据结构</p>
+<ol>
+    <li class="im">反转单向链表</li>
+    <li>反转双向链表</li>
+    <li>打印两个<span class="im">有序</span>链表的公共部分</li>
+    <li class="im">
+        <span>判断一个链表是否回文</span>
+        <br>
+        <span class="idea">双指针，找到中间点，然后一个返回头部，一个返回尾部，比较大小。</span>
+    </li>
+    <li>
+        <span>给定一个数，将链表中按照小于，等于，大于这个数的顺序排列，保证稳定</span>
+        <br>
+        <span class="idea">创建6个变量，分别是小于、等于、大于这个值的链表的头部和尾部。遍历链表，分成3部分，然后头尾相接。</span>
+    </li>
+    <li class="im">
+        <span>复制有额外指针的链表</span>
+        <br>
+        <span class="idea">复制这些节点，但是这些节点放在被复制节点的next位置上，然后复制指向额外节点的指针。最后把这个链表还原，被分离的新链表就是要求的链表。</span>
+    </li>
+    <li>
+        <span>判断一个链表是否有环，有环返回入环节点</span>
+        <br>
+        <span class="idea">如果无环，那么最终是null。对于有环，快慢指针，获得焦点a，然后，a点慢指针继续，快指针回收，新创建慢指针，和a点慢指针焦点出为入环节点。</span>
+        <br>
+        <span class="idea">证明：</span>
+        <br>
+        <span class="idea">快慢指针下：如果是一个完整的圆，那么必然相交，因为如果以慢指针为参照坐标，那么相当于快指针每次走一步，那么一定会遍历完环上的所有节点。</span>
+        <br>
+        <span class="idea">于是，对于有1个额外节点的环，快慢指针相交的位置在差一个节点就到了相交节点的位置上。</span>
+        <br>
+        <span class="idea">于是，对于有n个额外节点的环，快慢指针相交的位置在差n个节点就到了相交节点的位置上。</span>
+    </li>
+    <li>两个单链表是否相交</li>
+    <li class="im">
+        <span>判断2个链表是否相交，相交返回相交的第一个节点。</span>
+        <br>
+        <span class="idea">先判断是否为环:</span>
+        <ol class="idea">
+            <li>如果一个为环另一个不为环，那么不相交。</li>
+            <li>如果都不为环，那么最后一个节点应该相同，如果不相同则不相交。</li>
+            <li>如果为环，那么遍历一个环，判断有没有另一个环上的入环节点。</li>
+        </ol>
+    </li>
+</ol>
+<script data-msg="反转单向链表">
+    (() => {
+        return;
+        //          1 -> 2 -> 3;
+        //  null <- 1 <- 2
+        const reverse = (node, prev) => {
+            //  如果是最后一个
+            if (node === null) {
+                return;
+            }
+            //  先缓存原来的node.next，它是继续递归需要的数据
+            const next = node.next;
+            //  重新设置node.next
+            node.next = prev;
+            //  下一个
+            return reverse(next, node);
+        };
+        const node1 = new OneWayNode(1);
+        const node2 = new OneWayNode(2);
+        node1.add(node2);
+        reverse(node1, null);
+        console.log(node2);
+    })();
+</script>
+<script data-msg="反转双向链表">
+    (() => {
+        //  1 <-> 2 <-> 3;
+        const reverse = (node, last) => {
+            if (node === null) {
+                return;
+            }
+            //  记录后一个
+            const next = node.next;
+
+            node.next = last;
+            node.last = next;
+
+            return reverse(next, node);
+        };
+        const node1 = new DoubleWayNode(1);
+        const node2 = new DoubleWayNode(2);
+        node1.add(node2);
+        reverse(node1, null);
+        //  console.log(node2);
+    })();
+</script>
+<script data-msg="打印两个有序链表的公共部分">
+    (() => {
+        return;
+        const reverse = (node1, node2) => {
+            while (node1 !== null && node2 !== null) {
+                if (node1.value > node2.value) {
+                    node2 = node2.next;
+                    continue;
+                }
+                if (node1.value < node2.value) {
+                    node1 = node1.next;
+                    continue;
+                }
+                return node1;
+            }
+        };
+        const node1 = new OneWayNode(1);
+        const node2 = new OneWayNode(2);
+        node1.add(node2);
+        const commonNode = reverse(node1, node2);
+        console.log('公共部分是', commonNode);
+    })();
+</script>
+<script data-msg="判断一个链表是否回文">
+    (() => {
+        //  1 2 3 2 1 1
+        //      s   f
+        //  快慢指针，回来
+        //  做反向指针
+        const isReturnText = (node) => {
+            if (node === null) {
+                return;
+            }
+            let fast = node;
+            let slow = node;
+            while (node.next !== null && node.next.next !== null) {
+                node = fast = fast.next.next;
+                //  前一个
+                slow.next.last = slow;
+                slow = slow.next;
+            }
+            //  现在 slow 是 慢指针；中间或 中间-1；fast 是 最后一个
+            //  后半
+            let right = slow.next;
+            //  是回文
+            let isReturnText = true;
+            while (right) {
+                //  不相登
+                if (right.value !== slow.value) {
+                    isReturnText = false;
+                    //  这里不直接return ，是因为要把last字段清空回收，如果不需要回收，直接return
+                }
+                right = right.next;
+                const _slow = slow.last;
+                delete slow.last;
+                slow = _slow;
+            }
+            return isReturnText;
+        };
+    })();
+</script>
+<script data-msg="给定一个数，将链表中按照小于，等于，大于这个数的顺序排列，保证稳定">
+    (() => {
+        const resort = (node, value) => {
+            if (node === null) {
+                return;
+            }
+            let sh = null;
+            let se = null;
+
+            let mh = null;
+            let me = null;
+
+            let bh = null;
+            let be = null;
+
+            while (node !== null) {
+                if (node.value < value) {
+                    //  放到sh
+                    if (sh === null) {
+                        sh = node;
+                        se = node;
+                    } else {
+                        //  放到se
+                        se.next = node;
+                        se = node;
+                    }
+                }
+                if (node.value === value) {
+                    //  放到mh
+                    if (mh === null) {
+                        mh = node;
+                        me = node;
+                    } else {
+                        //  放到me
+                        me.next = node;
+                        me = node;
+                    }
+                }
+                if (node.value > value) {
+                    //  放到bh
+                    if (bh === null) {
+                        bh = node;
+                        be = node;
+                    } else {
+                        //  放到be
+                        be.next = node;
+                        be = node;
+                    }
+                }
+                node = node.next;
+            }
+
+            //  此时 sh - > se  ; mh -> me  ; bh -> be;
+
+            if (se !== null) {
+                se.next = mh || bh;
+            }
+            if (me !== null) {
+                me.next = bh;
+            }
+
+            return sh || mh || bh;
+        };
+    })();
+</script>
+<script data-msg="复制有额外指针的链表">
+    (() => {
+        //  拷贝节点
+        const copyNodeFn = (node) => {};
+        //  复制链表
+        const copyLink = (node) => {
+            let copyLink = null;
+            if (node === null) {
+                return copyLink;
+            }
+            //  遍历节点
+            while (node) {
+                const copyNode = copyNodeFn(node);
+                copyNode.next = node.next;
+                node.next = copyNode;
+                //  循环跳2步相当于
+                node = copyNode.next;
+            }
+            //  设置额外指针
+            while (node) {
+                const copyNode = node.next;
+                copyNode.extra = node.extra.next;
+                //  循环跳2步
+                node = node.next.next;
+            }
+            //  拆开链表
+            while (node) {
+                copyLink = node.next;
+                node.next = copyLink.next;
+                copyLink.next = node.next.next;
+                //  因为还原了所以只走一步
+                node = node.next;
+            }
+            return copyLink;
+
+        };
+    })();
+</script>
+<script data-msg="判断一个链表是否有环，有环返回入环节点">
+    (() => {
+        //  判断一个链表是否有环，有环返回入环节点
+        const returnCircle = (node) => {
+            if (node === null) {
+                return false;
+            }
+            //  慢指针
+            let slow = node.next;
+            //  如果没有下一个，那么是单链表
+            if (!slow) {
+                return false;
+            }
+            let fast = node;
+            //  快指针走到头了
+            if (!fast || !fast.next || !fast.next.next) {
+                return false;
+            }
+            //  快指针走两步
+            fast = fast.next.next;
+            //  有快指针，并且快指针 !== 慢指针，说明还需要遍历
+            while (fast && fast !== slow) {
+                //  快指针走到头了
+                if (!fast || !fast.next || !fast.next.next) {
+                    return false;
+                }
+                //  快指针走两步
+                fast = fast.next.next;
+                //  慢指针走一步
+                slow = slow.next;
+            }
+            //  现在快慢指针相同
+            fast = null;
+            //  创建新指针
+            let start = node;
+            while (start !== slow) {
+                start = start.next;
+                slow = slow.next;
+            }
+            return start;
+        };
+    })();
+</script>
+<script data-msg="两个单链表是否相交，如果相交返回相交节点">
+    (() => {
+        //  返回单链表最后一个节点
+        const returnLastNode = (node) => {
+            if (!node) {
+                return null;
+            }
+            if (node.next) {
+                node = node.next;
+                return returnLastNode(node);
+            }
+            return node;
+        };
+        //  两个单链表是否相交
+        const hasCommonNode = (node1, node2) => {
+            const lastNode1 = returnLastNode(node1);
+            const lastNode2 = returnLastNode(node2);
+            if ((lastNode1 && lastNode1) === null) {
+                //  有一个为null，所以不相交
+                return false;
+            }
+            return lastNode1 === lastNode2;
+        };
+        //  获取len的长度
+        const getListLength = (node) => {
+            let len = 0;
+            if (!node) {
+                return len;
+            }
+            while (node) {
+                len++;
+                node = node.next;
+            }
+            return len;
+        };
+        //  获取第n个节点，从零计算
+        const getNNode = (node, n) => {
+            if (!node) {
+                return null;
+            }
+            while (n) {
+                node = node.next;
+                n--;
+            }
+            return node;
+        };
+        //  如果相交返回相交节点
+        const getListCommonNode = (node1, node2) => {
+            const hasCommon = hasCommonNode(node1, node2);
+            if (!hasCommon) {
+                return false;
+            }
+            //  有相交节点  y字型
+            const len1 = getListLength(node1);
+            const len2 = getListLength(node2);
+            //  最大步数
+            const max = Math.max(len1, len2);
+            //  各自列表需要多走额外的步数
+            const extraLen1 = max - len1;
+            const extraLen2 = max - len2;
+            //  走n步以后
+            node1 = getNNode(extraLen1);
+            if (node1 === getNNode(extraLen2)) {
+                //  两个节点相等，就是相交节点
+                return node1;
+            }
+            return false;
+        };
+    })();
+</script>
+<script data-msg="判断2个链表是否相交，相交返回相交的第一个节点">
+    (() => {
+        //  从零计数，返回链表长度
+        const getListLen = (node) => {
+            let len = 0;
+            while (node) {
+                len++;
+                node = node.next;
+            }
+            return len;
+        };
+        //  获取第n个节点，从零计数
+        const getNNode = (node, n) => {
+            while (n) {
+                node = node.next;
+                n--;
+            }
+            return node;
+        };
+        //  单链表返回相交节点
+        const getListCommonNode = (node1, node2) => {
+            //  一定都是普通单链表
+            if (!node1 || !node2) {
+                return false;
+            }
+            //  获取链表长度
+            const len1 = getListLen(node1);
+            const len2 = getListLen(node2);
+            const max = Math.max(len1, len2);
+            const extra1 = max - len1;
+            const extra2 = max - len2;
+            node1 = getNNode(node1, extra1);
+            node2 = getNNode(node2, extra2);
+            if (node1 === node2) {
+                return node1;
+            }
+            return false;
+        };
+        //  先判断是否有环
+        const returnCircle = (node) => {
+            if (!node) {
+                return false;
+            }
+            //  慢指针
+            let slow = node.next;
+            if (!slow) {
+                return false;
+            }
+            //  快指针
+            let quick = node;
+            if (!quick.next || !quick.next.next) {
+                //  没有快指针
+                return false;
+            }
+            quick = quick.next.next;
+            while (quick !== slow) {
+                //  慢指针一定有
+                slow = slow.next;
+                if (!quick.next || !quick.next.next) {
+                    //  不相交
+                    return false;
+                }
+                quick = quick.next.next;
+            }
+            //  现在快指针=== 慢指针
+            quick = null;
+            let start = node;
+            while (start !== slow) {
+                start = start.node;
+                slow = slow.node;
+            }
+            //  是环的第一个节点
+            return start;
+        };
+        //  返回单链表最后一个节点
+        const returnLastNode = (node) => {
+            if (!node) {
+                return null;
+            }
+            if (node.next) {
+                node = node.next;
+                return returnLastNode(node);
+            }
+            return node;
+        };
+        //  判断一个链表上是否有某个节点
+        const getAnyNode = (node, theNode) => {
+            const head = node;
+            while (node) {
+                if (node === theNode) {
+                    return true;
+                }
+                node = node.next;
+                //  怕是环
+                if (node === head) {
+                    return false;
+                }
+            }
+            return false;
+        };
+        //  走到某一个节点需要的步数，前置条件是theNode一定在node上
+        const getStepToNode = (node, theNode) => {
+            let len = 0;
+            while (node) {
+                if (node === theNode) {
+                    return len;
+                }
+                len++;
+                node = node.next;
+            }
+        };
+        //  判断2个链表是否相交，相交返回相交的第一个节点
+        const returnNode = (node1, node2) => {
+            const isCircle1 = returnCircle(node1);
+            const isCircle2 = returnCircle(node2);
+            //  至少有一个为单链表
+            if ((isCircle1 && isCircle2) === false) {
+                //  一个为单链表，一个为环，绝对不相交
+                if (isCircle1 || isCircle2) {
+                    return false;
+                }
+                //  都是单链表
+                return getListCommonNode(node1, node2);
+            }
+            //  都是环，做法和都是单链表类似，只不过因为环没有结束点，那就当第一个入环点为结束点就行
+            if (!getAnyNode(isCircle2, isCircle1)) {
+                //  不相交
+                return false;
+            }
+            //  从 node1 到 circle2；从 node2 到 circle1，哪一个更短？
+            const step1 = getStepToNode(node1, isCircle2);
+            const step2 = getStepToNode(node2, isCircle1);
+            //  最近的节点
+            let least = null;
+            if (step1 < step2) {
+                least = isCircle2;
+            } else {
+                least = isCircle1;
+            }
+            //  从开头，到最近的节点位置，有没有相交的部分？当 y 结构判断
+            const y1 = getStepToNode(node1, least);
+            const y2 = getStepToNode(node2, least);
+            const max = Math.max(y1, y2);
+            const extra1 = max - y1;
+            const extra2 = max - y2;
+            const extraNode1 = getNNode(node1, extra1);
+            const extraNode2 = getNNode(node2, extra2);
+            //  是y型 + o型结构
+            if (extraNode1 === extraNode2) {
+                return extraNode1;
+            }
+            //  是普通o型结构
+            return  least
+        };
+    })();
+</script>
+</body>
+</html>

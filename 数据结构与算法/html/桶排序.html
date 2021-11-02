@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>桶排序</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <script src="../js/basic.js"></script>
+</head>
+<body>
+<h1>桶排序</h1>
+<p>桶排序是不基于比较的排序，就是不进过【比较两个数的大小然后进行交换】这个操作的排序。流程：</p>
+<ol>
+    <li class="idea">最好用二进制，因为方便。</li>
+    <li>先找到最大的数，要知道最大的数在进制中占几位；由于我使用二进制，所以比如5：101，占3位，按位右移动计数得到3占位。<span class="idea">【此处二进制方便】</span></li>
+    <li>准备2个list，就是2个桶。 <span class="idea"></span>【此处二进制方便，如果是十进制就要10个桶了】</li>
+    <li>判断从低位开始</li>
+    <li>对于任意一位上的数，如果===0，进入list0，如果===1，进入list1。</li>
+    <li>把list0和list1合并。</li>
+    <li>再判断比当前位高一位的数。</li>
+    <li>由于我的位数相对于数组长度小得多，所以可以当作一个常数，故这种排序O(N)</li>
+</ol>
+<script data-msg="桶排序">
+    (() => {
+//        return;
+        //  桶排序
+        const bucketSort = (arr) => {
+            if (arr.length < 2) {
+                return;
+            }
+            //  先找出最大值
+            let max = arr[0];
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i] > max) {
+                    max = arr[i];
+                }
+            }
+
+            //  11011;
+            //  5
+            const arr0 = [];
+            const arr1 = [];
+            let index = 1;
+            //  循环5次
+            while (max) {
+                max >>= 1;
+                for (let i = 0; i < arr.length; i++) {
+                    const current = arr[i];
+                    if (current&index) {
+                        arr1.push(current);
+                        continue;
+                    }
+                    arr0.push(current);
+                }
+                index = index << 1;
+                arr.length = 0;
+                for (let i = 0; i < arr0.length; i++) {
+                    arr.push(arr0[i]);
+                }
+                for (let i = 0; i < arr1.length; i++) {
+                    arr.push(arr1[i]);
+                }
+                arr0.length = 0;
+                arr1.length = 0;
+            }
+        };
+        const arr = getArr(10000);
+        console.time('桶排序');
+        bucketSort(arr);
+        console.timeEnd('桶排序');
+//        checkIsSort(arr);
+    })();
+</script>
+<p class="eg">更优雅的桶排序，虽然更优雅，但是好像比我的二进制桶排序慢</p>
+<script data-msg="更好的桶排序">
+    (() => {
+        //  1234  4321位
+
+        //  获取 num 这个数 第 d 位上的数
+        const getDigitNum = (num, digit) => {
+            let res = 0;
+            while (digit) {
+                res = num % 10;
+                num = (num / 10)|0;
+                digit--;
+            }
+            return res;
+        };
+        const bucketSort = (arr) => {
+            const { length } = arr;
+            if (length < 2) {
+                return;
+            }
+            //  词频表
+            const c = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+            //  最大的数
+            let max = -Infinity;
+            for (let i = 0; i < length; i++) {
+                if (arr[i] > max) {
+                    max = arr[i];
+                }
+            }
+            //  当前计算的位数，从后向前
+            let digit = 1;
+            //  执行 最大的数的位数 次
+            while (max) {
+                max = (max / 10)|0;
+                //  1.遍历，计算频次，先计算最小值
+                for (let i = 0; i < length; i++) {
+                    //  第 digit 位 上的数是 num
+                    const num = getDigitNum(arr[i], digit);
+                    //  词频+1
+                    c[num]++;
+                }
+                //  词频表 转为 大于等于某个数 的词频表
+                for (let i = 1; i < c.length; i++) {
+                    c[i] += c[i - 1] || 0;
+                }
+                //  临时数组
+                const tempArr = [];
+                //  再次遍历 arr，倒叙，获得当前位上的数，从词频表里取
+                for (let i = length - 1; i >= 0; i--) {
+                    const num = getDigitNum(arr[i], digit);
+                    const index = --c[num];
+                    tempArr[index] = arr[i];
+                }
+                arr = tempArr;
+            }
+        };
+        const arr = getArr(10000);
+        console.time('更好的桶排序');
+        bucketSort(arr);
+        console.timeEnd('更好的桶排序');
+    })();
+</script>
+</body>
+</html>

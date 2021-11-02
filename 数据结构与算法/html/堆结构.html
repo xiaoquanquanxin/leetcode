@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>堆结构</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <script src="../js/basic.js"></script>
+</head>
+<body>
+<h1>堆结构</h1>
+<p>在逻辑上是一颗 <span class="vi">【完全二叉树结构】</span>。要么是满二叉树，要么是最底层节点左侧填满的树。</p>
+<p>把数组的从零出发的一段，对应成完全二叉树。</p>
+<p>对于完全二叉树映射成数组，它的任意节点，它的左子节点的下标是 2*i+1，右子节点是 2*i+2。父节点是(i-1)<<1</p>
+<hr>
+<p>堆分成大根堆和小根堆。</p>
+<p>大根堆的意思是，任何节点，它的子节点都≤它。</p>
+<script data-msg="创建大根堆">
+    (() => {
+        //  获取父节点的位置
+        const getParentNodeIndex = (index) => {
+            return (index - 1) >> 1;
+        };
+        //  💡创建大根堆
+        window.heapInsert = (arr) => {
+            if (arr.length < 2) {
+                return;
+            }
+            for (let i = 0; i < arr.length; i++) {
+                insert(arr, i);
+            }
+        };
+        //  大根堆操作
+        const insert = (arr, index) => {
+            let parentNodeIndex = getParentNodeIndex(index);
+            //  比较，当前的比父节点大
+            while (arr[index] > arr[parentNodeIndex]) {
+                //  交换
+                swap(arr, index, parentNodeIndex);
+                //  index变换
+                index = parentNodeIndex;
+                parentNodeIndex = getParentNodeIndex(index);
+            }
+        };
+
+        return;
+        //  测试1000次
+        for (let i = 0; i < 1000; i++) {
+            (() => {
+                const arr = getArr();
+                heapInsert(arr);
+//                console.log(arr);
+                //  对数器
+                const isBigRootHeap = checkBigRootHeap(arr);
+                console.log(isBigRootHeap);
+            })();
+        }
+    })();
+</script>
+<p>拿掉大根堆的数，让剩下的数变成新的大根堆</p>
+<script data-msg="拿掉一个数">
+    (() => {
+        //  左子节点的下标
+        const findLeftChildNodeIndex = (index) => index * 2 + 1;
+        //  拿掉一个数
+        const newBigRootHeap = (arr) => {
+            //  大数
+            const big = arr[0];
+            //  大数和最后一位交换
+            swap(arr, 0, arr.length - 1);
+            //  删除大数，已经在最后一位
+            arr.pop();
+            //  从头遍历
+            let index = 0;
+            let leftIndex = findLeftChildNodeIndex(index);
+            let rightIndex = leftIndex + 1;
+            //  必须有子节点才能进行判断
+            while (leftIndex < arr.length) {
+                //  子节点中最大值的坐标
+                let maxIndex = leftIndex;
+                if (arr[leftIndex] < (arr[rightIndex] || -Infinity)) {
+                    maxIndex = rightIndex;
+                }
+                const maxValue = arr[maxIndex];
+                const current = arr[index];
+                if (maxValue > current) {
+                    //  交换
+                    swap(arr, maxIndex, index);
+                    index = maxIndex;
+                    leftIndex = findLeftChildNodeIndex(index);
+                    rightIndex = leftIndex + 1;
+                    continue;
+                }
+                //  💡 这里，说明该节点已经是 以当前节点为根结点的数的大跟堆了
+                break;
+            }
+            return big;
+        };
+
+        function test(){
+            const arr = getArr();
+            heapInsert(arr);
+            const _arr = JSON.parse(JSON.stringify(arr));
+            newBigRootHeap(arr);
+            const isBigRootHeap = checkBigRootHeap(arr);
+            console.log(isBigRootHeap);
+            if (!isBigRootHeap) {
+                console.log(_arr);
+                debugger;
+            }
+        }
+
+        return;
+        for (let i = 0; i < 1000; i++) {
+            test();
+        }
+    })();
+</script>
+<div class="im">
+    <hr>
+    <p>堆排序</p>
+    <p>堆结构中相关算法中，堆排序是最不重要的，但是堆排序是最快的。O(N * LogN)</p>
+    <script data-msg="堆排序">
+        (() => {
+            //  获取左子节点的index
+            const getLeftNodeIndex = index => (index << 1) + 1;
+            //  堆化 index 为根结点 - range范围内堆化
+            const heapify = (arr, index, range) => {
+                let leftIndex = getLeftNodeIndex(index);
+                //  range 是 length
+                while (leftIndex < range) {
+                    const rightIndex = leftIndex + 1;
+                    const leftNode = arr[leftIndex];
+                    const rightNode = arr[rightIndex];
+                    const current = arr[index];
+                    //  最大值
+                    let maxIndex = leftIndex;
+                    //  右节点在范围内
+                    if (rightIndex < range) {
+                        if (rightNode > leftNode) {
+                            maxIndex = rightIndex;
+                        }
+                    }
+                    const maxValue = arr[maxIndex];
+                    //  如果有一个子节点大于当前节点
+                    if (maxValue > current) {
+                        //  交换位置
+                        swap(arr, index, maxIndex);
+                        index = maxIndex;
+                        leftIndex = getLeftNodeIndex(index);
+                        continue;
+                    }
+                    break;
+                }
+            };
+
+            //  堆排序
+            const heapifySort = (arr) => {
+                for (let i = arr.length - 1; i >= 0; i--) {
+                    heapify(arr, i, arr.length);
+                }
+                //  当前 arr 是大根堆
+                let range = arr.length - 1;
+                while (range > 0) {
+                    swap(arr, 0, range);
+                    heapify(arr, 0, range);
+                    range--;
+                }
+            };
+            const arr = getArr();
+            //  执行
+            heapifySort(arr);
+            //  验证
+            checkIsSort(arr);
+        })();
+    </script>
+</div>
+</body>
+</html>

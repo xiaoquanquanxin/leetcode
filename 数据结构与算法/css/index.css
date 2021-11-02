@@ -1,0 +1,25 @@
+* {
+    color: inherit;
+}
+
+/*very-important*/
+.vi {
+    font-weight: bolder;
+    color: crimson;
+}
+
+/*important*/
+.im {
+    color: crimson;
+}
+
+/*idea*/
+.idea {
+    color: dodgerblue;
+}
+
+/*.e.g*/
+.eg {
+    color: green;
+}
+

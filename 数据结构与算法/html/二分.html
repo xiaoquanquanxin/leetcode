@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>二分查找</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+<h1>二分查找</h1>
+<div class="eg">
+    <p>题目</p>
+    <ol>
+        <li>有序数组中，找数据是否存在</li>
+        <li>有序数组中，找≥某个数最左侧的位置</li>
+        <li>
+            <p class="im">局部最小值问题</p>
+            <p>在一个无序数中，【任意两个不相邻】的数不想等。在任意相邻的3个数中，找到一个最小的数（边缘为从2个数中找）。</p>
+            <div class="idea">
+                <p>先判断边缘，然后最左右两侧一定是\ 和 / 的数据情况的，这时候判断这个范围的中间是否为最小值。</p>
+                <p>如果中间的数不是最小值，判断最小值左侧和右侧作为边缘是否合格。</p>
+            </div>
+        </li>
+    </ol>
+</div>
+<script data-msg="局部最小值问题">
+    (() => {
+        const arr = [12, 10, 7, 6, 8, 5, 2, 11, 4, 7, 9, 5, 23, 41, 5, 8, 3, 6, 8, 31];
+        const isMin = (index, arr) => {
+            const a = arr[index - 1];
+            const b = arr[index];
+            const c = arr[index + 1];
+            return (a > b && b < c);
+        };
+        const partMin = (arr) => {
+            if (arr.length <= 2) {
+                return true;
+            }
+            //  边缘
+            if (arr[0] < arr[1]) {
+                return true;
+            }
+            if (arr[arr.length - 2] > arr[arr.length - 1]) {
+                return true;
+            }
+            //  边缘的index
+            let right = arr.length - 2;
+            let left = 0;
+            //  中间的数
+            let index;
+            while (right > left) {
+                index = ((right + left) / 2)|0;
+                //  如果index是局部最小
+                if (isMin(index, arr)) {
+                    return index;
+                }
+                if (arr[index - 1] < arr[index]) {
+                    right = index;
+                    continue;
+                }
+                if (arr[index] > arr[index + 1]) {
+                    left = right;
+                }
+            }
+            return index;
+        };
+        console.log(partMin(arr));
+    })();
+</script>
+</body>
+</html>

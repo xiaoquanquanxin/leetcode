@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>位运算</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+<h1>位运算</h1>
+<div>
+    <hr>
+    <p>e.g.</p>
+    <div class="eg">
+        <p>取a,b中间位置上的数</p>
+        <p>a+((b-a)>>1)</p>
+    </div>
+</div>
+<div>
+    <hr>
+    <p>e.g.</p>
+    <div class="eg">
+        <p>取右数不是零的第一位</p>
+        <p>x&(~x + 1)</p>
+    </div>
+</div>
+<script>
+    (() => {
+        const arr = [1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 3, 8];
+        const getDiffArr = (arr) => {
+            let digit = 0;
+            for (let key in arr) {
+                digit ^= arr[key];
+            }
+            //  digit是两个不同的数的异或的结果
+            //  取这个结果的右侧第一个不是零的数
+            const right = digit&(~digit + 1);
+            let res = 0;
+            for (let key in arr) {
+                if (arr[key]&right) {
+                    res ^= arr[key];
+                }
+            }
+            return [res, digit^res];
+        };
+//        console.log(getDiffArr(arr));
+    })();
+</script>
+</body>
+</html>
