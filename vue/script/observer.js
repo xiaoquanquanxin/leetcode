@@ -5,7 +5,7 @@ function observer(vm, data){
 }
 
 function setRelative(vm, key, value){
-    const dep = new Watcher();
+    const dep = new Dep();
     Object.defineProperty(vm, key, {
         set(v){
             if (v === value) {
@@ -15,8 +15,8 @@ function setRelative(vm, key, value){
             dep.notify();
         },
         get(){
-            if (Watcher.target) {
-                dep.addItem(Watcher.target);
+            if (Dep.target) {
+                dep.addItem(Dep.target);
             }
             return value;
         }

@@ -1,22 +1,16 @@
-let uid = 1;
-
-function Dep(vm, key, nodeType, node){
-    Watcher.target = this;
-    this.vm = vm;
-    this.key = key;
-    this.nodeType = nodeType;
-    this.node = node;
-    this.uid = uid++;
-    this.update();
-    Watcher.target = null;
+function Dep(){
+    this.list = [];
 }
 
 Dep.prototype = {
-    getValue(){
-        this.value = this.vm[this.key];
+    addItem(item){
+        this.list.push(item);
     },
-    update(){
-        this.getValue();
-        this.node[this.nodeType] = this.value;
+    notify(){
+        console.log(this.list);
+        this.list.forEach(item => {
+            item.update();
+        });
     }
 };
+

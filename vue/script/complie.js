@@ -24,13 +24,13 @@ Complie.prototype = {
                     vm[key] = e.target.value;
                 });
                 el.value = vm[key];
-                new Dep(vm, key, 'value', el);
+                new Watcher(vm, key, 'value', el);
                 break;
             case 3:
                 const Reg = /\{\{(.*)\}\}/;
                 if (Reg.test(el.nodeValue)) {
                     const key = RegExp.$1;
-                    new Dep(vm, key, 'nodeValue', el);
+                    new Watcher(vm, key, 'nodeValue', el);
                     el.nodeValue = vm[key];
                 }
                 break;
